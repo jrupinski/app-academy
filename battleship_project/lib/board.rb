@@ -3,8 +3,7 @@ class Board
   attr_reader :size
 
   def initialize(n)
-    @grid = []
-    n.times { @grid << Array.new(n, :N) } 
+    @grid = Array.new(n) { Array.new(n, :N) } 
     @size = n * n
   end
 
@@ -16,34 +15,44 @@ class Board
     if self[position] == :S
       self[position] = :H
       puts "You sunk my battleship!"
-      true
+      return true
     else
       self[position] = :X
-      false
+      return false
     end
   end
 
   def place_random_ships
     ships_amount = self.size / 4
 
-    ships_amount.times do
-      x = 0, y = 0
-      
-      # don't place two S's in same place
-      loop do
-        x = random_coordinate
-        y = random_coordinate
-        break if @grid[x][y] != :S
-      end
-      # # don't place two S's in same place
-      # while @grid[x][y] == :S        
-      #   x = random_coordinate
-      #   y = random_coordinate
-      # end
+    while ships_amount > 0
+      rand_row = rand(0...@grid.length)
+      rand_col = rand(0...@grid.length)
 
-      # place ship
-      @grid[x][y] = :S
+      if @grid[rand_row][rand_col] != :S
+        @grid[rand_row][rand_col] = :S
+        ships_amount -= 1
+      end
     end
+    # ships_amount.times do
+    #   rand_row = rand(0...grid.length)
+    #   rand_col = rand(0...grid.length)
+      
+    #   # don't place two S's in same place
+    #   loop do
+    #     rand_row = rand()
+    #     rand_col = random_coordinate
+    #     break if @grid[rand_row][rand_col] != :S
+    #   end
+    #   # # don't place two S's in same place
+    #   # while @grid[rand_row][rand_col] == :S        
+    #   #   rand_row = random_coordinate
+    #   #   rand_col = random_coordinate
+    #   # end
+
+    #   # place ship
+    #   @grid[rand_row][rand_col] = :S
+    # end
   end
 
   def hidden_ships_grid
@@ -74,11 +83,13 @@ class Board
   end
 
   def [](position)
-    @grid[position[0]] [position[1]]
+    row, column = position
+    @grid[row] [column]
   end
 
   def []=(position, value)
-    @grid[position[0]][position[1]] = value
+    row, column = position
+    @grid[row] [column] = value
   end
 
   def num_ships
