@@ -14,7 +14,7 @@ class Battleship
 
   def start_game
     self.board.place_random_ships
-    puts "#{self.board.size / 4} ships placed on board."
+    puts "#{self.board.num_ships} ships placed on board."
     self.board.print
   end
 
@@ -44,7 +44,8 @@ class Battleship
 
   def turn
     input = self.player.get_move
-    @remaining_misses -= 1 if !self.board.attack(input)
+    # lose 1 move if you miss
+    @remaining_misses -= 1 if self.board.attack(input) == false
     self.board.print
     puts "You have #{@remaining_misses} misses left"
   end
