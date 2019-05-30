@@ -1,3 +1,4 @@
+require "byebug"
 # Write a method, pow(base, exponent), that takes in two numbers.
 # The method should calculate the base raised to the exponent power.
 # You can assume the exponent is always positive.
@@ -57,7 +58,10 @@ end
 # sum_array([5, 2])         # => 7
 # sum_array([4, 10, -1, 2]) # => 15
 def sum_array(array)
+  # debugger
+  return 0 if array.length == 0
 
+  array.pop + sum_array(array) 
 end
 
 
