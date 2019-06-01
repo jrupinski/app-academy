@@ -112,5 +112,11 @@ end
 #     2-dimensional array: [['some data']]
 #     3-dimensional array: [[['some data']]]
 def flatten(data)
-
+  # debugger
+  # 0-D array / base case
+  return data if data.is_a?(Array) == false
+  # n-D array
+  data.map do |ele|
+    flatten(ele)
+  end
 end
