@@ -14,7 +14,7 @@ require "byebug"
 # pow(4, 3) # => 64
 def pow(base, exponent)
   return 1 if exponent == 0
-  return base if exponent == 1
+  # return base if exponent == 1
 
   base * pow(base, exponent - 1)
 end
@@ -59,9 +59,8 @@ end
 # sum_array([4, 10, -1, 2]) # => 15
 def sum_array(array)
   # debugger
-  return 0 if array.length == 0
-
-  array.pop + sum_array(array) 
+  return 0 if array.empty?
+  array[0] + sum_array(array[1..-1]) 
 end
 
 
@@ -77,7 +76,7 @@ end
 # reverse_string("internet")    # => "tenretni"
 # reverse_string("friends")     # => "sdneirf"
 def reverse_string(str)
-  return "" if str.length == 0
+  return "" if str.empty?
 
   str[-1] + reverse_string(str[0...-1])
 end
@@ -112,11 +111,12 @@ end
 #     2-dimensional array: [['some data']]
 #     3-dimensional array: [[['some data']]]
 def flatten(data)
-  # debugger
   # 0-D array / base case
-  return data if data.is_a?(Array) == false
+  return [data] if data.is_a?(Array) == false
   # n-D array
-  data.map do |ele|
-    flatten(ele)
+  list = []
+  data.each do |ele|
+    list += flatten(ele)
   end
+  flattened
 end
