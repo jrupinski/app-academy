@@ -13,15 +13,19 @@ def all_vowel_pairs(words)
     
     # Create pairs of words: "goat" + "action" -> "goataction"
     (0...words.length - 1).each do |i|
-        pair = words[i], words[i + 1]
-        curr_pair_vowels = Hash.new(0)
+        (i...words.length).each do |j|
+            pair = words[i].downcase, words[j].downcase
+            curr_pair_vowels = Hash.new(0)
 
-        # get all individual characters from string pair
-        pair.join(" ").each_char do |char|
-            curr_pair_vowels[char] += 1 if vowels.include?(char)
+            # get all individual characters from string pair
+            pair.join(" ").each_char do |char|
+                # puts "#{pair}"
+                # puts "#{curr_pair_vowels}"
+                curr_pair_vowels[char] += 1 if vowels.include?(char)
+            end
+
+            pairs << pair.join(" ") if curr_pair_vowels.keys.sort == vowels
         end
-
-        pairs << pair.join(" ") if curr_pair_vowels.keys.sort == vowels
     end
 
     pairs
