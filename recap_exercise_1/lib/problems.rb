@@ -9,15 +9,16 @@ require "byebug"
 def all_vowel_pairs(words)
     debugger
     vowels = "aeiou".chars
-
+    
+    # Create pairs of words: "goat" + "action" -> "goataction"
     (0...words.length - 1).each do |i|
         pair = (words[i] += words[i + 1])
         curr_pair_vowels = Hash.new(0)
 
-        # get all individual characters from string
+        # get all individual characters from string pair
         pair.each_char do |char|
-            curr_pair_vowels[char] += 1
-        end 
+            curr_pair_vowels[char] += 1 if vowels.include?(char)
+        end
     end
 end
 
