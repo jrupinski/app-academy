@@ -1,3 +1,4 @@
+require "byebug"
 # Write a method, all_vowel_pairs, that takes in an array of words and returns all pairs of words
 # that contain every vowel. Vowels are the letters a, e, i, o, u. A pair should have its two words
 # in the same order as the original array. 
@@ -6,9 +7,19 @@
 #
 # all_vowel_pairs(["goat", "action", "tear", "impromptu", "tired", "europe"])   # => ["action europe", "tear impromptu"]
 def all_vowel_pairs(words)
+    debugger
+    vowels = "aeiou".chars
 
+    (0...words.length - 1).each do |i|
+        pair = (words[i] += words[i + 1])
+        curr_pair_vowels = Hash.new(0)
+
+        # get all individual characters from string
+        pair.each_char do |char|
+            curr_pair_vowels[char] += 1
+        end 
+    end
 end
-
 
 # Write a method, composite?, that takes in a number and returns a boolean indicating if the number
 # has factors besides 1 and itself
