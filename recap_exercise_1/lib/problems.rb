@@ -7,19 +7,24 @@ require "byebug"
 #
 # all_vowel_pairs(["goat", "action", "tear", "impromptu", "tired", "europe"])   # => ["action europe", "tear impromptu"]
 def all_vowel_pairs(words)
-    debugger
+    # debugger
     vowels = "aeiou".chars
+    pairs = []
     
     # Create pairs of words: "goat" + "action" -> "goataction"
     (0...words.length - 1).each do |i|
-        pair = (words[i] += words[i + 1])
+        pair = words[i], words[i + 1]
         curr_pair_vowels = Hash.new(0)
 
         # get all individual characters from string pair
-        pair.each_char do |char|
+        pair.join(" ").each_char do |char|
             curr_pair_vowels[char] += 1 if vowels.include?(char)
         end
+
+        pairs << pair.join(" ") if curr_pair_vowels.keys.sort == vowels
     end
+
+    pairs
 end
 
 # Write a method, composite?, that takes in a number and returns a boolean indicating if the number
