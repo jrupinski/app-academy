@@ -7,7 +7,6 @@ require "byebug"
 #
 # all_vowel_pairs(["goat", "action", "tear", "impromptu", "tired", "europe"])   # => ["action europe", "tear impromptu"]
 def all_vowel_pairs(words)
-    # debugger
     vowels = "aeiou".chars
     pairs = []
     
@@ -17,10 +16,8 @@ def all_vowel_pairs(words)
             pair = words[i].downcase, words[j].downcase
             curr_pair_vowels = Hash.new(0)
 
-            # get all individual characters from string pair
+            # get all vowels from pair string
             pair.join(" ").each_char do |char|
-                # puts "#{pair}"
-                # puts "#{curr_pair_vowels}"
                 curr_pair_vowels[char] += 1 if vowels.include?(char)
             end
 
@@ -28,6 +25,7 @@ def all_vowel_pairs(words)
         end
     end
 
+    # return pairs that include all vowels in them
     pairs
 end
 
