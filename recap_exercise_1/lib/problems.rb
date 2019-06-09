@@ -37,7 +37,8 @@ end
 # composite?(9)     # => true
 # composite?(13)    # => false
 def composite?(num)
-
+    (2...num).each { |factor| return true if num % factor == 0 }
+    false
 end
 
 
