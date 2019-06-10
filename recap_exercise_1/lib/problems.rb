@@ -52,16 +52,17 @@ end
 # find_bigrams("the theater is empty", ["cy", "em", "ty", "ea", "oo"])  # => ["em", "ty", "ea"]
 # find_bigrams("to the moon and back", ["ck", "oo", "ha", "at"])        # => ["ck", "oo"]
 def find_bigrams(str, bigrams)
-    # debugger
     string = str.split(" ").join("") # remove spaces from string
     string_bigrams = []
+
+    # create every bigram and add it if it's in bigrams arg
     (0...string.length - 1).each do |i|
         curr_bigram = string[i] + string[i+1]
-
         string_bigrams << curr_bigram if bigrams.include?(curr_bigram)
     end
 
-    string_bigrams
+    # keep original bigram order
+    bigrams.delete_if { |ele| !string_bigrams.include?(ele) }
 end
 
 class Hash
