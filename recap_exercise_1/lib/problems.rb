@@ -80,7 +80,9 @@ class Hash
     # hash_2.my_select { |k, v| k + 1 == v }      # => {10=>11, 5=>6, 7=>8})
     # hash_2.my_select                            # => {4=>4}
     def my_select(&prc)
-        prc ||= self.select { |k, v| k == v }
+        # assign a default proc to prc arg if none is given
+        prc ||= Proc.new { |k, v| k == v }
+        self.select(&prc) 
     end
 end
 
