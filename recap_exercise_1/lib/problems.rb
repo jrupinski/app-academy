@@ -14,9 +14,9 @@ def all_vowel_pairs(words)
     (0...words.length - 1).each do |i|
         (i...words.length).each do |j|
             pair = words[i].downcase, words[j].downcase
-            curr_pair_vowels = Hash.new(0)
-
+            
             # get all vowels from pair string
+            curr_pair_vowels = Hash.new(0)
             pair.join(" ").each_char do |char|
                 curr_pair_vowels[char] += 1 if vowels.include?(char)
             end
@@ -96,7 +96,16 @@ class String
     # "cats".substrings     # => ["c", "ca", "cat", "cats", "a", "at", "ats", "t", "ts", "s"]
     # "cats".substrings(2)  # => ["ca", "at", "ts"]
     def substrings(length = nil)
+        substrings = []
+        # get all substrings
+        (0...self.length).each do |first_letter|
+            substrings << self[first_letter]
+            (first_letter + 1...self.length).each do |second_letter|
+                substrings << (self[first_letter] + self[second_letter])
+            end
+        end
 
+        substrings
     end
 
 
