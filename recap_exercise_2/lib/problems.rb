@@ -27,7 +27,9 @@ end
 class Hash
     # Write a method, Hash#inverse, that returns a new hash where the key-value pairs are swapped
     def inverse
-
+        inversed = {}
+        self.each { |key, val| inversed[val] = key }
+        inversed
     end
 end
 
