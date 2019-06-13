@@ -39,7 +39,7 @@ class Array
     def pair_sum_count(num)
         count = 0
         
-        # check every possible pair sum in array
+        # check every distinct pair sum in array
         (0...self.length - 1).each do |idx1|
             (idx1 + 1...self.length).each do |idx2|
                 pair_sum = self[idx1] + self[idx2]
@@ -56,20 +56,17 @@ class Array
     # When no proc is given, the method should sort the array in increasing order.
     def bubble_sort(&prc)
         prc ||= Proc.new{ |ele1, ele2| ele1 <=> ele2 }
-        
+
         sorted = false
         while !sorted
             sorted = true
-            
+            # check every pair in array and sort it if necessary  
             (0...self.length - 1).each do |i|
-                ele1 = self[i]
-                ele2 = self[i+1]
-                
-                # debugger
-                if prc.call(ele1, ele2) == 1
-                        self[i], self[i+1] = self[i+1], self[i]
-                        sorted = false
-                    end
+                # if prc.call == 1: sort incr; prc.call == -1: sort decr 
+                if prc.call(self[i], self[i+1]) == 1
+                    self[i], self[i+1] = self[i+1], self[i]
+                    sorted = false
+                end
             end
         end
 
