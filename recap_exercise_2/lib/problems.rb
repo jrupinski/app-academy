@@ -55,7 +55,7 @@ class Array
     # When given a proc, the method should sort the array according to the proc.
     # When no proc is given, the method should sort the array in increasing order.
     def bubble_sort(&prc)
-        prc = Proc.new{ |ele1, ele2| ele1 > ele2 }
+        prc ||= Proc.new{ |ele1, ele2| ele1 <=> ele2 }
         
         sorted = false
         while !sorted
@@ -66,7 +66,7 @@ class Array
                 ele2 = self[i+1]
                 
                 # debugger
-                if prc.call(ele1, ele2)
+                if prc.call(ele1, ele2) == 1
                         self[i], self[i+1] = self[i+1], self[i]
                         sorted = false
                     end
@@ -76,5 +76,3 @@ class Array
         self
     end
 end
-
-[4, 12, 2, 8, 1, 14, 9, 25, 24, 81].bubble_sort { |a, b| a.to_s <=> b.to_s }
