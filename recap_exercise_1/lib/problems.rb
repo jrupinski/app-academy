@@ -53,7 +53,7 @@ end
 # find_bigrams("the theater is empty", ["cy", "em", "ty", "ea", "oo"])  # => ["em", "ty", "ea"]
 # find_bigrams("to the moon and back", ["ck", "oo", "ha", "at"])        # => ["ck", "oo"]
 def find_bigrams(str, bigrams)
-    string = str.split(" ").join("") # remove spaces from string
+    string = str.chomp(" ")
     string_bigrams = []
 
     # create every bigram and add it if it's in bigrams arg
