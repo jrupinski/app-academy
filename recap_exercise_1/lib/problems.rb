@@ -8,25 +8,21 @@ require "byebug"
 # all_vowel_pairs(["goat", "action", "tear", "impromptu", "tired", "europe"])   # => ["action europe", "tear impromptu"]
 def all_vowel_pairs(words)
     vowels = "aeiou".chars
-    pairs = []
+    all_vowels_pairs = []
     
     # Create pairs of words: "goat" + "action" -> "goataction"
     (0...words.length - 1).each do |i|
         (i...words.length).each do |j|
             pair = words[i].downcase, words[j].downcase
             
-            # get all vowels from pair string
-            curr_pair_vowels = Hash.new(0)
-            pair.join("").each_char do |char|
-                curr_pair_vowels[char] += 1 if vowels.include?(char)
-            end
-
-            pairs << pair.join(" ") if curr_pair_vowels.keys.sort == vowels
+            # get all vowels (sorted) from pair string 
+            curr_pair_vowels = get_vowels(pair.join(""))
+            # add pair 
+            all_vowels_pairs << pair.join(" ") if curr_pair_vowels == vowels
         end
     end
 
-    # return pairs that include all vowels in them
-    pairs
+    all_vowels_pairs
 end
 
 def get_vowels(string)
