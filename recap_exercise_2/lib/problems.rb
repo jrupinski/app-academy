@@ -1,3 +1,4 @@
+require "byebug"
 # Write a method, least_common_multiple, that takes in two numbers and returns the smallest number that is a mutiple 
 # of both of the given numbers
 def least_common_multiple(num_1, num_2)
@@ -10,7 +11,16 @@ end
 # Write a method, most_frequent_bigram, that takes in a string and returns the two adjacent letters that appear the
 # most in the string.
 def most_frequent_bigram(str)
+    bigram_count = Hash.new(0)
 
+    # count each bigram appearance
+    (0...str.length - 1).each do |i|
+        bigram = str[i] + str[i+1]
+        bigram_count[bigram] += 1
+    end
+
+    # return most frequent bigram
+    bigram_count.max_by { |k, v| v }.first
 end
 
 
@@ -36,3 +46,5 @@ class Array
 
     end
 end
+
+most_frequent_bigram("gotothemoonsoonforproof")
