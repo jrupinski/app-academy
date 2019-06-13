@@ -37,7 +37,17 @@ end
 class Array
     # Write a method, Array#pair_sum_count, that takes in a target number returns the number of pairs of elements that sum to the given target
     def pair_sum_count(num)
+        count = 0
+        
+        # check every possible pair sum in array
+        (0...self.length - 1).each do |idx1|
+            (idx1 + 1...self.length).each do |idx2|
+                pair_sum = self[idx1] + self[idx2]
+                count += 1 if pair_sum == num
+            end
+        end
 
+        count
     end
 
 
@@ -48,5 +58,3 @@ class Array
 
     end
 end
-
-most_frequent_bigram("gotothemoonsoonforproof")
