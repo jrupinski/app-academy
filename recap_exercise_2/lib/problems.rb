@@ -55,28 +55,26 @@ class Array
     # When given a proc, the method should sort the array according to the proc.
     # When no proc is given, the method should sort the array in increasing order.
     def bubble_sort(&prc)
+        prc = Proc.new{ |ele1, ele2| ele1 > ele2 }
+        
         sorted = false
-        prc = Proc.new do |ele1, ele2|
-            if self[ele1] > self[ele2]
-                self[ele1], self[ele2] = self[ele2], self[ele1]
-            else
-                false
-            end
-        end
-
         while !sorted
             sorted = true
-
-            (0...self.length - 1).each do |idx1|
-                (idx1 + 1...self.length).each do |idx2|
-
-                    if prc.call(idx1, idx2)
+            
+            (0...self.length - 1).each do |i|
+                ele1 = self[i]
+                ele2 = self[i+1]
+                
+                # debugger
+                if prc.call(ele1, ele2)
+                        self[i], self[i+1] = self[i+1], self[i]
                         sorted = false
                     end
-                end
             end
         end
 
         self
     end
 end
+
+[4, 12, 2, 8, 1, 14, 9, 25, 24, 81].bubble_sort { |a, b| a.to_s <=> b.to_s }
