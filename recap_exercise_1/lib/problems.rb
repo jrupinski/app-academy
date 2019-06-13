@@ -17,7 +17,7 @@ def all_vowel_pairs(words)
             
             # get all vowels from pair string
             curr_pair_vowels = Hash.new(0)
-            pair.join(" ").each_char do |char|
+            pair.join("").each_char do |char|
                 curr_pair_vowels[char] += 1 if vowels.include?(char)
             end
 
@@ -27,6 +27,14 @@ def all_vowel_pairs(words)
 
     # return pairs that include all vowels in them
     pairs
+end
+
+def get_vowels(string)
+    vowels = "aeiou".chars
+    str_vowels = Hash.new(0)
+    string.each_char { |char| str_vowels[char] += 1 if vowels.include?(char) }
+
+    str_vowels.keys.sort
 end
 
 # Write a method, composite?, that takes in a number and returns a boolean indicating if the number
@@ -98,12 +106,14 @@ class String
     def substrings(length = nil)
         strings = []
         
+        # create all possible substrings
         (0...self.length).each do |char1|
             (char1...self.length).each do |rest_of_chars|
                 strings << self[char1..rest_of_chars]
             end
         end
 
+        # return substrings with n length || return all substrings
         if length
             strings.select { |substr| substr.length == length }
         else
@@ -122,6 +132,9 @@ class String
     # "bootcamp".caesar_cipher(2) #=> "dqqvecor"
     # "zebra".caesar_cipher(4)    #=> "difve"
     def caesar_cipher(num)
-
+        alpha = ("a".."z").to_a
+        # shift all chars, loop back z -> a using modulo
+        cipher = self.chars.map { |char| alpha[(alpha.index(char) + num) % alpha.length] }
+        cipher.join("")
     end
 end
