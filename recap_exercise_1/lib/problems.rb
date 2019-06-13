@@ -7,18 +7,15 @@ require "byebug"
 #
 # all_vowel_pairs(["goat", "action", "tear", "impromptu", "tired", "europe"])   # => ["action europe", "tear impromptu"]
 def all_vowel_pairs(words)
-    vowels = "aeiou".chars
     all_vowels_pairs = []
-    
+
     # Create pairs of words: "goat" + "action" -> "goataction"
     (0...words.length - 1).each do |i|
         (i...words.length).each do |j|
-            pair = words[i].downcase, words[j].downcase
-            
-            # get all vowels (sorted) from pair string 
-            curr_pair_vowels = get_vowels(pair.join(""))
-            # add pair 
-            all_vowels_pairs << pair.join(" ") if curr_pair_vowels == vowels
+            pair = "#{words[i].downcase} #{words[j].downcase}"
+            curr_pair_vowels = get_vowels(pair).sort
+            # add pair of words if it contains all vowels 
+            all_vowels_pairs << pair if curr_pair_vowels.join("") == "aeiou"
         end
     end
 
@@ -30,7 +27,7 @@ def get_vowels(string)
     str_vowels = Hash.new(0)
     string.each_char { |char| str_vowels[char] += 1 if vowels.include?(char) }
 
-    str_vowels.keys.sort
+    str_vowels.keys
 end
 
 # Write a method, composite?, that takes in a number and returns a boolean indicating if the number
