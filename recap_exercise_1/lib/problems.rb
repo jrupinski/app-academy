@@ -104,7 +104,11 @@ class String
             end
         end
 
-        strings
+        if length
+            strings.select { |substr| substr.length == length }
+        else
+            strings
+        end
     end
 
 
