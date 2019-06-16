@@ -19,8 +19,16 @@ class Array
     flattened
   end
 
-  def my_zip
+  # return a new array with self.length elements; each ele is 
+  # (args.length + 1) long. Each element is an array with n-th element
+  # from every argument array and self.
+  def my_zip(*arg)
+    outer_arr_len = self.length
+    ele_length = arg.length + 1
 
+    new_array = Array.new(outer_arr_len) { Array.new(ele_length) }
+    
+    new_array
   end
 
   def my_rotate
