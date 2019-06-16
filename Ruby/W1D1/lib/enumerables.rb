@@ -31,6 +31,7 @@ class Array
 
     not_rejected
   end
+
   # return true if any element satisfies condition; else return false
   def my_any?
     if block_given?
@@ -38,6 +39,15 @@ class Array
     end
 
     false
+  end
+
+  # return true if all elements satisfy condition; else false
+  def my_all?
+    if block_given?
+      self.my_each { |ele| return false if yield(ele) == false }
+    end
+
+    true
   end
 end
 
@@ -59,3 +69,7 @@ p test.my_reject { |ele| ele.even? } # => [7, 9, 15]
 puts "my_any? test"
 p test.my_any? { |ele| !ele.even? } # => true
 p test.my_any? { |ele| ele == 999 } # => false
+
+puts "my_all? test"
+p test.my_all? { |ele| ele >= 2 } # => true
+p test.my_all? { |ele| ele.odd? } # => false
