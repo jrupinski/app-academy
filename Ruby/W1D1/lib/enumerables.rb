@@ -16,9 +16,7 @@ class Array
   def my_select
     selected = []
     if block_given?
-      self.my_each do |ele|
-        selected << ele if yield(ele)
-      end
+      self.my_each { |ele| selected << ele if yield(ele) }
     end
 
     selected
@@ -33,20 +31,31 @@ class Array
 
     not_rejected
   end
+  # return true if any element satisfies condition; else return false
+  def my_any?
+    if block_given?
+      self.my_each { |ele| return true if yield(ele) }
+    end
+
+    false
+  end
 end
 
 # TESTS
+test = [2, 4, 7, 9, 10, 15]
+
 puts "my_each test"
-a = [1, 2, 6, 3]
-p a.my_each  # => 1, 2, 6, 3
-p a.my_each { |el| print "#{el * 2}, "} # => 2, 4, 12, 6
+p test.my_each  # => [2, 4, 7, 9, 10, 15]
+p test.my_each { |el| print "#{el * 2}, "} # => [2, 4, 7, 9, 10, 15]
 
 puts "my_select test"
-a = [1, 2, 3]
-p a.my_select { |num| num > 1 } # => [2, 3]
-p a.my_select { |num| num == 4 } # => []
+p test.my_select { |num| num > 7 } # => [9, 10, 15]
+p test.my_select { |num| num == 5 } # => []
 
 puts "my_reject test"
-a = [2, 4, 7, 9, 10, 15]
-p a.my_reject { |ele| !ele.even? } # => [2, 4, 10]
-p a.my_reject { |ele| ele.even? } # => [7, 9, 15]
+p test.my_reject { |ele| !ele.even? } # => [2, 4, 10]
+p test.my_reject { |ele| ele.even? } # => [7, 9, 15]
+
+puts "my_any? test"
+p test.my_any? { |ele| !ele.even? } # => true
+p test.my_any? { |ele| ele == 999 } # => false
