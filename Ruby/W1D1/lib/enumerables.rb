@@ -12,9 +12,16 @@ class Array
 
     self
   end
+  
+  # Return elements of Array which satisfy given condition
+  def my_select(&condition_block)
+    # TODO
+  end
 end
 
-
 # tests
+# my_each
 p [1, 2, 6, 3].my_each  # => 1, 2, 6, 3
 p [1, 2, 6, 3].my_each { |el| print "#{el * 2}, "} # => 2, 4, 12, 6
+
+# my_select
