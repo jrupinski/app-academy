@@ -1,13 +1,11 @@
 class Array
   # call the block on every element of array, and returns original array
   # DO NOT USE enumerables #each method
-  def my_each(&block)
+  def my_each
     # If block given - call it on every element
-    if block_given?
-      for i in 0...self.length
-        array_ele = self[i]
-        block.call(array_ele)
-      end
+    for i in 0...self.length
+      array_ele = self[i]
+      yield(array_ele) if block_given?
     end
 
     self
@@ -15,7 +13,7 @@ class Array
   
   # Return elements of Array which satisfy given condition
   def my_select(&condition_block)
-    # TODO
+    self.my_each(&condition_block)
   end
 end
 
