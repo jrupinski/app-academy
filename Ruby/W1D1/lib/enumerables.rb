@@ -12,8 +12,15 @@ class Array
   end
   
   # Return elements of Array which satisfy given condition; use #my_each
-  def my_select(&condition_block)
-    self.my_each(&condition_block)
+  def my_select
+    selected = []
+    if block_given?
+      self.my_each do |ele|
+        selected << ele if yield(ele)
+      end
+    end
+
+    selected
   end
 end
 
