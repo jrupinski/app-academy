@@ -11,15 +11,19 @@ class Array
     self
   end
   
-  # Return elements of Array which satisfy given condition
+  # Return elements of Array which satisfy given condition; use #my_each
   def my_select(&condition_block)
     self.my_each(&condition_block)
   end
 end
 
-# tests
-# my_each
-p [1, 2, 6, 3].my_each  # => 1, 2, 6, 3
-p [1, 2, 6, 3].my_each { |el| print "#{el * 2}, "} # => 2, 4, 12, 6
+# TESTS
+puts "my_each test"
+a = [1, 2, 6, 3]
+p a.my_each  # => 1, 2, 6, 3
+p a.my_each { |el| print "#{el * 2}, "} # => 2, 4, 12, 6
 
-# my_select
+puts "my_select test"
+a = [1, 2, 3]
+p a.my_select { |num| num > 1 } # => [2, 3]
+p a.my_select { |num| num == 4 } # => []
