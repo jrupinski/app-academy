@@ -29,8 +29,12 @@ class Array
     # initialize empty array with proper sizing
     new_array = Array.new(outer_arr_len) { Array.new(ele_length) }
     
-    # get elements from self
-    (0...outer_arr_len).each { |i| new_array[i][0] = self[i] }
+    # enter outer array, then swap first values with first values from self
+    (0...outer_arr_len).to_a.my_each do |i|
+      self_sub_array = self[i]
+      new_array_sub_array = new_array[i]
+      new_array_sub_array[0] = self_sub_array
+    end
 
     # get elements from arguments
     # TODO: FIX THIS
