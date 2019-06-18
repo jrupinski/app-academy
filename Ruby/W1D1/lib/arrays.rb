@@ -23,42 +23,45 @@ class Array
   # (args.length + 1) long. Each element is an array with n-th element
   # from every argument array and self.
   def my_zip(*args)
-    outer_arr_len = self.length
-    ele_length = args.length + 1
-
     # initialize empty array with proper sizing
-    new_array = Array.new(outer_arr_len) { Array.new(ele_length) }
+    outer_arr_len = self.length
+    inner_arr_len = args.length + 1
+    new_array = Array.new(outer_arr_len) { Array.new(inner_arr_len) }
     
-    # enter outer array, then swap first values with first values from self
-    (0...outer_arr_len).to_a.my_each do |i|
-      self_sub_array = self[i]
-      new_array_sub_array = new_array[i]
-      new_array_sub_array[0] = self_sub_array
-    end
-
-    # get every value from args into new_array after self argument values
-    # each argument's ele goes into new_array[index_of(ele)], else nil
-    args.my_each do |arg|
-      (0...arg.length).to_a.my_each do |ele_idx|
-        # don't overstep the arrays in new_array
-        break if ele_idx >= outer_arr_len
-
-        arg_ele = arg[ele_idx]
-        inner_arr = 0
-        
-        # don't overwrite self's values in new_array
-        until new_array[ele_idx][inner_arr].nil?
-          inner_arr += 1
-          new_array_ele = new_array[ele_idx][inner_arr]
-        end
-
-        new_array[ele_idx][inner_arr] = arg_ele
-      end
-    end
+    zip_self_values(new_array)
+    zip_args_values(*args, new_array)
 
     new_array
   end
-  
+
+  # enter outer array, then swap first values with first values from self
+  def zip_self_values(array)
+    (0...array.length).to_a.my_each do |i|
+      self_ele = self[i]
+      array_sub_array = array[i]
+      array_sub_array[0] = self_ele
+    end
+  end
+
+  # get every value from args into array after self argument values
+  # each argument's ele goes into array[index_of(ele)], else nil
+  def zip_args_values(*args, array)
+    args.my_each do |arg|
+      (0...arg.length).to_a.my_each do |ele_idx|
+        # don't overstep the arrays in array
+        break if ele_idx >= array.length 
+
+        # don't overwrite self's values in array
+        inner_arr = 0
+        until array[ele_idx][inner_arr].nil?
+          inner_arr += 1
+          array_ele = array[ele_idx][inner_arr]
+        end
+
+        array[ele_idx][inner_arr] = arg[ele_idx]
+      end
+    end
+  end
 
   def my_rotate
 
