@@ -36,20 +36,22 @@ class Array
       new_array_sub_array[0] = self_sub_array
     end
 
-    # get every value from args into new_array
-    # from arg: ele of index n goes to new_array's inner array of index n
+    # get every value from args into new_array after self argument values
+    # each argument's ele goes into new_array[index_of(ele)], else nil
     args.my_each do |arg|
       (0...arg.length).to_a.my_each do |ele_idx|
-        # debugger
+        # don't overstep the arrays in new_array
+        break if ele_idx >= outer_arr_len
+
         arg_ele = arg[ele_idx]
         inner_arr = 0
-        new_array_ele = new_array[ele_idx][inner_arr]
-
-        until new_array_ele.nil?
+        
+        # don't overwrite self's values in new_array
+        until new_array[ele_idx][inner_arr].nil?
           inner_arr += 1
           new_array_ele = new_array[ele_idx][inner_arr]
         end
-        
+
         new_array[ele_idx][inner_arr] = arg_ele
       end
     end
@@ -72,19 +74,19 @@ class Array
 end
 
 # Tests
-test = [1, [2], [[3]], [4], [[[[[5]]]]]]
 
 puts "#my_flatten test"
+test = [1, [2], [[3]], [4], [[[[[5]]]]]]
 p test.my_flatten # => [1, 2, 3, 4, 5]
 p ["test", "testing"].my_flatten # => ["test", "testing"]
 
 puts "#my_zip test"
 a = [ 4, 5, 6 ]
 b = [ 7, 8, 9 ]
-p [1, 2, 3].my_zip(a, b) # => [[1, 4, 7], [2, 5, 8], [3, 6, 9]]
-p a.my_zip([1,2], [8])   # => [[4, 1, 8], [5, 2, nil], [6, nil, nil]]
-# p [1, 2].my_zip(a, b)    # => [[1, 4, 7], [2, 5, 8]]
-
 c = [10, 11, 12]
 d = [13, 14, 15]
-# p [1, 2].my_zip(a, b, c, d)    # => [[1, 4, 7, 10, 13], [2, 5, 8, 11, 14]]
+
+p [1, 2, 3].my_zip(a, b) # => [[1, 4, 7], [2, 5, 8], [3, 6, 9]]
+p a.my_zip([1,2], [8])   # => [[4, 1, 8], [5, 2, nil], [6, nil, nil]]
+p [1, 2].my_zip(a, b)    # => [[1, 4, 7], [2, 5, 8]]
+p [1, 2].my_zip(a, b, c, d)    # => [[1, 4, 7, 10, 13], [2, 5, 8, 11, 14]]
