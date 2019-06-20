@@ -62,19 +62,20 @@ class Array
       end
     end
   end
-
-  def my_rotate(amt = 1)
-    return self if amt == 0
-
-    if amt > 0
-      self << self.shift
-      self.my_rotate(amt - 1)
+  
+  # Rotate array. By default, the array should rotate by one element.
+  # If a negative value is given, the array is rotated in the opposite direction.
+  def my_rotate(amt = 1)  
+    return self if amt.zero?
+        
+    rotated = self.clone
+    if amt.positive?
+      rotated << rotated.shift
+      rotated.my_rotate(amt - 1)
     else
-      self.unshift(self.pop)
-      self.my_rotate(amt + 1)
+      rotated.unshift(rotated.pop)
+      rotated.my_rotate(amt + 1)
     end
-
-    self
   end
 
   def my_join
