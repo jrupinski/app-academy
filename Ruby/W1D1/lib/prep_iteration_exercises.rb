@@ -56,6 +56,25 @@ end
 
 class Array
   def bubble_sort!(&prc)
+    last_idx = self.length
+    sorted = false
+    
+    
+    until sorted == true
+      sorted = true 
+      (0...last_idx - 1).each do |ele1_idx|
+        ele2_idx = ele1_idx + 1
+        first_ele = self[ele1_idx]
+        second_ele = self[ele2_idx]
+
+        if (first_ele <=> second_ele) == 1
+          self[ele1_idx], self[ele2_idx] = self[ele2_idx], self[ele1_idx]
+          sorted = false
+        end
+      end
+    end
+
+    self
   end
 
   def bubble_sort(&prc)
