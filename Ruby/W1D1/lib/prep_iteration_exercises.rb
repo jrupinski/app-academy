@@ -1,9 +1,18 @@
+require "byebug"
 # ### Factors
 #
 # Write a method `factors(num)` that returns an array containing all the
 # factors of a given number.
 
 def factors(num)
+  factors = []
+  factor = 1
+  while factor <= num
+    factors << factor if num % factor == 0
+    factor += 1
+  end
+
+  factors
 end
 
 # ### Bubble Sort
