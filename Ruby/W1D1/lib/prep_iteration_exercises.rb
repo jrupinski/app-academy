@@ -78,6 +78,8 @@ class Array
   end
 
   def bubble_sort(&prc)
+    sorted = self.dup
+    sorted.bubble_sort!
   end
 end
 
