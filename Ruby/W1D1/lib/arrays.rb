@@ -30,7 +30,7 @@ class Array
     
     zip_self_values(new_array)
     zip_args_values(*args, new_array)
-
+ 
     new_array
   end
 
@@ -78,12 +78,27 @@ class Array
     end
   end
 
-  def my_join
+  def my_join(char = "")
+    string = ""
+    
+    self.my_each do |ele|
+      string += ele.to_s + char
+    end
 
+    string.chop
   end
 
   def my_reverse
+    reversed = []
+    last_idx = self.length - 1
+    starting_idx = 0
 
+    while last_idx >= starting_idx
+      reversed << self[last_idx]
+      last_idx -= 1
+    end
+
+    reversed
   end
 end
 
@@ -105,10 +120,17 @@ p a.my_zip([1,2], [8])   # => [[4, 1, 8], [5, 2, nil], [6, nil, nil]]
 p [1, 2].my_zip(a, b)    # => [[1, 4, 7], [2, 5, 8]]
 p [1, 2].my_zip(a, b, c, d)    # => [[1, 4, 7, 10, 13], [2, 5, 8, 11, 14]]
 
-# 
-puts "test"
+puts "#my_rotate test"
 a = [ "a", "b", "c", "d" ]
 p a.my_rotate         #=> ["b", "c", "d", "a"]
 p a.my_rotate(2)      #=> ["c", "d", "a", "b"]
 p a.my_rotate(-3)     #=> ["b", "c", "d", "a"]
 p a.my_rotate(15)     #=> ["d", "a", "b", "c"]
+
+puts "#my_join test"
+p a.my_join         # => "abcd"
+p a.my_join("$")    # => "a$b$c$d"
+
+puts "my_reverse test"
+p [ "a", "b", "c" ].my_reverse   #=> ["c", "b", "a"]
+p [ 1 ].my_reverse               #=> [1]
