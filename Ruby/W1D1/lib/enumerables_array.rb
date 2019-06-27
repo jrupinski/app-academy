@@ -1,4 +1,3 @@
-require "byebug"
 # ### Factors
 #
 # Write a method `factors(num)` that returns an array containing all the
@@ -56,12 +55,13 @@ end
 
 class Array
   def bubble_sort!(&prc)
+    return self if self.empty? || self.length == 1
+
     sorted = false
     sort_desc = false
     sort_asc = false
     
     
-    # debugger
     # determine sort type by checking first pair
     sort_type = prc.call(self[0], self[1])
     return self if sort_type == 0
@@ -123,7 +123,8 @@ end
 # return substrings that are included in dictionary array
 def subwords(word, dictionary)
   substrings = substrings(word)
-  substrings.select { |substring| word if dictionary.include?(substring) }
+  subwords = substrings.select { |substring| word if dictionary.include?(substring) }
+  subwords.uniq
 end
 
 # ### Doubler
@@ -228,7 +229,7 @@ end
 # ```
 
 def concatenate(strings)
-  strings.my_inject { |result, string| result += string }
+  strings.inject { |result, string| result += string }
 end
 
 
