@@ -161,6 +161,14 @@ end
 
 class Array
   def my_each(&prc)
+    # If block given - call it on every element
+    if block_given?
+      for i in 0...self.length
+        array_ele = self[i] 
+        yield(array_ele)
+      end
+    end
+    self
   end
 end
 
