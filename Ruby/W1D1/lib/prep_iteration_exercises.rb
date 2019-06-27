@@ -75,10 +75,10 @@ class Array
         ele2_idx = ele1_idx + 1
         ele = self[ele1_idx]
         next_ele = self[ele2_idx]
-        comparison = prc.call(ele, next_ele)
+        comparison = ele <=> next_ele
 
         # sort ascending
-        if comparison == -1 && sort_desc
+        if (comparison == -1 && sort_desc) || (comparison == 1 && sort_asc) 
           self[ele1_idx], self[ele2_idx] = self[ele2_idx], self[ele1_idx]
           sorted = false
         end
