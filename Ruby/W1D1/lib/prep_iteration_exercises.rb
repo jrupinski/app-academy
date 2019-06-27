@@ -187,9 +187,25 @@ end
 
 class Array
   def my_map(&prc)
+    mapped = []
+    if block_given?
+      for i in 0...self.length
+        array_ele = self[i]
+        mapped << yield(array_ele)
+      end
+    end
+
+    mapped
   end
 
+  # Return elements of Array which satisfy given condition; use #my_each
   def my_select(&prc)
+    selected = []
+    if block_given?
+      self.my_each { |ele| selected << ele if yield(ele) }
+    end
+
+    selected
   end
 
   def my_inject(&blk)
