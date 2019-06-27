@@ -120,7 +120,10 @@ def substrings(string)
   substrings
 end
 
+# return substrings that are included in dictionary array
 def subwords(word, dictionary)
+  substrings = substrings(word)
+  substrings.select { |substring| word if dictionary.include?(substring) }
 end
 
 # ### Doubler
