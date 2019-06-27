@@ -63,10 +63,13 @@ class Array
     
     
     # determine sort type by checking first pair
-    sort_type = prc.call(self[0], self[1])
-    return self if sort_type == 0
-    sort_asc = true if sort_type == -1
-    sort_desc = true if sort_type == 1
+    if block_given?
+      sort_type = prc.call(self[0], self[1])
+      return self if sort_type == 0
+      sort_asc = true if sort_type == -1
+      sort_desc = true if sort_type == 1
+    else sort_asc = true
+    end
     
     until sorted
       sorted = true      
