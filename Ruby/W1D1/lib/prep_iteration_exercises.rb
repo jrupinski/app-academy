@@ -131,6 +131,9 @@ end
 # array with the original elements multiplied by two.
 
 def doubler(array)
+  if array.is_a?(Array)
+    array.map { |int_ele| int_ele * 2  if int_ele.is_a?(Integer) }
+  end
 end
 
 # ### My Each
