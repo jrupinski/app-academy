@@ -56,21 +56,33 @@ end
 
 class Array
   def bubble_sort!(&prc)
-    last_idx = self.length
     sorted = false
+    sort_desc = false
+    sort_asc = false
     
     
-    until sorted == true
-      sorted = true 
-      (0...last_idx - 1).each do |ele1_idx|
+    # debugger
+    # determine sort type by checking first pair
+    sort_type = prc.call(self[0], self[1])
+    return self if sort_type == 0
+    sort_asc = true if sort_type == -1
+    sort_desc = true if sort_type == 1
+    
+    until sorted
+      sorted = true      
+      # Check every pair of elements
+      (0...self.length - 1).each do |ele1_idx|
         ele2_idx = ele1_idx + 1
-        first_ele = self[ele1_idx]
-        second_ele = self[ele2_idx]
+        ele = self[ele1_idx]
+        next_ele = self[ele2_idx]
+        comparison = prc.call(ele, next_ele)
 
-        if (first_ele <=> second_ele) == 1
+        # sort ascending
+        if comparison == -1 && sort_desc
           self[ele1_idx], self[ele2_idx] = self[ele2_idx], self[ele1_idx]
           sorted = false
         end
+
       end
     end
 
@@ -79,7 +91,7 @@ class Array
 
   def bubble_sort(&prc)
     sorted = self.dup
-    sorted.bubble_sort!
+    sorted.bubble_sort!(&prc)
   end
 end
 
@@ -172,3 +184,12 @@ end
 
 def concatenate(strings)
 end
+
+
+# TESTS
+puts "#bubble_sort test:"
+p [3, 1, 5].bubble_sort { |num1, num2| num1 <=> num2 } #sort descending
+p [3, 1, 5].bubble_sort { |num1, num2| num2 <=> num1 } #sort ascending
+p [5, 5, 2, 3, 1].bubble_sort { |num1, num2| num1 <=> num2 } # leave unsorted
+p [5, 6, 1, 5].bubble_sort { |num1, num2| num1 <=> num2 } #sort ascending
+p [6, 5, 1, 5].bubble_sort { |num1, num2| num1 <=> num2 } #sort descending
