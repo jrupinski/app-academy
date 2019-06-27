@@ -77,7 +77,7 @@ class Array
         next_ele = self[ele2_idx]
         comparison = ele <=> next_ele
 
-        # sort ascending
+        # sort ascending or descending
         if (comparison == -1 && sort_desc) || (comparison == 1 && sort_asc) 
           self[ele1_idx], self[ele2_idx] = self[ele2_idx], self[ele1_idx]
           sorted = false
@@ -109,6 +109,15 @@ end
 # words).
 
 def substrings(string)
+  substrings = []
+  chars = string.chars
+  (0...chars.length).each do |first_char|
+    (first_char...chars.length).each do |rest_of_chars|
+      substrings << string[first_char..rest_of_chars]
+    end
+  end
+
+  substrings
 end
 
 def subwords(word, dictionary)
