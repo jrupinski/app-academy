@@ -14,7 +14,8 @@ def vowel_counts(str)
   vowels = "aeiou"
   count = Hash.new(0)
 
-  str.split("").each { |char| count[char.downcase] += 1 if vowels.include?(char.downcase) }
+  str.each_char { |char| count[char.downcase] += 1 if vowels.include?(char.downcase) }
+
 
   count
 end
