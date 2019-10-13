@@ -1,3 +1,4 @@
+require "byebug"
 # Create a bootcamp
 # parameters: name: str, slogan: str, student_capacity: int
 # variables: teachers: arr of str, grades: hash of arrays, of int
@@ -53,4 +54,29 @@ class Bootcamp
     students.include?(student)
   end
 
+  def student_to_teacher_ratio
+    # debugger
+    students.count / teachers.count
+  end
+
+  def add_grade(student, grade)
+    if self.enrolled?(student)
+      grades[student] << grade
+      true
+    else
+      false
+    end
+  end
+
+  def num_grades(student)
+    grades[student].count
+  end
+
+  def average_grade(student)
+    if self.enrolled?(student) && grades[student].count > 0
+      grades[student].sum / grades[student].count
+    else
+      nil
+    end
+  end
 end
