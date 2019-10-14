@@ -59,11 +59,11 @@ class Array
   def my_transpose
     result = []
 
-    self.each_with_index do |row, row_idx|
-      
+    (0...self.length).each do |row|
       trans_row = []
-      row.each_with_index do |col, col_idx|
-        trans_row << self[col_idx][row_idx]
+
+      (0...self.length).each do |col|
+        trans_row << self[col][row]
       end
 
       result << trans_row
