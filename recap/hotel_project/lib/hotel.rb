@@ -14,7 +14,7 @@ class Hotel
   end
 
   def room_exists?(room_name)
-    rooms.keys.include?(room_name)
+    rooms.has_key?(room_name)
   end
 
   def check_in(guest, room_name)
@@ -31,7 +31,7 @@ class Hotel
   end
 
   def has_vacancy?
-    @rooms.any? { |room_name, room| !room.full? }
+    @rooms.values.any? { |room| !room.full? }
   end
 
   def list_rooms
