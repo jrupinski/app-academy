@@ -1,3 +1,5 @@
+require "byebug"
+
 class Code
   # PART 1
   attr_reader :pegs
@@ -37,5 +39,19 @@ class Code
 
   def length
     @pegs.length
+  end
+
+  # PART 2
+  def ==(other_code)
+    self.pegs == other_code.pegs
+  end
+
+  def num_exact_matches(other_code)
+    (0...self.length).count { |i| self[i] == other_code[i] }
+  end
+
+  def num_near_matches(other_code)
+    # debugger
+    (0...self.length).count { |i| self.pegs.include?(other_code[i]) && self[i] != other_code[i] }
   end
 end
