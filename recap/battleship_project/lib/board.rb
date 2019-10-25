@@ -68,13 +68,7 @@ class Board
   end
 
   def self.print_grid(grid)
-    grid.each do |row|
-      row.each do |ele|
-        print "#{ele} "
-      end
-
-      puts
-    end
+    grid.each { |row| puts row.join(" ") }
   end
 
   def cheat
