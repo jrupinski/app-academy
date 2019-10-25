@@ -1,3 +1,5 @@
+require "byebug"
+
 class Board
   attr_reader :size
 
@@ -6,7 +8,7 @@ class Board
     @size = size * size
   end
 
-  def print_grid
+  def self.print_grid
     @grid.length.times { |sub_grid| p @grid[sub_grid] }
   end
 
@@ -24,4 +26,62 @@ class Board
     count
   end
 
+  # PART 2
+  def attack(position)
+    if self[position] == :S
+      self[position] = :H
+      puts "You sunk my battleship!"
+      true
+    else
+      self[position] = :X
+      false
+    end
+  end
+
+  def place_random_ships
+    # ranom ships equals 25% of game board
+    num_of_ships = self.size / 4
+
+    # place n ships on empty gridspaces
+    num_of_ships.times do 
+      rand_position = [rand(@grid.length), rand(@grid.length)]
+      until self[rand_position] == :N
+        rand_position = [rand(@grid.length), rand(@grid.length)]
+      end
+
+      self[rand_position] = :S
+    end
+  end
+
+  def hidden_ships_grid
+    @grid.map do |row| 
+      
+      row.map do |ele|
+        if ele == :S
+          :N
+        else
+          ele
+        end
+      end
+
+    end
+  end
+
+  def self.print_grid(grid)
+    grid.each do |row|
+      row.each do |ele|
+        print "#{ele} "
+      end
+
+      puts
+    end
+  end
+
+  def cheat
+    Board.print_grid(@grid)
+  end
+
+  def print
+    Board.print_grid(self.hidden_ships_grid)
+  end
 end
