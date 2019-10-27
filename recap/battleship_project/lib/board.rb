@@ -13,17 +13,17 @@ class Board
   end
 
   def [](position)
-    @grid[position.first][position.last]
+    row, col = position
+    @grid[row][col]
   end
 
   def []=(position, value)
-    @grid[position.first][position.last] = value
+    row, col = position
+    @grid[row][col] = value
   end
 
   def num_ships
-    count = 0
-    @grid.each { |row| row.each { |ele| count += 1 if ele == :S } }
-    count
+    @grid.flatten.count { |ele| ele == :S }
   end
 
   # PART 2
