@@ -12,7 +12,7 @@ class Code
   }
 
   def self.valid_pegs?(pegs_arr)
-    pegs_arr.all? { |peg| POSSIBLE_PEGS.keys.include?(peg.upcase) }
+    pegs_arr.all? { |peg| POSSIBLE_PEGS.has_key?(peg.upcase) }
   end
 
   def self.random(num_of_pegs)
