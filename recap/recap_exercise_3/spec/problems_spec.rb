@@ -1,6 +1,6 @@
 require "problems"
 
-describe "Recap Exercise 3" do
+describe "RECAP EXERCISE 3" do
   
   describe "no_dupes?" do
     dupes_arr = [1,3,6,3,8]
@@ -25,16 +25,20 @@ describe "Recap Exercise 3" do
       expect { no_consecutive_repeats?([10, 2]) }.to_not raise_error
     end
 
-    it "returns true if an element never appears consecutively in the array" do
-      expect(no_consecutive_repeats?(['cat', 'dog', 'mouse', 'dog'])).to eq(true)
-      expect(no_consecutive_repeats?(['x'])).to eq(true)
-      expect(no_consecutive_repeats?([])).to eq(true)
+    context "if an element never appears consecutively in the array" do
+      it "should return true" do
+        expect(no_consecutive_repeats?(['cat', 'dog', 'mouse', 'dog'])).to eq(true)
+        expect(no_consecutive_repeats?(['x'])).to eq(true)
+        expect(no_consecutive_repeats?([])).to eq(true)
+      end
     end
 
-    it "returns false if same element appears consecutively in the array" do
-      expect(no_consecutive_repeats?(['cat', 'dog', 'dog', 'mouse'])).to eq(false)
-      expect(no_consecutive_repeats?([55, 55, 11, 7])).to eq(false)
-      expect(no_consecutive_repeats?(["x", 53, "y", "y", 99])).to eq(false)
+    context "if same element appears consecutively in the array" do
+      it "should return false" do
+        expect(no_consecutive_repeats?(['cat', 'dog', 'dog', 'mouse'])).to eq(false)
+        expect(no_consecutive_repeats?([55, 55, 11, 7])).to eq(false)
+        expect(no_consecutive_repeats?(["x", 53, "y", "y", 99])).to eq(false)
+      end
     end
   end
 
