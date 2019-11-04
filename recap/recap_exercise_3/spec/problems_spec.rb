@@ -42,4 +42,21 @@ describe "RECAP EXERCISE 3" do
     end
   end
 
+  describe "char_indices" do
+    it "should accept string as an arg" do
+      expect { char_indices("string") }.to_not raise_error
+    end
+
+    context "should return a hash value" do
+      it "should contain every char of string as a key" do
+        expect(char_indices("elo").keys).to eq(["e", "l", "o"])
+        expect(char_indices("bobby").keys).to eq(["b", "o", "y"])
+      end
+
+      it "should contain an array of indexes of  char appearances as value" do
+        expect(char_indices("elo").values).to eq([[0], [1], [2]])
+        expect(char_indices("bobby").values).to eq([[0, 2, 3], [1], [4]])
+      end
+    end
+  end
 end
