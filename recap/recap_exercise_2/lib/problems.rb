@@ -72,7 +72,6 @@ class Array
           sorted = false
         end
       end
-
     end
 
     self
