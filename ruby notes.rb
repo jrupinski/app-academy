@@ -589,3 +589,113 @@ Syntactic Sugar:
     # Let's call Queue#[]= again, but with syntactic sugar:
     grocery_checkout[1] = "Grace"
     p grocery_checkout    #<Queue:0x007fe7a7a29ec8 @line=["Grace", "Grace"]>
+
+TRUTHY, FALSEY VALUES:
+  Falsey values - nil and false
+  Truthy - every other value
+  Here is a more complete description of how a || b behaves under the hood:
+
+    when a is truthy, return a
+    when a is falsey, return b
+
+true || 42          # => true
+42 || true          # => 42
+false || 42         # => 42
+42 || false         # => 42
+false || "hello"    # => "hello"
+nil || "hello"      # => "hello"
+"hi" || "hello"     # => "hi"
+0 || true           # => 0
+false || nil        # => nil
+
+We can write a ||= b in place of a = a || b :
+
+  def greet(person = nil)
+      person ||= "you"
+      p "Hey " + person
+  end
+
+  greet("Brian")  # => "Hey Brian"
+  greet           # => "Hey you"
+
+
+
+Default Procs:
+  The ||= pattern is utilized heavily when implementing default procs:
+
+  def call_that_proc(val, &prc)
+      prc ||= Proc.new { |data| data.upcase + "!!" }
+      prc.call(val)
+  end
+
+  p call_that_proc("hey")                                             # => "HEY!!"
+  p call_that_proc("programmers") { |data| data * 3 }                 # => "programmersprogrammersprogrammers"
+  p call_that_proc("code") { |data| "--" + data.capitalize + "--"}    # => "--Code--"
+
+  You'll notice that in the above code, we don't explicitly assign prc to be nil. 
+  This is because prc will automatically contain nil if the method is called without passing in a proc.
+
+  Lazy Initialization
+
+The ||= pattern is also useful when implementing Lazy Initialization for classes. Lazy initialization is a design strategy where we delay creation of an object until it is needed. The idea is to avoid slow or costly operations until they are absolutely necessary. This contrasts with our typical classes that preemptively set all attributes up front. For example, take this Restaurant class that initializes all attributes immediately:
+
+class Restaurant
+    attr_accessor :name, :chefs, :menu
+
+    def initialize(name, chefs)
+        @name = name
+        @chefs = chefs
+        @menu = ["sammies", "big ol' cookies", "bean blankies", "chicky catch", "super water"]
+    end
+end
+
+five_star_restaurant = Restaurant.new("Appetizer Academy", ["Marta", "Jon", "Soon-Mi"])
+p five_star_restaurant
+#<Restaurant:0x00007fea7a8c6880 
+# @name="Appetizer Academy", 
+# @chefs=["Marta", "Jon", "Soon-Mi"],
+# @menu=["sammies", "big ol' cookies", "bean blankies", "chicky catch", "super water"]
+#>
+
+While it is required that @name and @chefs must be assigned 
+immediately in Restaurant#initialize 
+since they are taken in as arguments, it is not necessary that @menu be assigned
+ immediately. Imagine that @menu was a "costly" object like an array of 10,000
+  elements. Initializing @menu may slow down the creation of the Restaurant. To 
+  overcome this, we'll use the lazy initialization pattern to only create the 
+  @menu if someone asks for it. In other words, we'll create the @menu in the 
+  Restaurant#menu getter if it does not exist already:
+
+class Restaurant
+    attr_accessor :name, :chefs, :menu
+
+    def initialize(name, chefs)
+        @name = name
+        @chefs = chefs
+    end
+
+    def menu
+        @menu ||= ["sammies", "big ol' cookies", "bean blankies", "chicky catch", "super water"]
+    end
+end
+
+five_star_restaurant = Restaurant.new("Appetizer Academy", ["Marta", "Jon", "Soon-Mi"])
+
+p five_star_restaurant
+#<Restaurant:0x00007f90b3922368 
+# @name="Appetizer Academy",
+# @chefs=["Marta", "Jon", "Soon-Mi"]
+#>
+
+p five_star_restaurant.menu
+#["sammies", "big ol' cookies", "bean blankies", "chicky catch", "super water"]
+
+p five_star_restaurant
+#<Restaurant:0x00007f90b3922368
+# @name="Appetizer Academy", 
+# @chefs=["Marta", "Jon", "Soon-Mi"],
+# @menu=["sammies", "big ol' cookies", "bean blankies", "chicky catch", "super water"]
+#>
+
+Above, notice how the restaurant lacks a @menu until we call the getter!
+ To accomplish this we leveraged the fact that a missing attribute will be nil. That means we can use the ||= pattern!
