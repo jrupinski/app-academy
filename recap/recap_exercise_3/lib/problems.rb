@@ -22,3 +22,16 @@ def char_indices(str)
 
   char_hash
 end
+
+def longest_streak(str)
+  char_streaks = Hash.new(0)
+  str.chars.each { |char| char_streaks[char] += 1 }
+
+  char_streaks.inject("") do |max_streak, (char, streak)|
+    if (char * streak).length >= max_streak.length
+      char * streak
+    else
+      max_streak
+    end
+  end
+end

@@ -66,6 +66,7 @@ describe "RECAP EXERCISE 3" do
     end
 
     it  "should return the longest char streak" do
+      expect(longest_streak('')).to eq('')
       expect(longest_streak('a')).to eq('a')
       expect(longest_streak('accccbbb')).to eq('cccc')
       expect(longest_streak('aaaxyyyyyzz')).to eq('yyyyy')
