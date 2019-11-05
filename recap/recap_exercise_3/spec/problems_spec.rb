@@ -59,4 +59,23 @@ describe "RECAP EXERCISE 3" do
       end
     end
   end
+
+  describe "longest_streak" do
+    it "should accept string as an arg" do
+      expect { longest_streak("string") }.to_not raise_error
+    end
+
+    it  "should return the longest char streak" do
+      expect(longest_streak('a')).to eq('a')
+      expect(longest_streak('accccbbb')).to eq('cccc')
+      expect(longest_streak('aaaxyyyyyzz')).to eq('yyyyy')
+    end
+
+    context "if there's a tie" do
+      it "should return the streak that occurs later in str" do
+        expect(longest_streak('aaabbb')).to eq('bbb')
+        expect(longest_streak('abc')).to eq('c')
+      end
+    end
+  end
 end
