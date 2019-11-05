@@ -79,4 +79,25 @@ describe "RECAP EXERCISE 3" do
       end
     end
   end
+
+  describe "bi_prime?" do
+    it "should accept a number as an arg" do
+      expect { bi_prime?(5) }.to_not raise_error
+    end
+
+    context "should return a boolean" do
+      it "return true if number is a semi-prime (it's a product of multiplying two prime numbers)" do
+        expect(bi_prime?(4)).to eq(true)
+        expect(bi_prime?(6)).to eq(true)
+        expect(bi_prime?(25)).to eq(true)
+      end
+
+      it "return false if number is not a semi-prime" do
+        expect(bi_prime?(0)).to eq(false)
+        expect(bi_prime?(96)).to eq(false)
+        expect(bi_prime?(24)).to eq(false)
+        expect(bi_prime?(64)).to eq(false)
+      end
+    end
+  end
 end
