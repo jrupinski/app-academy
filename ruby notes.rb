@@ -239,6 +239,24 @@ Default Parameters:
   p repeat("hi", 3) # => "hihihi"
 
 Hashes:
+
+  Create hash with DISTINCT arrays:
+    @grades = Hash.new { |hash, key| hash[key] = [] }
+
+  Using #inject with hash:
+    def longest_streak(str)
+      char_streaks = Hash.new(0)
+      str.chars.each { |char| char_streaks[char] += 1 }
+
+      char_streaks.inject("") do |max_streak, (char, streak)|
+        if (char * streak).length >= max_streak.length
+          char * streak
+        else
+          max_streak
+        end
+      end
+    end
+
   You can use :symbols as keys, and use a shortcut (skip => rocket):
     my_bootcamp = { name:"App Academy", color:"red", locations:["NY", "SF", "ONLINE"] }
     p my_bootcamp           # => {:name=>"App Academy", :color=>"red", :locations=>["NY", "SF", "ONLINE"]}
