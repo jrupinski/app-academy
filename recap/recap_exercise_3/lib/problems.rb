@@ -16,9 +16,9 @@ def no_consecutive_repeats?(arr)
 end
 
 def char_indices(str)
-  char_hash = Hash.new(Array.new)
+  char_hash = Hash.new { |h, k| h[k] = [] }
 
-  str.chars.each_with_index { |char, i| char_hash[char] += [i] }
+  str.chars.each_with_index { |char, i| char_hash[char] << i }
 
   char_hash
 end
