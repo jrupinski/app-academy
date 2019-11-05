@@ -11,5 +11,14 @@ def no_consecutive_repeats?(arr)
   (0...arr.length - 1).each do |i|
     return false if arr[i] == arr[i + 1]
   end
+
   true
+end
+
+def char_indices(str)
+  char_hash = Hash.new(Array.new)
+
+  str.chars.each_with_index { |char, i| char_hash[char] += [i] }
+
+  char_hash
 end
