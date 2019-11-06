@@ -112,6 +112,8 @@ describe "RECAP EXERCISE 3" do
       expect(vigenere_cipher("toerrishuman", [1, 2, 3])).to eq("uqhstltjxncq")
       expect(vigenere_cipher("zebra", [3, 0])).to eq("ceerd")
       expect(vigenere_cipher("yawn", [5, 1])).to eq("dbbo")
+      expect(vigenere_cipher("ZeBrA", [3, 0])).to eq("CeErD")
+      expect(vigenere_cipher("y%@wn", [1])).to eq("z%@xo")
     end
   end
 
