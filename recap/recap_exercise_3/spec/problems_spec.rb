@@ -125,7 +125,11 @@ describe "RECAP EXERCISE 3" do
       expect(cipher_char("f", 3)).to eq("i")
       expect(cipher_char("z", 1)).to eq("a")
       expect(cipher_char("j", 26)).to eq("j")
-      expect(cipher_char("h", 0)).to eq("h")
+      expect(cipher_char("%", 0)).to eq("%")
+      expect(cipher_char("H", 0)).to eq("H")
+      expect(cipher_char("Z", 1)).to eq("A")
+      expect(cipher_char("A", 9)).to eq("J")
+
     end
   end
 
