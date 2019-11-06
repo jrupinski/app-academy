@@ -114,4 +114,19 @@ describe "RECAP EXERCISE 3" do
       expect(vigenere_cipher("yawn", [5, 1])).to eq("dbbo")
     end
   end
+
+  describe "cipher_char" do
+    it "should accept a char and a key (int)" do
+      cipher_char("a", 3)
+    end
+
+    it "should return a char swapped by key amount" do
+      expect(cipher_char("a", 1)).to eq("b")
+      expect(cipher_char("f", 3)).to eq("i")
+      expect(cipher_char("z", 1)).to eq("a")
+      expect(cipher_char("j", 26)).to eq("j")
+      expect(cipher_char("h", 0)).to eq("h")
+    end
+  end
+
 end
