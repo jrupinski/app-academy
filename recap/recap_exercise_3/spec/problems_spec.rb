@@ -100,4 +100,18 @@ describe "RECAP EXERCISE 3" do
       end
     end
   end
+
+  describe "vigenere_cipher" do
+    it "should accept a word and an a key-sequence array as args" do
+      expect { vigenere_cipher("Testing", [1, 2, 3]) }.to_not raise_error
+    end
+
+    it "should return the encrypted message" do
+      expect(vigenere_cipher("toerrishuman", [1])).to eq("upfssjtivnbo")
+      expect(vigenere_cipher("toerrishuman", [1, 2])).to eq("uqftsktjvobp")
+      expect(vigenere_cipher("toerrishuman", [1, 2, 3])).to eq("uqhstltjxncq")
+      expect(vigenere_cipher("zebra", [3, 0])).to eq("ceerd")
+      expect(vigenere_cipher("yawn", [5, 1])).to eq("dbbo")
+    end
+  end
 end
