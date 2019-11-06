@@ -35,3 +35,18 @@ def longest_streak(str)
     end
   end
 end
+
+def bi_prime?(num)
+  prime_nums = (0..num).select { |i| prime?(i) } 
+
+  prime_nums.any? do |prime_1|
+    prime_nums.any? do |prime_2|
+      prime_1 * prime_2 == num
+    end
+  end
+end
+
+def prime?(num)
+  return false if num <= 1
+  (2...num).none? { |i| num % i == 0 }
+end
