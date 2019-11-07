@@ -135,4 +135,22 @@ describe "RECAP EXERCISE 3" do
     end
   end
 
+  describe "vowel_rotate" do
+    it "should accept a string as an arg" do
+      expect { vowel_rotate("string") }.to_not raise_error
+    end
+
+    it "should return a string where each vowel is replaced by it's predecessor" do
+      expect(vowel_rotate("elo")).to eq("ole")
+      expect(vowel_rotate('awesome')).to eq("ewasemo")
+      expect(vowel_rotate('headphones')).to eq("heedphanos")
+      expect(vowel_rotate('bootcamp')).to eq("baotcomp")
+    end
+
+    it "should not modify original string" do
+      str = "awesome"
+      vowel_rotate(str)
+      expect(str).to eq("awesome")
+    end
+  end
 end
