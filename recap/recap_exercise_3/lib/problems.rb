@@ -1,5 +1,6 @@
 require "byebug"
 
+# GENERAL PROBLEMS
 def no_dupes?(arr)
   arr.reject do |ele|
     # debugger
@@ -118,4 +119,19 @@ def vowel_rotate(string)
   end
 
   rotated
+end
+
+# PROCS PROBLEMS
+
+class String
+  # argument: code block
+  # returns a new string containing chars that evaluate the block to true 
+  def select(&prc)
+    return "" if prc.nil?
+
+    selected = ""
+    self.each_char { |char| selected += char if prc.call(char) }
+    
+    selected
+  end
 end
