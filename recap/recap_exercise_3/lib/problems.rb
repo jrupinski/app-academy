@@ -90,3 +90,32 @@ def cipher_char(char, key)
     return alpha[new_char]
   end
 end
+
+# params: string
+# returns string where each vowel has it's place swapped with it's predecessor
+# first vowel swaps with last one
+# ex. vowel_rotate('awesome') # => "ewasemo"
+def vowel_rotate(string)
+  vowels = "aeiou"
+  rotated = string.dup
+  
+  last_vow = string.chars.reverse_each { |char| break char if vowels.include?(char) }
+  prev_vow = nil
+
+  string.each_char.with_index do |char, i|
+    # if vowel - replace with previous vowel
+    if vowels.include?(char)
+      # if it's the first vowel - replace with last vowel
+      if prev_vow.nil?
+        prev_vow = char
+        rotated[i] = last_vow
+        next
+      end
+
+      rotated[i] = prev_vow
+      prev_vow = char
+    end
+  end
+
+  rotated
+end
