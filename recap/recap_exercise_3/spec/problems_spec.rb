@@ -179,5 +179,40 @@ describe "RECAP EXERCISE 3" do
         expect(str).to eq("HiYa")
       end
     end
+
+    describe "String#map!" do
+      it "should accept a block as an arg" do
+        expect { "test".map! { |c| c = "o" if c == "e" } }.to_not raise_error
+      end
+
+      
+      it "should return a string, replacing each char with the result of the block" do
+        expect("test".map! { |c| (c = "o" if c == "e") || c }).to eq("tost")
+        expect("test".map! { |c| c = "o" if c == "e" }).to eq("o")
+
+        test_proc = Proc.new do |word|
+          word.map! do |ch| 
+              if ch == 'e'
+                  '3'
+              elsif ch == 'a'
+                  '4'
+              else
+                  ch
+              end
+          end
+        end
+        
+        expect("Lovelace".map!(&test_proc)).to eq("Lov3l4c3")
+        expect("test".map! {}).to eq("")
+      end
+
+      it "should modify existing string" do
+        word = "test"
+        word_id = word.object_id
+        word.map! { |c| (c = "o" if c == "e") || c }
+        expect(word_id == word.object_id).to eq(true)
+        expect(word).to eq("tost")
+      end
+    end
   end
 end
