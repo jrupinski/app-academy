@@ -215,4 +215,31 @@ describe "RECAP EXERCISE 3" do
       end
     end
   end
+
+  describe "Recursion problems:" do
+    describe "multiply" do
+      it "should take 2 numbers as an arg" do
+        expect { multiply(1, 2) }.to_not raise_error
+      end
+
+      it "should return it's product" do
+        expect(multiply(1, 2)).to eq(2)
+        expect(multiply(1, 2)).to eq(2)
+        expect(multiply(1, 1)).to eq(1)
+        expect(multiply(-15, 1)).to eq(-15)
+        expect(multiply(55, 0)).to eq(0)
+        expect(multiply(0, 0)).to eq(0)
+        expect(multiply(-3, -3)).to eq(9)
+      end
+
+      it "should use recursion" do
+        # Doesn't work properly, TODO: research how to use without class
+        # multiply.should_receive(:multiply).and_call_original
+      end
+      it "should not use (*) operator" do
+        # Doesn't work properly, TODO: research how to use without class
+        # multiply.should_not.receive(:*)
+      end
+    end
+  end
 end
