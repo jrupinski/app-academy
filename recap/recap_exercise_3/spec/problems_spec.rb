@@ -241,5 +241,28 @@ describe "RECAP EXERCISE 3" do
         # multiply.should_not.receive(:*)
       end
     end
+
+    describe "lucas_sequence" do
+      it "should accept a length number as an arg" do
+        expect { lucas_sequence(5) }.to_not raise_error
+      end
+
+      it "should have [2, 1] as it's first 2 numbers" do
+        expect(lucas_sequence(0)).to eq([])
+        expect(lucas_sequence(1)).to eq([2])
+        expect(lucas_sequence(2)).to eq([2, 1])
+      end
+
+      it "should generate new numbers by adding previous two numbers" do
+        expect(lucas_sequence(3)).to eq([2, 1, 3])
+        expect(lucas_sequence(4)).to eq([2, 1, 3, 4])
+        expect(lucas_sequence(5)).to eq([2, 1, 3, 4, 7])
+        expect(lucas_sequence(8)).to eq([2, 1, 3, 4, 7, 11, 18, 29])
+      end
+
+      it "should use recursion" do
+        # Doesn't work properly, TODO: fix this
+      end
+    end
   end
 end
