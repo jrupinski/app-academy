@@ -1,6 +1,9 @@
 require "byebug"
 
 # GENERAL PROBLEMS
+
+# args: Array
+# returns a new array with distinct elements from the arg array
 def no_dupes?(arr)
   arr.reject do |ele|
     # debugger
@@ -8,6 +11,8 @@ def no_dupes?(arr)
   end
 end
 
+# args: Array
+# returns true if no ele repeats consecutively in array; false otherwise
 def no_consecutive_repeats?(arr)
   (0...arr.length - 1).each do |i|
     return false if arr[i] == arr[i + 1]
@@ -16,15 +21,16 @@ def no_consecutive_repeats?(arr)
   true
 end
 
-# Takes a string as an
+# args: String
+# returns a hash with each char as key and indexes of it's appearance in string as values
 def char_indices(str)
   char_hash = Hash.new { |h, k| h[k] = [] }
-
   str.chars.each_with_index { |char, i| char_hash[char] << i }
-
   char_hash
 end
 
+# args: String
+# returns new string containing longest consecutive repeats of char in string
 def longest_streak(str)
   char_streaks = Hash.new(0)
   str.chars.each { |char| char_streaks[char] += 1 }
@@ -38,6 +44,9 @@ def longest_streak(str)
   end
 end
 
+# args: Integer
+# returns true if number is a semi-prime (it's a product of multiplying two prime numbers)
+# returns false otherwise
 def bi_prime?(num)
   prime_nums = (0..num).select { |i| prime?(i) } 
 
@@ -53,8 +62,9 @@ def prime?(num)
   (2...num).none? { |i| num % i == 0 }
 end
 
-# Vigenere cipher a single word. Exercise asks for downcase only.
-# Improved it a bit by working with symbols and upcase chars 
+# args: String(single word), Array of Integers(keys) 
+# returns a new string - vigenere ciphered word Vigenere cipher a single word.
+# key is sequentially taken from the key array, which loops back if keys < word.length 
 def vigenere_cipher(word, key_seq_arr)
   return word if key_seq_arr.empty?
   
@@ -72,6 +82,8 @@ def vigenere_cipher(word, key_seq_arr)
   ciphered
 end
 
+# vigenere_cipher helper method
+# args: Char, Int
 # Cipher a single char by a key. Takes a char and an int(key) as parameters. 
 def cipher_char(char, key)
   alpha = ("a".."z").to_a
@@ -92,7 +104,7 @@ def cipher_char(char, key)
   end
 end
 
-# params: string
+# args: string
 # returns string where each vowel has it's place swapped with it's predecessor
 # first vowel swaps with last one
 # ex. vowel_rotate('awesome') # => "ewasemo"
@@ -124,7 +136,7 @@ end
 # PROCS PROBLEMS
 
 class String
-  # argument: code block
+  # args: code block
   # returns a new string containing chars that evaluate the block to true 
   def select(&prc)
     return "" if prc.nil?
@@ -146,5 +158,27 @@ class String
     end
 
     self.replace(test)
+  end
+end
+
+# RECURSION PROBLEMS
+
+# args: 2 integers
+# returns product of multiplying args (ints)
+def multiply(num_1, num_2)
+  return 0 if num_1 == 0 || num_2 == 0
+  return num_1 if num_2.abs == 1
+
+  result = 0
+  if num_2 > 0
+    result = num_1 + multiply(num_1, num_2 - 1)
+  else
+    # if both nums are negative and num_2 is even - result is positive
+    if num_2.even? && num_1 < 0
+      num_1 = num_1.abs
+      num_2 = num_2.abs
+    end
+
+    result = num_1 + multiply(num_1, num_2 + 1)
   end
 end
