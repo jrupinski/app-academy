@@ -134,4 +134,17 @@ class String
     
     selected
   end
+
+  # args: code block
+  # modifies self to contain chars which, when given to block, equal true
+  def map!(&prc)
+    return "" if prc.nil?
+
+    test = ""
+    self.each_char.with_index do |c, i|
+      test += prc.call(c) || ""
+    end
+
+    self.replace(test)
+  end
 end
