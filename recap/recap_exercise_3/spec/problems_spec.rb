@@ -254,6 +254,7 @@ describe "RECAP EXERCISE 3" do
       end
 
       it "should generate new numbers by adding previous two numbers" do
+        expect(lucas_sequence(-2)).to eq([])
         expect(lucas_sequence(3)).to eq([2, 1, 3])
         expect(lucas_sequence(4)).to eq([2, 1, 3, 4])
         expect(lucas_sequence(5)).to eq([2, 1, 3, 4, 7])
