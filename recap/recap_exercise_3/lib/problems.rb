@@ -57,6 +57,9 @@ def bi_prime?(num)
   end
 end
 
+# helper method for bi_prime?
+# args: Integer
+# returns true if arg is a prime number; else false
 def prime?(num)
   return false if num <= 1
   (2...num).none? { |i| num % i == 0 }
@@ -195,4 +198,18 @@ def lucas_sequence(n)
 
   sequence  = lucas_sequence(n - 1)
   sequence << sequence[-1] + sequence[-2]
+end
+
+# args: Integer
+# returns an array with prime numbers that, when multiplied together, equal num
+def prime_factorization(num)
+  return [] if num < 2
+
+  # get all primes up to num recursively
+  primes_factors  = prime_factorization(num - 1)
+  if prime?(num)
+    primes_factors << num
+  end
+
+  primes_factors
 end
