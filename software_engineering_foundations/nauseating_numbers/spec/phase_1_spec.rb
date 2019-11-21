@@ -7,11 +7,11 @@ describe "Phase_1" do
     end
 
     it "returns a count of distinct pairs of elements where sum equals zero" do
-      expect(strange_sums([9])).to equal(0)      
-      expect(strange_sums([1, 3, -1, 9, -3])).to equal(2)
-      expect(strange_sums([19, 6, -3, -20])).to equal(0)
-      expect(strange_sums([-5, 5])).to equal(1)
-      expect(strange_sums([42, 3, -1, -42])).to equal(1)
+      expect(strange_sums([9])).to eq(0)      
+      expect(strange_sums([1, 3, -1, 9, -3])).to eq(2)
+      expect(strange_sums([19, 6, -3, -20])).to eq(0)
+      expect(strange_sums([-5, 5])).to eq(1)
+      expect(strange_sums([42, 3, -1, -42])).to eq(1)
     end
   end
 
@@ -21,13 +21,13 @@ describe "Phase_1" do
     end
 
     it "returns a boolean indicating if any distinct pair of elements results in the product" do
-      expect(pair_product([4, 2, 5, 8], 16)).to equal(true)
-      expect(pair_product([8, 1, 9, 3], 8)).to equal(true)
-      expect(pair_product([3, 4], 12)).to equal(true)
-      expect(pair_product([3, 4, 6, 2, 5], 12)).to equal(true)
-      expect(pair_product([4, 2, 5, 7], 16)).to equal(false)
-      expect(pair_product([8, 4, 9, 3], 8)).to equal(false)
-      expect(pair_product([3], 12)).to equal(false)
+      expect(pair_product([4, 2, 5, 8], 16)).to eq(true)
+      expect(pair_product([8, 1, 9, 3], 8)).to eq(true)
+      expect(pair_product([3, 4], 12)).to eq(true)
+      expect(pair_product([3, 4, 6, 2, 5], 12)).to eq(true)
+      expect(pair_product([4, 2, 5, 7], 16)).to eq(false)
+      expect(pair_product([8, 4, 9, 3], 8)).to eq(false)
+      expect(pair_product([3], 12)).to eq(false)
     end
   end
 
@@ -37,10 +37,10 @@ describe "Phase_1" do
     end
 
     it "returns a new string where chars of original string is multiplied by times specified in hash" do
-      expect(rampant_repeats('taco', {'a'=>3, 'c'=>2})).to equal('taaacco')
-      expect(rampant_repeats('feverish', {'e'=>2, 'f'=>4, 's'=>3})).to equal('ffffeeveerisssh')
-      expect(rampant_repeats('misispi', {'s'=>2, 'p'=>2})).to equal('mississppi')
-      expect(rampant_repeats('faarm', {'e'=>3, 'a'=>2})).to equal('faaaarm')
+      expect(rampant_repeats('taco', {'a'=>3, 'c'=>2})).to eq('taaacco')
+      expect(rampant_repeats('feverish', {'e'=>2, 'f'=>4, 's'=>3})).to eq('ffffeeveerisssh')
+      expect(rampant_repeats('misispi', {'s'=>2, 'p'=>2})).to eq('mississppi')
+      expect(rampant_repeats('faarm', {'e'=>3, 'a'=>2})).to eq('faaaarm')
     end
   end
 
@@ -50,15 +50,15 @@ describe "Phase_1" do
     end
 
     it "returns a boolean indicating if given number is a perfect square" do
-      expect(perfect_square(1)).to equal(true)
-      expect(perfect_square(4)).to equal(true)
-      expect(perfect_square(64)).to equal(true)
-      expect(perfect_square(100)).to equal(true)
-      expect(perfect_square(169)).to equal(true)
-      expect(perfect_square(2)).to equal(false)
-      expect(perfect_square(40)).to equal(false)
-      expect(perfect_square(32)).to equal(false)
-      expect(perfect_square(50)).to equal(false)
+      expect(perfect_square?(1)).to eq(true)
+      expect(perfect_square?(4)).to eq(true)
+      expect(perfect_square?(64)).to eq(true)
+      expect(perfect_square?(100)).to eq(true)
+      expect(perfect_square?(169)).to eq(true)
+      expect(perfect_square?(2)).to eq(false)
+      expect(perfect_square?(40)).to eq(false)
+      expect(perfect_square?(32)).to eq(false)
+      expect(perfect_square?(50)).to eq(false)
     end
   end
 end
