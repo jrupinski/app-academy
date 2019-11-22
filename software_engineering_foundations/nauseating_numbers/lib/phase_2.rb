@@ -35,19 +35,21 @@ def mutual_factors(*nums)
   common_factors
 end
 
-def tribonacci_number(num)
-  tribonacci = [1, 1, 2]
+def tribonacci_number(n)
+  tribonacci = tribonacci_sequence(n)
+  tribonacci.last
+end
 
-  # arrays starts at zero, user starts count at one - subtract 1
-  return tribonacci[num - 1] if num < 3
-
-  until tribonacci.length == num
-    first_ele = tribonacci[-3]
-    second_ele = tribonacci[-2]
-    third_ele = tribonacci[-1]
-
-    tribonacci << (first_ele + second_ele + third_ele)
+def tribonacci_sequence(n)
+  case n
+    when -Float::INFINITY..0 then return []
+    when 1 then return [1]
+    when 2 then return [1, 1]
+    when 3 then return [1, 1, 2]
   end
-  
-  tribonacci[num - 1]
+
+  sequence = tribonacci_sequence(n - 1)
+  sequence << (sequence[-3] + sequence[-2] + sequence[-1])
+
+  sequence
 end
