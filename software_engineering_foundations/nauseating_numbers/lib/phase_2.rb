@@ -13,12 +13,16 @@ def get_divisors(num)
 end
 
 def matrix_addition(mat_1, mat_2)
-  mat_sum = Array.new(mat_1.length) { Array.new(mat_1[0].length) }
+  mat_sum = []
 
   (0...mat_1.length).each do |row|
+  curr_row = []
+
     (0...mat_1[row].length).each do |col|
-      mat_sum[row][col] = mat_1[row][col] + mat_2[row][col]
+      curr_row << (mat_1[row][col] + mat_2[row][col])
     end
+    
+    mat_sum << curr_row
   end
 
   mat_sum
