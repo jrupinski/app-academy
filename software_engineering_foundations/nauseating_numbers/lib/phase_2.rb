@@ -16,8 +16,8 @@ def matrix_addition(mat_1, mat_2)
   mat_sum = []
 
   (0...mat_1.length).each do |row|
-  curr_row = []
-
+    
+    curr_row = []
     (0...mat_1[row].length).each do |col|
       curr_row << (mat_1[row][col] + mat_2[row][col])
     end

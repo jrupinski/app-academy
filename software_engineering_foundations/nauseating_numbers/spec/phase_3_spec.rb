@@ -1,3 +1,5 @@
+require "phase_3"
+
 describe "phase_3" do
   describe "matrix_addition_reloaded" do
     let (:matrix_a) { [[2,5], [4,7]] }
