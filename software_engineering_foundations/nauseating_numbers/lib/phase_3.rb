@@ -31,15 +31,22 @@ end
 
 def squarocol?(multi_array)
   return false if !same_array_size?(multi_array)
+  rows = multi_array
+  columns = get_matrix_columns(multi_array)
+  # row or column is filled with same element 
+  rows.any? { |row| row.uniq.one? } || columns.any? { |col| col.uniq.one? }
+end
 
-  (0...multi_array.length).any? do |row_idx|
-    row = multi_array[row_idx]
-    col = []
-    (0...multi_array.length).each do |col_idx|
-      col << multi_array[col_idx][row_idx]
+def get_matrix_columns(matrix)
+  columns = []
+
+  (0...matrix.length).each do |row_idx|
+    curr_col = []
+    (0...matrix.length).each do |col_idx|
+      curr_col << matrix[col_idx][row_idx]
     end
-    
-    # row or column is filled with same element 
-    row.uniq.one? || col.uniq.one?
+    columns << curr_col
   end
+
+  columns
 end
