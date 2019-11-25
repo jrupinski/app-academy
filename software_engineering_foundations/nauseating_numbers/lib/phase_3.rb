@@ -28,3 +28,18 @@ def same_array_size?(*matrices)
 
   true
 end
+
+def squarocol?(multi_array)
+  return false if !same_array_size?(multi_array)
+
+  (0...multi_array.length).any? do |row_idx|
+    row = multi_array[row_idx]
+    col = []
+    (0...multi_array.length).each do |col_idx|
+      col << multi_array[col_idx][row_idx]
+    end
+    
+    # row or column is filled with same element 
+    row.uniq.one? || col.uniq.one?
+  end
+end
