@@ -31,6 +31,7 @@ end
 
 def squarocol?(multi_array)
   return false if !same_array_size?(multi_array)
+
   rows = multi_array
   columns = get_matrix_columns(multi_array)
   # row or column is filled with same element 
@@ -39,6 +40,7 @@ end
 
 def squaragonal?(multi_array)
   return false if !same_array_size?(multi_array)
+
   diagonals = get_matrix_diagonals(multi_array)
   # check if any diagonal filled with same element
   diagonals.any? { |diagonal| diagonal.uniq.one? }
@@ -60,7 +62,7 @@ end
 
 def get_matrix_diagonals(matrix)
   diagonals = []
-  
+
   # get both diagonals - left and right
   2.times do
     diagonals << (0...matrix.length).inject([]) do |diagonal, diag_idx|
@@ -70,7 +72,7 @@ def get_matrix_diagonals(matrix)
       else                # get right diagonal
         diagonal << matrix[diag_idx][-1 - diag_idx]
       end
-      
+
     end
   end
 
