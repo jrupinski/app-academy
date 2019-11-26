@@ -78,3 +78,27 @@ def get_matrix_diagonals(matrix)
 
   diagonals
 end
+
+def pascals_triangle(n)
+  raise "num has to be positive" if n < 1
+  return [1] if n == 1
+  return [[1], [1, 1]] if n == 2
+  triangle = [[1], [1,1]]
+
+  until triangle.length == n
+    new_level = []
+    prev_level = triangle.last
+
+    (0...prev_level.length - 1).each do |i|
+      new_level << prev_level[i] + prev_level[i + 1]
+    end
+
+    # add 1 on front and back of level
+    new_level.unshift(1)
+    new_level.push(1)
+
+    triangle << new_level
+  end
+
+  triangle
+end
