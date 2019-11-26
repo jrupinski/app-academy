@@ -113,6 +113,7 @@ describe "phase_3" do
   describe "pascals_triangle" do
     it "accepts a positive number as an arg" do
       expect { pascals_triangle(2) }.to_not raise_error
+      expect { pascals_triangle(-2) }.to raise_error("num has to be positive")
     end
 
     it "returns a 2D array containing the first n levels of pascal's triangle." do
