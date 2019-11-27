@@ -1,8 +1,11 @@
+require "phase_4"
+
 describe "phase_4" do
   describe "mersenne_prime" do
     it "accepts a positive number as an arg" do
       expect { mersenne_prime(2) }.to_not raise_error
-      expect { mersenne_prime(-2) }.to raise_error("num has to be positive")
+      expect { mersenne_prime(-2) }.to raise_error("arg has to be a positive num")
+      expect { mersenne_prime("test") }.to raise_error("arg has to be a positive num")
     end
 
     it "returns n-th Mersenne prime number" do
