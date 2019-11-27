@@ -34,20 +34,20 @@ describe "phase_4" do
     end
   end
 
-  describe "triangular_number?" do
+  describe "is_triangular?" do
     it "accepts a number as an arg" do
-      expect { triangular_number?(5) }.to_not raise_error
+      expect { is_triangular?(5) }.to_not raise_error
     end
 
     it "returns a bool indicating if number is a triangular number" do
-      expect(triangular_number?(1)).to eq(true)
-      expect(triangular_number?(3)).to eq(true)
-      expect(triangular_number?(6)).to eq(true)
-      expect(triangular_number?(10)).to eq(true)
-      expect(triangular_number?(15)).to eq(true)
-      expect(triangular_number?(2)).to eq(false)
-      expect(triangular_number?(4)).to eq(false)
-      expect(triangular_number?(5)).to eq(false)
+      expect(is_triangular?(1)).to eq(true)
+      expect(is_triangular?(3)).to eq(true)
+      expect(is_triangular?(6)).to eq(true)
+      expect(is_triangular?(10)).to eq(true)
+      expect(is_triangular?(15)).to eq(true)
+      expect(is_triangular?(2)).to eq(false)
+      expect(is_triangular?(4)).to eq(false)
+      expect(is_triangular?(5)).to eq(false)
     end
   end
 
