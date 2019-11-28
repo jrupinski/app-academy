@@ -72,9 +72,13 @@ describe "phase_4" do
   end
 
   describe "pretentious_primes" do
-    it "accepts an array and a number as an arg" do
+    it "accepts an array of numbers and a number as an arg" do
       expect { pretentious_primes([4, 15, 7], 1) }.to_not raise_error
-      expect { pretentious_primes("test", [1, 2, 3]) }.to_not raise_error
+      expect { pretentious_primes(3, [4, 15, 7]) }.to raise_error("Use array of numbers and a number as arguments")
+      expect { pretentious_primes("test", [1, 2, 3]) }.to raise_error("Use array of numbers and a number as arguments")
+      expect { pretentious_primes(5) }.to raise_error("Use array of numbers and a number as arguments")
+      expect { pretentious_primes([1, 2, 3]) }.to raise_error("Use array of numbers and a number as arguments")
+      expect { pretentious_primes() }.to raise_error("Use array of numbers and a number as arguments")
     end
 
     context "returns a new array where each element of the original array is replaced:" do
