@@ -54,10 +54,12 @@ describe "phase_4" do
   describe "consecutive_collapse" do
     it "accepts an array of numbers as an arg" do
       expect { consecutive_collapse([3, 4, 1]) }.to_not raise_error
-      expect { consecutive_collapse("test") }.to raise_error
+      expect { consecutive_collapse("test") }.to raise_error("Wrong arg - array of numbers only")
+      expect { consecutive_collapse() }.to raise_error("Wrong arg - array of numbers only")
     end
 
     it "return a new array, with every leftmost adjacent consecutive numbers removed" do
+      expect(consecutive_collapse([1])).to eq([1])
       expect(consecutive_collapse([3, 4, 1])).to eq([1])
       expect(consecutive_collapse([1, 4, 3, 7])).to eq([1, 7])
       expect(consecutive_collapse([9, 8, 2])).to eq([2])
