@@ -97,3 +97,59 @@ def is_triangular?(num)
 
   tri_nums.last == num
 end
+
+
+#
+# Return an Array where we continuously remove consecutive numbers that are 
+# adjacent in the array. If multiple adjacent pairs are consecutive numbers, 
+# remove the leftmost pair first.
+#
+# @param [Array] arr Array of whole numbers
+#
+# @return [Array] Array of numbers, collapsed
+#
+def consecutive_collapse(arr = [])
+  raise "Wrong arg - array of numbers only" if !arr.is_a?(Array) ||
+    arr.all? { |ele| !ele.is_a?(Integer) }
+  
+  return arr if arr.length == 1
+
+  collapsed = arr.clone
+  is_collapsed = false
+  
+  while !is_collapsed
+    is_collapsed = true
+    
+    (0...collapsed.length - 1).each do |i|
+      
+      pair = collapsed[i..i + 1]
+      pair_idx = (i..i + 1)
+      if is_consecutive?(pair.first, pair.last)
+        collapsed.slice!(pair_idx)
+        is_collapsed = false
+        break
+      end
+
+    end
+  end
+
+  collapsed
+end
+
+#
+# Check if numbers are consecutive to each other
+# 
+# Examples: 
+# is_consecutive?(1,2) => true
+# is_consecutive?(2,1) => true
+# is_consecutive?(1,3) => false
+# is_consecutive?(5,3) => false
+#
+# @param [Integer] num_1 Whole number
+# @param [Integer] num_2 Whole number
+#
+# @return [Boolean] Indicates if numbers are consecutive
+#
+def is_consecutive?(num_1, num_2)
+  num_1 + 1 == num_2 || num_1 - 1 == num_2
+end
