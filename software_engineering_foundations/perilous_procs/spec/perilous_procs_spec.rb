@@ -17,9 +17,32 @@ describe "phase 1" do
 
     it "uses Array#each" do
       arr = [3, 1, 11, 5]
-      # block = Proc.new { |n| n.even? }
       expect(arr).to receive(:each).at_least(:once)
       some?(arr) { |n| n.even? }
+    end
+  end
+
+  describe "exactly?" do
+    it "accepts an array, a number, and a block as arguments" do
+      expect { exactly?(['A', 'b', 'C'], 2) { |el| el == el.upcase } }.to_not raise_error
+    end
+
+    it "return a boolean indicating if there are exactly n elements that return true when given to block" do
+      expect(exactly?(['A', 'b', 'C'], 2) { |el| el == el.upcase }).to eq(true)
+      expect(exactly?(['A', 'B', 'C'], 2) { |el| el == el.upcase }).to eq(false)
+      expect(exactly?(['A', 'B', 'C'], 3) { |el| el == el.upcase }).to eq(true)
+      expect(exactly?(['cat', 'DOG', 'bird'], 1) { |el| el == el.upcase }).to eq(true)
+      expect(exactly?(['cat', 'DOG', 'bird'], 0) { |el| el == el.upcase }).to eq(false)
+      expect(exactly?(['cat', 'dog', 'bird'], 0) { |el| el == el.upcase }).to eq(true)
+      expect(exactly?([4, 5], 3) { |n| n > 0 }).to eq(false)
+      expect(exactly?([4, 5, 2], 3) { |n| n > 0 }).to eq(true)
+      expect(exactly?([42, -9, 7, -3, -6], 2) { |n| n > 0 }).to eq(true)
+    end
+
+    it "uses Array#each" do
+      arr = ['A', 'b', 'C']
+      expect(arr).to receive(:each).at_least(:once)
+      exactly?(arr, 2) { |el| el == el.upcase }
     end
   end
 end
