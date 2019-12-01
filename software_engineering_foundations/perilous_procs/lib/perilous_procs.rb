@@ -32,3 +32,8 @@ def at_most?(arr, n, &block)
   arr.each { |ele| count += 1 if block.call(ele) }
   count <= n
 end
+
+def first_index(arr, &block)
+  (0...arr.length).each { |idx| return idx if block.call(arr[idx]) }
+  nil
+end

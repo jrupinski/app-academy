@@ -27,7 +27,7 @@ describe "phase 1" do
       expect { exactly?(['A', 'b', 'C'], 2) { |el| el == el.upcase } }.to_not raise_error
     end
 
-    it "return a boolean indicating if there are exactly n elements that return true when given to block" do
+    it "returns a boolean indicating if there are exactly n elements that return true when given to block" do
       expect(exactly?(['A', 'b', 'C'], 2) { |el| el == el.upcase }).to eq(true)
       expect(exactly?(['A', 'B', 'C'], 2) { |el| el == el.upcase }).to eq(false)
       expect(exactly?(['A', 'B', 'C'], 3) { |el| el == el.upcase }).to eq(true)
@@ -116,7 +116,7 @@ describe "phase 1" do
       expect { at_most?([-4, 100, -3], 1) { |el| el > 0 } }.to_not raise_error
     end
 
-    it "return a boolean indicating if there are at most n elements that return true when given to block" do
+    it "returns a boolean indicating if there are at most n elements that return true when given to block" do
       expect(at_most?([-4, 100, -3], 1) { |el| el > 0 }).to eq(true)
       expect(at_most?([-4, -100, -3], 1) { |el| el > 0 }).to eq(true)
       expect(at_most?([4, 100, -3], 1) { |el| el > 0 }).to eq(false)
@@ -130,6 +130,30 @@ describe "phase 1" do
       arr = ['A', 'b', 'C']
       expect(arr).to receive(:each).at_most(:once)
       at_most?(arr, 2) { |el| el == el.upcase }
+    end
+  end
+
+  describe "first_index" do
+    it "accepts an array and a block as arguments" do
+      expect { first_index(['bit', 'cat', 'byte', 'below']) { |el| el.length > 3 } }.to_not raise_error
+    end
+
+    it "returns the index of the first element that equals true when passed to block" do
+      expect(first_index(['bit', 'cat', 'byte', 'below']) { |el| el.length > 3 }).to eq(2)
+      expect(first_index(['bitten', 'bit', 'cat', 'byte', 'below']) { |el| el.length > 3 }).to eq(0)
+      expect(first_index(['bit', 'cat', 'byte', 'below']) { |el| el[0] == 'b' }).to eq(0)
+      expect(first_index(['bit', 'cat', 'byte', 'below']) { |el| el.include?('a') }).to eq(1)
+    end
+    
+    it "returns nil if no elements equal true when passed to block" do
+      expect(first_index(['bitten', 'bit', 'cat', 'byte', 'below']) { |el| el.length > 6 }).to eq(nil)
+      expect(first_index(['bit', 'cat', 'byte', 'below']) { |el| el[0] == 't' }).to eq(nil)
+    end
+
+    it "uses Array#each" do
+      arr = ['bitten', 'bit', 'cat', 'byte', 'below']
+      expect(arr).to receive(:each).at_most(:once)
+      first_index(arr) { |el| el.length > 6 }
     end
   end
 end
