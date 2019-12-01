@@ -45,4 +45,23 @@ describe "phase 1" do
       exactly?(arr, 2) { |el| el == el.upcase }
     end
   end
+
+  describe "filter_out" do
+    it "accepts an array and a block as arguments" do
+      expect { filter_out([1, 2, 3]) { |x| x.odd? } }.to_not raise_error
+    end
+
+    it "returns new array where elements of original array are removed if they equal true when giveen to block" do
+      expect(filter_out([10, 6, 3, 2, 5 ]) { |x| x.odd? }).to eq([10, 6, 2])
+      expect(filter_out([1, 7, 3, 5 ]) { |x| x.odd? }).to eq([])
+      expect(filter_out([10, 6, 3, 2, 5 ]) { |x| x.even? }).to eq([3, 5])
+      expect(filter_out([1, 7, 3, 5 ]) { |x| x.even? }).to eq([1, 7, 3, 5])
+    end
+
+    it "should use Array#each" do
+      arr = [1, 2, 3, 4, 5]
+      expect(arr).to receive(:each).at_least(:once)
+      filter_out(arr) { |x| x.odd? }
+    end
+  end
 end
