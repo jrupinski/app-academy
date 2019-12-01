@@ -15,3 +15,9 @@ def filter_out(arr, &block)
   arr.each { |ele| filtered << ele if block.call(ele) == false}
   filtered
 end
+
+def at_least?(arr, n, &block)
+  count = 0
+  arr.each { |ele| count += 1 if block.call(ele) }
+  count >= n
+end
