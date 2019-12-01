@@ -110,4 +110,26 @@ describe "phase 1" do
       every?(arr) { |x| x.odd? }
     end
   end
+
+  describe "at_most?" do
+    it "accepts an array, a number, and a block as arguments" do
+      expect { at_most?([-4, 100, -3], 1) { |el| el > 0 } }.to_not raise_error
+    end
+
+    it "return a boolean indicating if there are at most n elements that return true when given to block" do
+      expect(at_most?([-4, 100, -3], 1) { |el| el > 0 }).to eq(true)
+      expect(at_most?([-4, -100, -3], 1) { |el| el > 0 }).to eq(true)
+      expect(at_most?([4, 100, -3], 1) { |el| el > 0 }).to eq(false)
+      expect(at_most?([4, 100, 3], 1) { |el| el > 0 }).to eq(false)
+      expect(at_most?(['r', 'q', 'e', 'z'], 2) { |el| 'aeiou'.include?(el) }).to eq(true)
+      expect(at_most?(['r', 'i', 'e', 'z'], 2) { |el| 'aeiou'.include?(el) }).to eq(true)
+      expect(at_most?(['r', 'i', 'e', 'o'], 2) { |el| 'aeiou'.include?(el) }).to eq(false)
+    end
+
+    it "uses Array#each" do
+      arr = ['A', 'b', 'C']
+      expect(arr).to receive(:each).at_most(:once)
+      at_most?(arr, 2) { |el| el == el.upcase }
+    end
+  end
 end
