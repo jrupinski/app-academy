@@ -21,3 +21,8 @@ def at_least?(arr, n, &block)
   arr.each { |ele| count += 1 if block.call(ele) }
   count >= n
 end
+
+def every?(arr, &block)
+  arr.each { |ele| return false if !block.call(ele) }
+  true
+end
