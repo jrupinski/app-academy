@@ -1,6 +1,6 @@
 require "perilous_procs"
 
-describe "phase 1" do
+context "phase 1" do
   describe "some?" do
     it "accepts an array and a block as arguments" do
       expect { some?([3, 1, 11, 5]) { |n| n.even? } }.to_not raise_error
@@ -154,6 +154,25 @@ describe "phase 1" do
       arr = ['bitten', 'bit', 'cat', 'byte', 'below']
       expect(arr).to receive(:each).at_most(:once)
       first_index(arr) { |el| el.length > 6 }
+    end
+  end
+end
+
+context "phase_2" do
+  describe "xnor_select" do
+    let (:is_even) { Proc.new { |n| n % 2 == 0 } }
+    let (:is_odd) { Proc.new { |n| n % 2 != 0 } }
+    let (:is_positive) { Proc.new { |n| n > 0 } }
+
+    it "accepts an array and two procs as arguments" do
+      expect { xnor_select([1, 2], is_odd, is_positive) }.to_not raise_error
+    end
+
+    it "returns a new array containing elements from original array where they 
+        either return true or false when passed to both procs" do
+      expect(xnor_select([8, 3, -4, -5], is_even, is_positive)).to eq([8, -5])
+      expect(xnor_select([-7, -13, 12, 5, -10], is_even, is_positive)).to eq([12, -7, -13])
+      expect(xnor_select([-7, -13, 12, 5, -10], is_odd, is_positive)).to eq([5, -10])
     end
   end
 end
