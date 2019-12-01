@@ -9,3 +9,9 @@ def exactly?(arr, n, &block)
   arr.each { |ele| count += 1 if block.call(ele) }
   count == n
 end
+
+def filter_out(arr, &block)
+  filtered = []
+  arr.each { |ele| filtered << ele if block.call(ele) == false}
+  filtered
+end
