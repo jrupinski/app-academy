@@ -89,4 +89,25 @@ describe "phase 1" do
       at_least?(arr, 2) { |el| el == el.upcase }
     end
   end
+
+  describe "every?" do
+    it "accepts an array and a block as arguments" do
+      expect { every?([3, 1, 11, 5]) { |n| n.even? } }.to_not raise_error
+    end
+
+    it "returns a boolean indicating if all elements of array equal true when passed to block" do
+      expect(every?([3, 1, 11, 5]) { |n| n.even? }).to eq(false)
+      expect(every?([2, 4, 4, 8]) { |n| n.even? }).to eq(true)
+      expect(every?([8, 2]) { |n| n.even? }).to eq(true)
+      expect(every?(['squash', 'corn', 'kale', 'carrot']) { |str| str[0] == 'p' }).to eq(false)
+      expect(every?(['squash', 'pea', 'kale', 'potato']) { |str| str[0] == 'p' }).to eq(false)
+      expect(every?(['parsnip', 'potato', 'pea']) { |str| str[0] == 'p' }).to eq(true)
+    end
+
+    it "should use Array#each" do
+      arr = [1, 2, 3, 4, 5]
+      expect(arr).to receive(:each).at_least(:once)
+      every?(arr) { |x| x.odd? }
+    end
+  end
 end
