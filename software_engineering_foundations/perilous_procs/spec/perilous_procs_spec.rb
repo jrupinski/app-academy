@@ -64,4 +64,29 @@ describe "phase 1" do
       filter_out(arr) { |x| x.odd? }
     end
   end
+
+  describe "at_least?" do
+    it "accepts an array, a number, and a block as arguments" do
+      expect { at_least?(['A', 'b', 'C'], 2) { |el| el == el.upcase } }.to_not raise_error
+    end
+
+    it "return a boolean indicating if there are at least n elements that return true when given to block" do
+      expect(at_least?(['sad', 'quick', 'timid', 'final'], 2) { |s| s.end_with?('ly') }).to eq( false)
+      expect(at_least?(['sad', 'quickly', 'timid', 'final'], 2) { |s| s.end_with?('ly') }).to eq(false)
+      expect(at_least?(['sad', 'quickly', 'timidly', 'final'], 2) { |s| s.end_with?('ly') }).to eq(true)
+      expect(at_least?(['sad', 'quickly', 'timidly', 'finally'], 2) { |s| s.end_with?('ly') }).to eq(true)
+      expect(at_least?(['sad', 'quickly', 'timid', 'final'], 1) { |s| s.end_with?('ly') }).to eq(true)
+      expect(at_least?(['sad', 'quick', 'timid', 'final'], 1) { |s| s.end_with?('ly') }).to eq(false)
+      expect(at_least?([false, false, false], 3) { |bool| bool }).to eq(false)
+      expect(at_least?([false, true, true], 3) { |bool| bool }).to eq(false)
+      expect(at_least?([true, true, true], 3) { |bool| bool }).to eq(true)
+      expect(at_least?([true, true, true, true], 3) { |bool| bool }).to eq(true)
+    end
+
+    it "uses Array#each" do
+      arr = ['A', 'b', 'C']
+      expect(arr).to receive(:each).at_least(:once)
+      at_least?(arr, 2) { |el| el == el.upcase }
+    end
+  end
 end
