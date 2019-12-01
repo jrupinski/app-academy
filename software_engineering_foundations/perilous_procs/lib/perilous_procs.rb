@@ -37,3 +37,11 @@ def first_index(arr, &block)
   (0...arr.length).each { |idx| return idx if block.call(arr[idx]) }
   nil
 end
+
+# phase_2
+def xnor_select(arr, prc_1, prc_2)
+  selected = []
+  selected
+    .concat(arr.select { |ele| prc_1.call(ele) && prc_2.call(ele) })
+    .concat(arr.select { |ele| !prc_1.call(ele) && !prc_2.call(ele) })
+end
