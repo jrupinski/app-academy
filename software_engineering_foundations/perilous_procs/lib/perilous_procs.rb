@@ -69,3 +69,12 @@ def multi_map(arr, n = 1, &block)
   n.times { mapped.map! { |ele|block.call(ele) } }
   mapped
 end
+
+def proctition(arr, &block)
+  truthy = []
+  falsy = []
+
+  arr.each { |ele| (truthy << ele if block.call(ele)) || falsy << ele }
+  
+  [*truthy, *falsy]
+end
