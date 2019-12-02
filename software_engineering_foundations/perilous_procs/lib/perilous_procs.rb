@@ -1,3 +1,5 @@
+require "byebug"
+
 # phase_1
 def some?(arr, &block)
   arr.each { |ele| return true if block.call(ele) }
@@ -44,4 +46,20 @@ def xnor_select(arr, prc_1, prc_2)
   selected
     .concat(arr.select { |ele| prc_1.call(ele) && prc_2.call(ele) })
     .concat(arr.select { |ele| !prc_1.call(ele) && !prc_2.call(ele) })
+end
+
+def filter_out!(arr, &block)
+  filtered = false
+  while !filtered
+    filtered = true
+
+    arr.each.with_index do |ele, idx|
+      if block.call(ele)
+        arr.delete_at(idx)
+        filtered = false
+      end
+    end
+  end
+
+  arr
 end
