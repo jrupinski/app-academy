@@ -89,3 +89,14 @@ def chain_map(val, arr_of_procs)
   arr_of_procs.each { |proc| val = proc.call(val) }
   val
 end
+
+def proc_suffix(sent, procs_hash)
+  sent
+    .split(" ")
+    .map do |word|
+      suffixes = ""
+      procs_hash.each { |proc, suffix| suffixes += suffix if proc.call(word) }
+      word += suffixes
+    end
+    .join(" ")
+end
