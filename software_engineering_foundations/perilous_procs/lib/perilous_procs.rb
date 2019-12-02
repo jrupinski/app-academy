@@ -78,3 +78,9 @@ def proctition(arr, &block)
   
   [*truthy, *falsy]
 end
+
+# Phase 3: Perilous
+def selected_map!(arr, prc_1, prc_2)
+  arr.map! { |ele| (prc_2.call(ele) if prc_1.call(ele) == true) || ele }
+  nil
+end
