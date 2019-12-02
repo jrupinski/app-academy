@@ -51,7 +51,7 @@ context "phase 1" do
       expect { filter_out([1, 2, 3]) { |x| x.odd? } }.to_not raise_error
     end
 
-    it "returns new array where elements of original array are removed if they equal true when giveen to block" do
+    it "returns new array where elements of original array are removed if they equal true when given to block" do
       expect(filter_out([10, 6, 3, 2, 5 ]) { |x| x.odd? }).to eq([10, 6, 2])
       expect(filter_out([1, 7, 3, 5 ]) { |x| x.odd? }).to eq([])
       expect(filter_out([10, 6, 3, 2, 5 ]) { |x| x.even? }).to eq([3, 5])
@@ -173,6 +173,42 @@ context "phase_2" do
       expect(xnor_select([8, 3, -4, -5], is_even, is_positive)).to eq([8, -5])
       expect(xnor_select([-7, -13, 12, 5, -10], is_even, is_positive)).to eq([12, -7, -13])
       expect(xnor_select([-7, -13, 12, 5, -10], is_odd, is_positive)).to eq([5, -10])
+    end
+  end
+
+  describe "filter_out!" do
+    it "accepts an array and a block as arguments" do
+      expect { filter_out!([1, 2, 3]) { |x| x.odd? } }.to_not raise_error
+    end
+
+    it "returns mutated array where elements of original array are removed if they equal true when given to block" do
+      arr_1 = [10, 6, 3, 2, 5 ]
+      filter_out!(arr_1) { |x| x.odd? }
+      expect(arr_1).to eq([10, 6, 2])
+
+      arr_2 = [1, 7, 3, 5 ]
+      filter_out!(arr_2) { |x| x.odd? }
+      expect(arr_2).to eq([])
+
+      arr_3 = [10, 6, 3, 2, 5 ]
+      filter_out!(arr_3) { |x| x.even? }
+      expect(arr_3).to eq([3, 5])
+
+      arr_4 = [1, 7, 3, 5 ]
+      filter_out!([1, 7, 3, 5 ]) { |x| x.even? }
+      expect(arr_4).to eq([1, 7, 3, 5])
+    end
+
+    it "should NOT use Array#reject!" do
+      arr = [1, 2, 3, 4, 5]
+      expect(arr).not_to receive(:reject!)
+      filter_out!(arr) { |x| x.odd? }
+    end
+
+    it "mutates original array" do
+      arr = [1, 2, 3, 4, 5]
+      filter_out!(arr) { |x| x.odd? }
+      expect(arr).to eq([2, 4])
     end
   end
 end
