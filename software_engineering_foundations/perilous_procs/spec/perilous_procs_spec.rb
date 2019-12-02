@@ -211,4 +211,20 @@ context "phase_2" do
       expect(arr).to eq([2, 4])
     end
   end
+
+  describe "multi_map" do
+    it "accepts an array, an optional number (n; default = 1), and a block as arguments" do
+      expect { multi_map([1, 2, 3], 5) { |i| i * 2 } }.to_not raise_error
+      expect { multi_map([1, 2, 3]) { |i| i + 2 } }.to_not raise_error
+    end
+
+    it "returns a new array where each element of the original array is run through the block n times" do
+      expect(multi_map(['pretty', 'cool', 'huh?']) { |s| s + '!'}).to eq(["pretty!", "cool!", "huh?!"])
+      expect(multi_map(['pretty', 'cool', 'huh?'], 1) { |s| s + '!'}).to eq(["pretty!", "cool!", "huh?!"])
+      expect(multi_map(['pretty', 'cool', 'huh?'], 3) { |s| s + '!'}).to eq(["pretty!!!", "cool!!!", "huh?!!!"])
+      expect(multi_map([4, 3, 2, 7], 1) { |num| num * 10 }).to eq([40, 30, 20, 70])
+      expect(multi_map([4, 3, 2, 7], 2) { |num| num * 10 }).to eq([400, 300, 200, 700])
+      expect(multi_map([4, 3, 2, 7], 4) { |num| num * 10 }).to eq([40000, 30000, 20000, 70000])
+    end
+  end
 end
