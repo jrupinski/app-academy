@@ -249,3 +249,31 @@ context "phase_2" do
     end
   end
 end
+
+context "phase 3" do
+  describe "selected_map!" do
+    let(:is_even) { Proc.new { |n| n.even? } }
+    let(:is_positive) { Proc.new { |n| n > 0 } }
+    let(:square) { Proc.new { |n| n * n } }
+    let(:flip_sign) { Proc.new { |n| -n } }
+    
+    it "accepts an array and two procs as arguments" do
+      expect { selected_map!([1, 2, 3], is_even, square) }.to_not raise_error
+    end
+
+    it "mutates the original array, and replaces elements that return true when passed into first proc with result of the second proc" do
+      arr_1 = [8, 5, 10, 4]
+      expect{ selected_map!(arr_1, is_even, square) }.to change { arr_1 }.to([64, 5, 100, 16])
+
+      arr_2 = [-10, 4, 7, 6, -2, -9]
+      expect{ selected_map!(arr_2, is_even, flip_sign) }.to change { arr_2 }.to([10, -4, 7, -6, 2, -9])
+
+      arr_3 = [-10, 4, 7, 6, -2, -9]
+      expect{ selected_map!(arr_3, is_positive, square) }.to change { arr_3 }.to([-10, 16, 49, 36, -2, -9])
+    end
+
+    it "returns nil after executing" do
+      expect(selected_map!([1, 2, 3], is_even, square)).to eq(nil)
+    end
+  end
+end
