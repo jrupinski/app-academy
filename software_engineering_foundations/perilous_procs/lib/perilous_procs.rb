@@ -63,3 +63,9 @@ def filter_out!(arr, &block)
 
   arr
 end
+
+def multi_map(arr, n = 1, &block)
+  mapped = arr.clone
+  n.times { mapped.map! { |ele|block.call(ele) } }
+  mapped
+end
