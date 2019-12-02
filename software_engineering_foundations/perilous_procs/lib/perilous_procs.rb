@@ -86,8 +86,6 @@ def selected_map!(arr, prc_1, prc_2)
 end
 
 def chain_map(val, arr_of_procs)
-  return arr_of_procs.first.call(val) if arr_of_procs.length == 1
-  num_of_procs = arr_of_procs.length
-  last_proc = arr_of_procs.last
-  last_proc.call(chain_map(val, arr_of_procs[0...num_of_procs - 1]))
+  arr_of_procs.each { |proc| val = proc.call(val) }
+  val
 end
