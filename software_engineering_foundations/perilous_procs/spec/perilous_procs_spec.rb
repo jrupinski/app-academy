@@ -276,4 +276,22 @@ context "phase 3" do
       expect(selected_map!([1, 2, 3], is_even, square)).to eq(nil)
     end
   end
+
+  describe "chain_map" do
+    let (:add_5) { Proc.new { |n| n + 5 } }
+    let (:half) { Proc.new { |n| n / 2.0 } }
+    let (:square) { Proc.new { |n| n * n } }
+
+    it "accepts any value and an array of procs as an argument" do
+      expect { chain_map(25, [add_5, half]) }.to_not raise_error
+    end
+
+    it "returns the final result of feeding the value through all of the procs" do
+      expect(chain_map(25, [add_5, half])).to eq(15.0)
+      expect(chain_map(25, [half, add_5])).to eq(17.5)
+      expect(chain_map(25, [add_5, half, square])).to eq(225)
+      expect(chain_map(4, [square, half])).to eq(8)
+      expect(chain_map(4, [half, square])).to eq(4)
+    end
+  end
 end
