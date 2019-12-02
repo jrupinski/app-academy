@@ -232,4 +232,20 @@ context "phase_2" do
       expect { multi_map(arr, 1) { |num| num * 10 } }.to_not change { arr }
     end
   end
+
+  describe "proctition" do
+    it "accepts an array and a block as arguments" do
+      expect { proctition([7, 8, 3, 6, 10]) { |el| el.even? } }.to_not raise_error
+    end
+
+    it "returns a new array where elements of the original array that return true when run through block are moved before rest" do
+      expect(proctition([4, -5, 7, -10, -2, 1, 3]) { |el| el > 0 }).to eq([4, 7, 1, 3, -5, -10, -2])
+      expect(proctition([7, 8, 3, 6, 10]) { |el| el.even? }).to eq([8, 6, 10, 7, 3])
+    end
+
+    it "does not modify original array" do
+      arr = [4, 3, 2, 7]
+      expect { proctition(arr) { |num| num.even? } }.to_not change { arr }
+    end
+  end
 end
