@@ -84,3 +84,10 @@ def selected_map!(arr, prc_1, prc_2)
   arr.map! { |ele| (prc_2.call(ele) if prc_1.call(ele) == true) || ele }
   nil
 end
+
+def chain_map(val, arr_of_procs)
+  return arr_of_procs.first.call(val) if arr_of_procs.length == 1
+  num_of_procs = arr_of_procs.length
+  last_proc = arr_of_procs.last
+  last_proc.call(chain_map(val, arr_of_procs[0...num_of_procs - 1]))
+end
