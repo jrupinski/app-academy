@@ -226,5 +226,10 @@ context "phase_2" do
       expect(multi_map([4, 3, 2, 7], 2) { |num| num * 10 }).to eq([400, 300, 200, 700])
       expect(multi_map([4, 3, 2, 7], 4) { |num| num * 10 }).to eq([40000, 30000, 20000, 70000])
     end
+
+    it "does not modify original array" do
+      arr = [4, 3, 2, 7]
+      expect { multi_map(arr, 1) { |num| num * 10 } }.to_not change { arr }
+    end
   end
 end
