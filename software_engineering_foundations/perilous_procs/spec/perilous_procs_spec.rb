@@ -294,4 +294,43 @@ context "phase 3" do
       expect(chain_map(4, [half, square])).to eq(4)
     end
   end
+
+  describe "proc_suffix" do
+    let (:contains_a) { Proc.new { |w| w.include?('a') } }
+    let (:three_letters) { Proc.new { |w| w.length == 3 } }
+    let (:four_letters) { Proc.new { |w| w.length == 4 } }
+
+    it "accepts a sentence and a hash as arguments" do
+      expect { proc_suffix("test sentence", contains_a => 'to') }.to_not raise_error
+    end
+
+    it "returns a new sentence" do
+      sentence = "cat"
+      expect { proc_suffix(sentence, contains_a => 'to') }.to_not change { sentence }
+    end
+
+    it "appends a suffix to each word if original word returns true when given to the corresponding proc key" do
+      expect(proc_suffix('dog cat',
+          contains_a => 'ly',
+          three_letters => 'o'
+      )).to eq("dogo catlyo")
+
+      expect(proc_suffix('dog cat',
+          three_letters => 'o',
+          contains_a => 'ly'
+      )).to eq("dogo catoly")
+
+      expect(proc_suffix('wrong glad cat',
+          contains_a => 'ly',
+          three_letters => 'o',
+          four_letters => 'ing'
+      )).to eq("wrong gladlying catlyo")
+
+      expect(proc_suffix('food glad rant dog cat',
+          four_letters => 'ing',
+          contains_a => 'ly',
+          three_letters => 'o'
+      )).to eq("fooding gladingly rantingly dogo catlyo")
+    end
+  end
 end
