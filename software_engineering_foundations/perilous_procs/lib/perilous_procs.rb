@@ -100,3 +100,22 @@ def proc_suffix(sent, procs_hash)
     end
     .join(" ")
 end
+
+def proctition_platinum(arr, *procs)
+  # initialize empty array on every index of proc; start count from 1
+  proc_hash = 
+    Hash.new
+    (1..procs.length).each { |proc| proc_hash[proc] = [] }
+
+  arr.each do |ele|
+    procs.each_with_index do |proc, idx|
+      proc_idx = idx + 1
+      if proc.call(ele) == true
+        proc_hash[proc_idx] << ele
+        break
+      end
+    end
+  end
+
+  proc_hash
+end
