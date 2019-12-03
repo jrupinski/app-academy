@@ -333,4 +333,44 @@ context "phase 3" do
       )).to eq("fooding gladingly rantingly dogo catlyo")
     end
   end
+
+  describe "proctition_platinum" do
+    let (:is_yelled) { Proc.new { |s| s[-1] == '!' } }
+    let (:is_upcase) { Proc.new { |s| s.upcase == s } }
+    let (:contains_a) { Proc.new { |s| s.downcase.include?('a') } }
+    let (:begins_w) { Proc.new { |s| s.downcase[0] == 'w' } }
+
+    it "accepts an array and any number of additional procs as arguments" do
+      expect { proctition_platinum(
+        ['WHO', 'what', 'when!', 'WHERE!', 'how', 'WHY'], 
+        is_yelled, is_upcase, contains_a) }.to_not raise_error
+    end
+
+    context "returns a hash where:" do
+      it "values contain an array with elements of array that returns true when passed to corresponding proc" do
+        expect(proctition_platinum(['WHO', 'what', 'when!', 'WHERE!', 'how', 'WHY'], 
+        is_yelled, contains_a)).to eq({1=>["when!", "WHERE!"], 2=>["what"]})
+        
+        expect(proctition_platinum(['WHO', 'what', 'when!', 'WHERE!', 'how', 'WHY'], 
+        is_yelled, is_upcase, contains_a)).to eq({1=>["when!", "WHERE!"], 2=>["WHO", "WHY"], 3=>["what"]})
+        
+        expect(proctition_platinum(['WHO', 'what', 'when!', 'WHERE!', 'how', 'WHY'], 
+        is_upcase, is_yelled, contains_a)).to eq({1=>["WHO", "WHERE!", "WHY"], 2=>["when!"], 3=>["what"]})
+        
+        expect(proctition_platinum(['WHO', 'what', 'when!', 'WHERE!', 'how', 'WHY'], 
+        begins_w, is_upcase, is_yelled, contains_a)).to eq({1=>["WHO", "what", "when!", "WHERE!", "WHY"], 2=>[], 3=>[], 4=>[]})
+      end
+
+      it "keys are equal to number of procs passed in (starting from 1)" do
+        expect(proctition_platinum(['WHO', 'when!'], is_yelled).keys).to eq([1])
+        expect(proctition_platinum(['WHO', 'when!'], is_yelled, contains_a).keys).to eq([1, 2])
+        expect(proctition_platinum(['WHO', 'when!'], is_yelled, contains_a, begins_w).keys).to eq([1, 2, 3])
+      end
+      
+      it "value appears only in first proc key where it returned true" do
+        expect(proctition_platinum(['WHO!', 'when!', 'WHERE!', 'how'], 
+        is_upcase, is_yelled)).to eq({1=>["WHO!", "WHERE!"], 2=>["when!"]})
+      end
+    end
+  end
 end
