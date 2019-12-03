@@ -373,4 +373,51 @@ context "phase 3" do
       end
     end
   end
+
+  describe "procipher" do
+  let(:is_yelled) { Proc.new { |s| s[-1] == '!' } }
+  let(:is_upcase) { Proc.new { |s| s.upcase == s } }
+  let(:contains_a) { Proc.new { |s| s.downcase.include?('a') } }
+  let(:make_question) { Proc.new { |s| s + '???' } }
+  let(:reverse) { Proc.new { |s| s.reverse } }
+  let(:add_smile) { Proc.new { |s| s + ':)' } }
+
+    it "accepts a sentence and a hash of procs(both as key and val) as arguments" do
+      expect {        
+        procipher('he said what!',
+            is_yelled => make_question,
+            contains_a => reverse
+        )
+      }.to_not raise_error
+    end
+
+    it "returns a new sentence where each word of the input sentence is changed by a value proc if the original word returns true when passed into the key proc." do
+      expect(procipher('he said what!',
+          is_yelled => make_question,
+          contains_a => reverse
+      )).to eq("he dias ???!tahw")
+
+      expect(procipher('he said what!',
+          contains_a => reverse,
+          is_yelled => make_question
+      )).to eq("he dias !tahw???")
+
+      expect(procipher('he said what!',
+          contains_a => reverse,
+          is_yelled => add_smile
+      )).to eq("he dias !tahw:)")
+
+      expect(procipher('stop that taxi now',
+          is_upcase => add_smile,
+          is_yelled => reverse,
+          contains_a => make_question
+      )).to eq("stop that??? taxi??? now")
+
+      expect(procipher('STOP that taxi now!',
+          is_upcase => add_smile,
+          is_yelled => reverse,
+          contains_a => make_question
+      )).to eq("STOP:) that??? taxi??? !won")
+    end
+  end
 end
