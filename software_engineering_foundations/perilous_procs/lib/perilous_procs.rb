@@ -119,3 +119,21 @@ def proctition_platinum(arr, *procs)
 
   proc_hash
 end
+
+def procipher(sentence, procs_hash)
+  ciphered_sent = [] 
+
+  sentence.split(" ").each do |og_word|
+    ciphered_word = og_word.clone  
+    
+    procs_hash.each do |proc_condition, proc_change|
+      if proc_condition.call(og_word) == true
+        ciphered_word = proc_change.call(ciphered_word) 
+      end
+    end
+
+    ciphered_sent << ciphered_word
+  end
+
+  ciphered_sent.join(" ")
+end
