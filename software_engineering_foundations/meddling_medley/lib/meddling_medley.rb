@@ -5,3 +5,10 @@ def duos(string)
     string[char] == string[char + 1]
   end
 end
+
+def sentence_swap(sentence, word_replacements)
+  sentence
+    .split
+    .map { |word| word_replacements[word] || word }
+    .join(" ")
+end
