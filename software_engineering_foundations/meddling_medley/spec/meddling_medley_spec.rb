@@ -43,4 +43,19 @@ context "Phase 1: Modest problems" do
       )).to eq('hello world')
     end
   end
+
+  describe "hash_mapped" do
+    double = Proc.new { |n| n * 2 }
+    first = Proc.new { |a| a[0] }
+
+    it "accepts a hash, a proc, and a block" do
+      expect { hash_mapped({'a'=>4, 'x'=>7, 'c'=>-3}, double) { |k| k.upcase + '!!' } }.to_not raise_error
+    end
+
+    it "returns a new hash where each key is the result of the original key when given to the block. Each value of the new hash should be the result of the original values when passed into the proc" do
+      expect(hash_mapped({'a'=>4, 'x'=>7, 'c'=>-3}, double) { |k| k.upcase + '!!' }).to eq({"A!!"=>8, "X!!"=>14, "C!!"=>-6})
+
+      expect(hash_mapped({-5=>['q', 'r', 's'], 6=>['w', 'x']}, first) { |n| n * n }).to eq({25=>"q", 36=>"w"})
+    end
+  end
 end

@@ -12,3 +12,9 @@ def sentence_swap(sentence, word_replacements)
     .map { |word| word_replacements[word] || word }
     .join(" ")
 end
+
+def hash_mapped(hash, proc, &block)
+  mapped = {}
+  hash.map { |k, v| mapped[block.call(k)] = proc.call(v) }
+  mapped
+end
