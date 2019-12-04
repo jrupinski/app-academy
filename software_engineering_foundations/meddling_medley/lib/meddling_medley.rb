@@ -56,3 +56,8 @@ def uncompress(string)
     
   uncompressed
 end
+
+# Phase 2: More difficult, maybe?
+def conjunct_select(array, *procs)
+  array.select { |ele| procs.all? { |proc| proc.call(ele) == true } }
+end

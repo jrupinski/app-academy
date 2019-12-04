@@ -122,3 +122,21 @@ context "Phase 1: Modest problems" do
     end
   end
 end
+
+context "Phase 2: More difficult, maybe?" do
+  describe "conjunct_select" do
+    let (:is_positive) { Proc.new { |n| n > 0 } }
+    let (:is_odd) { Proc.new { |n| n.odd? } }
+    let (:less_than_ten) { Proc.new { |n| n < 10 } }
+
+    it "accepts an array and one or more procs as arguments" do
+      expect { conjunct_select([4, 8, -2, 11, 7, -3, 13], is_positive) }.to_not raise_error
+    end
+
+    it "returns a new array containing the elements that return true when passed into all of the given procs" do
+      expect(conjunct_select([4, 8, -2, 11, 7, -3, 13], is_positive)).to eq([4, 8, 11, 7, 13])
+      expect(conjunct_select([4, 8, -2, 11, 7, -3, 13], is_positive, is_odd)).to eq([11, 7, 13])
+      expect(conjunct_select([4, 8, -2, 11, 7, -3, 13], is_positive, is_odd, less_than_ten)).to eq([7])
+    end
+  end
+end 
