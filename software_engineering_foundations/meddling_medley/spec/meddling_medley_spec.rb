@@ -85,4 +85,28 @@ context "Phase 1: Modest problems" do
       expect(triplet_true?('e')).to eq(false)
     end
   end
+
+  describe "energetic_encoding" do
+    it "accepts a string and a hash as arguments" do
+      expect { energetic_encoding('sent sea',
+        'e'=>'i', 's'=>'z', 'n'=>'m', 't'=>'p', 'a'=>'u'
+      ) }.to_not raise_error
+    end
+
+    it "return a new string where characters of the original string are replaced with the corresponding values in the hash. If char is not a key in hash - replace it with \"?\"" do
+      expect(energetic_encoding('sent sea',
+          'e'=>'i', 's'=>'z', 'n'=>'m', 't'=>'p', 'a'=>'u'
+      )).to eq('zimp ziu')
+
+      expect(energetic_encoding('cat',
+          'a'=>'o', 'c'=>'k'
+      )).to eq('ko?')
+
+      expect(energetic_encoding('hello world',
+          'o'=>'i', 'l'=>'r', 'e'=>'a'
+      )).to eq('?arri ?i?r?')
+
+      expect(energetic_encoding('bike', {})).to eq('????')
+    end
+  end
 end

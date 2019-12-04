@@ -35,3 +35,15 @@ def triplet_true?(string)
 
   false
 end
+
+def energetic_encoding(string, replacements)
+  string
+    .split
+    .map do |word|
+      word
+        .chars
+        .map { |char| replacements[char] || "?" }
+        .join
+    end
+    .join(" ")
+end
