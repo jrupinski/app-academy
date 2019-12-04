@@ -47,3 +47,12 @@ def energetic_encoding(string, replacements)
     end
     .join(" ")
 end
+
+def uncompress(string)
+  uncompressed = ""
+  string
+    .chars
+    .each_slice(2) { |(char, times)| uncompressed += (char * times.to_i) }
+    
+  uncompressed
+end

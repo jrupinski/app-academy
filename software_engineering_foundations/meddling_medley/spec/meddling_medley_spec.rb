@@ -109,4 +109,16 @@ context "Phase 1: Modest problems" do
       expect(energetic_encoding('bike', {})).to eq('????')
     end
   end
+
+  describe "uncompress" do
+    it "accepts a string as an argument. The string will be formatted so every letter is followed by a number" do
+      expect { uncompress('a2b4c1') }.to_not raise_error
+    end
+
+    it "return an \"uncompressed\" version of the string where every letter is repeated multiple times given based on the number that appears directly after the letter" do
+      expect(uncompress('a2b4c1')).to eq'aabbbbc'
+      expect(uncompress('b1o2t1')).to eq'boot'
+      expect(uncompress('x3y1x2z4')).to eq'xxxyxxzzzz'
+    end
+  end
 end
