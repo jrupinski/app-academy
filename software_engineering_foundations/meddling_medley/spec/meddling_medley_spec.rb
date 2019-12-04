@@ -58,4 +58,17 @@ context "Phase 1: Modest problems" do
       expect(hash_mapped({-5=>['q', 'r', 's'], 6=>['w', 'x']}, first) { |n| n * n }).to eq({25=>"q", 36=>"w"})
     end
   end
+
+  describe "counted_characters" do
+    it "accepts a string as an argument" do
+      expect { counted_characters("string") }.to_not raise_error
+    end
+
+    it "returns an array containing the characters of the string that appeared more than twice. The characters in the output array should appear in the same order they occur in the input string" do
+      expect(counted_characters("that's alright folks")).to eq(["t"])
+      expect(counted_characters("mississippi")).to eq(["i", "s"])
+      expect(counted_characters("hot potato soup please")).to eq(["o", "t", " ", "p"])
+      expect(counted_characters("runtime")).to eq([])
+    end
+  end
 end

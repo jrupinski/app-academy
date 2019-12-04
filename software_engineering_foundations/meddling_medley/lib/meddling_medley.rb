@@ -18,3 +18,9 @@ def hash_mapped(hash, proc, &block)
   hash.map { |k, v| mapped[block.call(k)] = proc.call(v) }
   mapped
 end
+
+def counted_characters(string)
+  char_count = Hash.new(0)
+  string.chars.each { |char| char_count[char] += 1 }
+  char_count.keys.select { |char| char_count[char] > 2 }
+end
