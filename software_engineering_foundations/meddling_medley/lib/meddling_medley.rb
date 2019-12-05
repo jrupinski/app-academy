@@ -142,3 +142,32 @@ def alternating_vowel(sentence)
     end
     .join(" ")
 end
+
+def silly_talk(sentence)
+  vowels = "aeiou"
+  
+  sentence
+    .split
+    .map do |word|
+      is_capitalized = (word == word.capitalize)
+      word.downcase!
+
+      if vowels.include?(word[-1])
+        word += word[-1]
+        (word.capitalize if is_capitalized) || word
+      else
+        char_idx = 0
+        while char_idx <= word.length - 1
+          if vowels.include?(word[char_idx])
+            word[char_idx] += ("b" + word[char_idx])
+            char_idx += 3
+          else
+            char_idx += 1
+          end
+        end 
+            
+        (word.capitalize if is_capitalized) || word
+      end
+    end
+    .join(" ")
+end
