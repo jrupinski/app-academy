@@ -166,3 +166,24 @@ def silly_talk(sentence)
     end
     .join(" ")
 end
+
+def compress(string)
+  compressed = ""
+  curr_streak = ""
+  string.each_char.with_index do |char, idx|
+    if curr_streak.empty? || curr_streak.chars.last == char
+      curr_streak += char
+    else
+      compressed += curr_streak.chars.last
+      compressed += curr_streak.length.to_s if curr_streak.length > 1 
+      curr_streak = char
+    end
+
+    if idx == string.length - 1
+      compressed += curr_streak.chars.last
+      compressed += curr_streak.length.to_s if curr_streak.length > 1 
+    end
+  end
+
+  compressed
+end
