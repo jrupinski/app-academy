@@ -77,7 +77,7 @@ def convert_pig_latin(string)
       first_vow = get_first_vowel_idx(word)
       word_translated = word[first_vow..-1] + word[0...first_vow] + "ay"
       word_translated.capitalize! if is_capitalized
-      
+
       converted += word_translated
     end
 
@@ -92,4 +92,28 @@ def get_first_vowel_idx(word)
   vowels = "aeiou"
   word.each_char.with_index { |char, idx| return idx if vowels.include?(char) }
   nil
+end
+
+def reverberate(sentence)
+  vowels = "aeiou"
+  
+  sentence.split.map do |word|
+    next word if word.length < 3
+    
+    if vowels.include?(word.chars.last)
+      word + word.downcase
+    else
+      last_vow = get_last_vowel_idx(word)
+      word + word[last_vow..-1]
+    end
+
+  end
+  .join(" ")
+end
+
+def get_last_vowel_idx(word)
+  vowels = "aeiou"
+  last_vow = nil
+  word.chars.each.with_index { |char, idx| last_vow = idx if vowels.include?(char) }
+  last_vow
 end
