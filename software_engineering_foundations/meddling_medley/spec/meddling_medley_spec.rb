@@ -139,4 +139,34 @@ context "Phase 2: More difficult, maybe?" do
       expect(conjunct_select([4, 8, -2, 11, 7, -3, 13], is_positive, is_odd, less_than_ten)).to eq([7])
     end
   end
+
+  describe "convert_pig_latin" do
+    it "accepts a sentence as an argument" do
+      expect { convert_pig_latin("test sentence") }.to_not raise_error
+    end
+
+    context "the method should translate the sentence according to the following rules:" do
+      it "words that are shorter than 3 characters are unchanged" do
+        expect(convert_pig_latin("yo")).to eq("yo")
+      end
+
+      context "words that are 3 characters or longer are translated according to the following rules:" do
+        it "if the word begins with a vowel, simply add 'yay' to the end of the word" do
+          expect(convert_pig_latin("eat")).to eq("eatyay")
+        end
+
+        it "if the word begins with a non-vowel, move all letters that come before the word's first vowel to the end of the word and add 'ay'" do
+          expect(convert_pig_latin("trash")).to eq("ashtray")
+        end
+      end
+      
+      it "if words are capitalized in the original sentence, they should remain capitalized in the translated sentence" do
+        expect(convert_pig_latin('We like to eat bananas')).to eq("We ikelay to eatyay ananasbay")
+        expect(convert_pig_latin('I cannot find the trash')).to eq("I annotcay indfay ethay ashtray")
+        expect(convert_pig_latin('What an interesting problem')).to eq("Atwhay an interestingyay oblempray")
+        expect(convert_pig_latin('Her family flew to France')).to eq("Erhay amilyfay ewflay to Ancefray")
+        expect(convert_pig_latin('Our family flew to France')).to eq("Ouryay amilyfay ewflay to Ancefray")
+      end
+    end
+  end
 end 
