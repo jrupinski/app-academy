@@ -61,3 +61,35 @@ end
 def conjunct_select(array, *procs)
   array.select { |ele| procs.all? { |proc| proc.call(ele) == true } }
 end
+
+def convert_pig_latin(string)
+  vowels = "aeiou"
+  converted = ""
+
+  string.split(" ").each do |word|
+    is_capitalized = (word == word.capitalize)
+    
+    if word.length < 3
+      converted += word
+    elsif vowels.include?(word.chars.first.downcase)
+      converted += (word + "yay")
+    else
+      first_vow = get_first_vowel_idx(word)
+      word_translated = word[first_vow..-1] + word[0...first_vow] + "ay"
+      word_translated.capitalize! if is_capitalized
+      
+      converted += word_translated
+    end
+
+    converted += " "
+  end
+
+  # remove trailing whitespace
+  converted.rstrip
+end
+
+def get_first_vowel_idx(word)
+  vowels = "aeiou"
+  word.each_char.with_index { |char, idx| return idx if vowels.include?(char) }
+  nil
+end
