@@ -96,7 +96,7 @@ end
 
 def reverberate(sentence)
   vowels = "aeiou"
-  
+
   sentence.split.map do |word|
     next word if word.length < 3
     
@@ -116,4 +116,10 @@ def get_last_vowel_idx(word)
   last_vow = nil
   word.chars.each.with_index { |char, idx| last_vow = idx if vowels.include?(char) }
   last_vow
+end
+
+def disjunct_select(array, *procs)
+  array.select do |ele|
+    procs.any? { |proc| proc.call(ele) == true }
+  end
 end
