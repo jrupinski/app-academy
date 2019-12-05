@@ -123,3 +123,20 @@ def disjunct_select(array, *procs)
     procs.any? { |proc| proc.call(ele) == true }
   end
 end
+
+def alternating_vowel(sentence)
+  sentence
+    .split
+    .map.with_index do |word, word_idx|
+      if get_first_vowel_idx(word).nil?
+        word
+      elsif word_idx.even?
+        word.slice!(get_first_vowel_idx(word))
+        word
+      else
+        word.slice!(get_last_vowel_idx(word))
+        word
+      end
+    end
+    .join(" ")
+end
