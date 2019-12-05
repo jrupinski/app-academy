@@ -169,4 +169,33 @@ context "Phase 2: More difficult, maybe?" do
       end
     end
   end
-end 
+
+  describe "reverberate" do
+    it "accepts a sentence as an argument" do
+      expect { reverberate("test") }.to_not raise_error
+    end
+    
+    describe "translate the sentence according to the following rules:" do
+      it "words that are shorter than 3 characters are unchanged" do
+        expect(reverberate("yo")).to eq("yo")
+      end
+
+      context "words that are 3 characters or longer are translated according to the following rules:" do
+        it "if the word ends with a vowel, simply repeat the word twice" do
+          expect(reverberate("like")).to eq("likelike")
+        end
+
+        it "if the word ends with a non-vowel, repeat all letters that come after the word's last vowel, including the last vowel itself" do
+          expect(reverberate("trash")).to eq("trashash")
+        end
+      end
+
+      it "translates whole sentences based on those rules" do
+        expect(reverberate('We like to go running fast')).to eq("We likelike to go runninging fastast")
+        expect(reverberate('He cannot find the trash')).to eq("He cannotot findind thethe trashash")
+        expect(reverberate('Pasta is my favorite dish')).to eq("Pastapasta is my favoritefavorite dishish")
+        expect(reverberate('Her family flew to France')).to eq("Herer familyily flewew to Francefrance")
+      end
+    end
+  end
+end
