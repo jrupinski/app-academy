@@ -225,4 +225,21 @@ context "Phase 2: More difficult, maybe?" do
       )).to eq(["ace", "dog", "apple", "teeming", "boot"])
     end
   end
+
+  describe "alternating_vowel" do
+    it "accepts a sentence as an argument" do
+      expect { alternating_vowel("ananas") }.to_not raise_error
+    end
+    
+    it "words that contain no vowels should remain unchanged" do
+      expect(alternating_vowel('crypt myths brr')).to eq("crypt myths brr")
+    end
+    
+    it "return a new sentence where the words alternate between having their first or last vowel removed" do
+      expect(alternating_vowel('panthers are great animals')).to eq("pnthers ar grat animls")
+      expect(alternating_vowel('running panthers are epic')).to eq("rnning panthrs re epc")
+      expect(alternating_vowel('code properly please')).to eq("cde proprly plase")
+      expect(alternating_vowel('my forecast predicts rain today')).to eq("my forecst prdicts ran tday")
+    end
+  end
 end
