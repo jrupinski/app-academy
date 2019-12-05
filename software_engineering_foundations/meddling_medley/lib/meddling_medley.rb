@@ -156,17 +156,12 @@ def silly_talk(sentence)
         word += word[-1]
         (word.capitalize if is_capitalized) || word
       else
-        char_idx = 0
-        while char_idx <= word.length - 1
-          if vowels.include?(word[char_idx])
-            word[char_idx] += ("b" + word[char_idx])
-            char_idx += 3
-          else
-            char_idx += 1
-          end
+        new_word = ""
+        word.each_char do |char|
+          new_word += char
+          new_word += ("b" + char) if vowels.include?(char)
         end 
-            
-        (word.capitalize if is_capitalized) || word
+        (new_word.capitalize if is_capitalized) || new_word
       end
     end
     .join(" ")
