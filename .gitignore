@@ -2,3 +2,4 @@
 !completed_assignments/*.zip
 .byebug_history
 .yardoc
+Gemfile.lock
