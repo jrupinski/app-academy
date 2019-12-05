@@ -242,4 +242,27 @@ context "Phase 2: More difficult, maybe?" do
       expect(alternating_vowel('my forecast predicts rain today')).to eq("my forecst prdicts ran tday")
     end
   end
+
+  describe "silly_talk" do
+    it "accepts a sentence as an argument" do
+      expect { silly_talk("testing") }.to_not raise_error
+    end
+
+    context "translates each word of the sentence according to the following rules:" do
+      it "if the word ends with a vowel, simply repeat that vowel at the end of the word" do
+        expect(silly_talk("code")).to eq("codee")
+      end
+
+      it "if the word ends with a non-vowel, every vowel of the word should be followed by 'b' and that same vowel" do
+        expect(silly_talk("siren")).to eq("sibireben")
+      end
+
+      it "if words are capitalized in the original sentence, they should remain capitalized in the translated sentence" do
+        expect(silly_talk('He flew to Italy')).to eq("Hee flebew too Ibitabaly")
+        expect(silly_talk('Kids like cats and dogs')).to eq("Kibids likee cabats aband dobogs")
+        expect(silly_talk('Stop that scooter')).to eq("Stobop thabat scobooboteber")
+        expect(silly_talk('They can code')).to eq("Thebey caban codee")
+      end
+    end
+  end
 end
