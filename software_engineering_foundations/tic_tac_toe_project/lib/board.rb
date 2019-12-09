@@ -1,3 +1,4 @@
+require "byebug"
 #
 # Ver. 1: 3 x 3 grid
 # Board class, creates a game board for Tic Tac Toe.
@@ -32,37 +33,36 @@ class Board
     self.grid[row][col] == "_"
   end
 
-  def full?
-    self.grid.flatten.none? { |ele| ele == "_" }
+  def empty_positions?
+    self.grid.flatten.any? { |ele| ele == "_" }
   end
-  
+
   def valid?(row, col)
     (row >= 0 && row < @grid.length) && ( col >= 0 && col < @grid.transpose.length)
   end
 
-  def game_over?
-    win_col? || win_row? || win_diagonal? || full?
-  end
-
-  def win_col?
+  def win_col?(mark)
+    debugger
     self.grid.length.times do |col|
       curr_col = self.grid.transpose[col]
-      return true if curr_col.uniq.count == 1 && !curr_col.uniq.include?("_")
+      return true if curr_col.uniq.include?(":#{mark}")
     end
     
     false
   end
 
-  def win_row?
+  def win_row?(mark)
+    debugger
     self.grid.length.times do |row|
       curr_row = self.grid.transpose[row]
-      return true if curr_row.uniq.count == 1 && !curr_row.uniq.include?("_")
+      return true if curr_row.uniq.include?(":#{mark}")
     end
     
     false
   end
 
-  def win_diagonal?
+  def win_diagonal?(mark)
+    debugger
     diagonal_left = []
     diagonal_right = []
 
@@ -73,7 +73,7 @@ class Board
       diagonal_right << self.grid[row][right_diag_col]
     end
 
-    (diagonal_left.uniq.count == 1 && !diagonal_left.uniq.include?("_")) || (diagonal_right.uniq.count == 1 && !diagonal_right.uniq.include?("_"))
+    diagonal_left.uniq.include?(":#{mark}") || diagonal_right.uniq.include?(":#{mark}")
   end
 
   def print_grid
