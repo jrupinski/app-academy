@@ -18,8 +18,12 @@ class Board
   def place_mark(row, col, mark)
     if valid?(row, col) && empty?(row, col)
       @grid[row][col] = mark
-      true
+      mark
+    elsif !valid?(row, col)
+      raise "invalid coordinates"
+      false
     else
+      raise "place already marked"
       false
     end
   end
