@@ -41,7 +41,9 @@ describe Board do
     end
   end
 
-  describe "game_over" do
+  context "win conditions" do
+    test_board = Board.new
+
     let (:win_vert) { [
       [":X", "_", "_"], 
       [":X", "_", "_"], 
@@ -66,28 +68,45 @@ describe Board do
       [":X", "_", "_"]
     ] }
 
+    describe "win_col?" do
+      it "returns true if board has a column filled with given mark" do
+        test_board.instance_variable_set(:@grid, win_vert)
+        expect(test_board.win_col?(:X)).to eq(true)
+      end
+    end
+
+    describe "win_row?" do
+      it "returns true if board has a row filled with given mark" do
+        test_board.instance_variable_set(:@grid, win_hor)
+        expect(test_board.win_row?(:X)).to eq(true)
+      end
+    end
+
+    describe "win_diagonal?" do
+      it "returns true if board has a diagonal filled with given mark" do
+        test_board.instance_variable_set(:@grid, win_diagonal)
+        expect(test_board.win_diagonal?(:X)).to eq(true)
+        
+        test_board.instance_variable_set(:@grid, win_diagonal_right)
+        expect(test_board.win_diagonal?(:X)).to eq(true)
+      end
+    end
+  end
+
+  describe "empty_positions?" do
+    test_board = Board.new
+
     let (:full) { [
       [":X", ":X", ":Y"], 
       [":Y", ":Y", ":X"], 
       [":X", ":Y", ":X"]
     ] }
 
-    it "returns true if board is full or one of players has won" do
-      test_board = Board.new
-      
-      test_board.instance_variable_set(:@grid, win_hor)
-      expect(test_board.game_over?).to eq(true)
-      
-      test_board.instance_variable_set(:@grid, win_vert)
-      expect(test_board.game_over?).to eq(true)
-      
-      test_board.instance_variable_set(:@grid, win_diagonal)
-      expect(test_board.game_over?).to eq(true)
-      
-      test_board.instance_variable_set(:@grid, win_diagonal_right)
-      expect(test_board.game_over?).to eq(true)
+    it "returns true if there are any empty positions left to mark" do
+      expect(test_board.empty_positions?).to eq(true)
 
-      expect(Board.new.game_over?).to eq(false)
+      test_board.instance_variable_set(:@grid, full)
+      expect(test_board.empty_positions?).to eq(false)
     end
   end
 end
