@@ -32,15 +32,19 @@ class Board
     self.grid[row][col] == "_"
   end
 
+  def full?
+    self.grid.flatten.none? { |ele| ele == "_" }
+  end
+  
   def valid?(row, col)
     (row >= 0 && row < @grid.length) && ( col >= 0 && col < @grid.transpose.length)
   end
 
   def game_over?
-    vertical_streak? || horizontal_streak? || diagonal_streak? || self.grid.flatten.none? { |ele| ele == "_" }
+    win_col? || win_row? || win_diagonal? || full?
   end
 
-  def vertical_streak?
+  def win_col?
     self.grid.length.times do |col|
       curr_col = self.grid.transpose[col]
       return true if curr_col.uniq.count == 1 && !curr_col.uniq.include?("_")
@@ -49,7 +53,7 @@ class Board
     false
   end
 
-  def horizontal_streak?
+  def win_row?
     self.grid.length.times do |row|
       curr_row = self.grid.transpose[row]
       return true if curr_row.uniq.count == 1 && !curr_row.uniq.include?("_")
@@ -58,7 +62,7 @@ class Board
     false
   end
 
-  def diagonal_streak?
+  def win_diagonal?
     diagonal_left = []
     diagonal_right = []
 
