@@ -29,20 +29,28 @@ class Board
   end
 
   def valid?(row, col)
-    row < @grid.length && col < @grid.transpose.length
+    (row >= 0 && row < @grid.length) && ( col >= 0 && col < @grid.transpose.length)
   end
 
   def game_over?
-    vertical_streak? || horizontal_streak? || diagonal_streak?
+    vertical_streak? || horizontal_streak? || diagonal_streak? || self.grid.flatten.none? { |ele| ele == "_" }
   end
 
   def vertical_streak?
-    self.grid.length.times { |col| return true if self.grid.transpose[col].uniq.count == 1 }
+    self.grid.length.times do |col|
+      curr_col = self.grid.transpose[col]
+      return true if curr_col.uniq.count == 1 && !curr_col.uniq.include?("_")
+    end
+    
     false
   end
 
   def horizontal_streak?
-    self.grid.length.times { |row| return true if self.grid[row].uniq.count == 1}
+    self.grid.length.times do |row|
+      curr_row = self.grid.transpose[row]
+      return true if curr_row.uniq.count == 1 && !curr_row.uniq.include?("_")
+    end
+    
     false
   end
 
@@ -50,17 +58,18 @@ class Board
     diagonal_left = []
     diagonal_right = []
 
-    self.grid.each_index do |ele, row|
+    (0...self.grid.length).each do |row|
       col = row
-      right_diag_col = row - col
+      right_diag_col = (self.grid.length - 1) - row
       diagonal_left << self.grid[row][col]
       diagonal_right << self.grid[row][right_diag_col]
     end
 
-    diagonal_left.uniq.count == 1 || diagonal_right.uniq.count == 1
+    (diagonal_left.uniq.count == 1 && !diagonal_left.uniq.include?("_")) || (diagonal_right.uniq.count == 1 && !diagonal_right.uniq.include?("_"))
   end
 
   def print_grid
     self.grid.length.times { |row| p self.grid[row] }
+    nil
   end
 end
