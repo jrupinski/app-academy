@@ -16,8 +16,8 @@ class HumanPlayer
     
     valid_format?(position)
 
-    row = position.split(" ").first
-    col = position.split(" ").last
+    row = position.split(" ").first.to_i
+    col = position.split(" ").last.to_i
     [row, col]
   end
 
