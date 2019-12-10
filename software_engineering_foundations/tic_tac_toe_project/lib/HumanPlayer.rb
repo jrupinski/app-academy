@@ -1,3 +1,4 @@
+require "byebug"
 #
 # Player class for Tic Tac Toe game
 #
@@ -7,30 +8,21 @@ class HumanPlayer
   end
 
   def get_position
-    p "Enter x coordinate: "
-    x = gets.chomp
-    p "Enter y coordinate: "
-    y = gets.chomp
+    p "Enter row and column (separated with space): "
+    position = gets.chomp
     
-    until x.numbers_only? && y.numbers_only?
-      raise "only numbers please" if !x.numbers_only || !y.numbers_only
-      p "Enter x coordinate: "
-      x = gets.chomp
-      p "Enter y coordinate: "
-      y = gets.chomp
-    end
+    valid_format?(position)
 
-    [x.to_i, y.to_i]
+    row = position.split(" ").first
+    col = position.split(" ").last
+    [row, col]
   end
-end
 
-
-#
-# Monkey patch for checking if a string is all numbers
-#
-class String
-  def numbers_only?
+  def valid_format?(position)
     numbers = "0123456789"
-    self.each_char.all? { |char| numbers.include?(char) }
+    raise "too many spaces" if !position.chars.one? { |c| c == " " }
+    raise "wrong number of arguments" if position.split(" ").count != 2 
+    raise "position can have numbers only" if !position.split(" ").all? { |c| numbers.include?(c) } 
+    true
   end
 end
