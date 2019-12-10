@@ -3,11 +3,14 @@ require "byebug"
 # Player class for Tic Tac Toe game
 #
 class HumanPlayer
+  attr_reader :mark_value
+
   def initialize(mark_value)
     @mark_value = mark_value
   end
 
   def get_position
+    p "current mark: #{self.mark_value}"
     p "Enter row and column (separated with space): "
     position = gets.chomp
     
