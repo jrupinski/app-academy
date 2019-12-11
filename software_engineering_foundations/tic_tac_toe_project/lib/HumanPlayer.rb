@@ -11,10 +11,15 @@ class HumanPlayer
 
   def get_position
     p "current mark: #{self.mark_value}"
-    p "Enter row and column (separated with space): "
+    print "Enter row and column (separated with space): "
     position = gets.chomp
     
-    valid_format?(position)
+    begin
+      valid_format?(position)
+    rescue => error
+      puts "#{error.message}"
+      return nil
+    end
 
     row = position.split(" ").first.to_i
     col = position.split(" ").last.to_i
@@ -23,8 +28,8 @@ class HumanPlayer
 
   def valid_format?(position)
     numbers = "0123456789"
-    raise "too many spaces" if !position.chars.one? { |c| c == " " }
     raise "wrong number of arguments" if position.split(" ").count != 2 
+    raise "too many spaces" if !position.chars.one? { |c| c == " " }
     raise "position can have numbers only" if !position.split(" ").all? { |c| numbers.include?(c) } 
     true
   end
