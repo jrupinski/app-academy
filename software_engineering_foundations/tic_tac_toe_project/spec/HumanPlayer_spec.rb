@@ -40,5 +40,12 @@ describe "HumanPlayer" do
       allow(player).to receive(:gets).and_return("a b")
       expect{ player.get_position }.to raise_error(HumanPlayer::PositionError)
     end
+
+    it "returns an array of 2 numbers" do
+      allow(player).to receive(:gets).and_return("0 1")
+      result = player.get_position
+      expect(result.is_a?(Array)).to eq(true)
+      expect(result.all? { |ele| ele.is_a?(Integer) }).to eq(true)
+    end
   end
 end
