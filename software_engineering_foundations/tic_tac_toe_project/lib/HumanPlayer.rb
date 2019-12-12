@@ -5,6 +5,15 @@ require "byebug"
 class HumanPlayer
   attr_reader :mark_value
 
+  # Exception classes
+  class WrongNumOfArgumentsError < StandardError; end
+  class TooManySpacesError < StandardError; end
+  class PositionError < StandardError
+    def message
+      "position can have numbers only"
+    end
+  end
+
   def initialize(mark_value)
     @mark_value = mark_value
   end
@@ -28,9 +37,9 @@ class HumanPlayer
 
   def valid_format?(position)
     numbers = "0123456789"
-    raise "wrong number of arguments" if position.split(" ").count != 2 
-    raise "too many spaces" if !position.chars.one? { |c| c == " " }
-    raise "position can have numbers only" if !position.split(" ").all? { |c| numbers.include?(c) } 
+    raise  WrongNumOfArgumentsError if position.split(" ").count != 2 
+    raise TooManySpacesError if !position.chars.one? { |c| c == " " }
+    raise PositionError if !position.split(" ").all? { |c| numbers.include?(c) } 
     true
   end
 end
