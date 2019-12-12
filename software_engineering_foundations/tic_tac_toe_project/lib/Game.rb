@@ -7,41 +7,45 @@ require_relative "./HumanPlayer.rb"
 
 class Game
   def initialize(player_1_mark, player_2_mark)
-    @player_1_mark = HumanPlayer.new(player_1_mark)
-    @player_2_mark = HumanPlayer.new(player_2_mark)
-    @players = [@player_1_mark, @player_2_mark]
     @board = Board.new
+    @player_1 = HumanPlayer.new(player_1_mark)
+    @player_2 = HumanPlayer.new(player_2_mark)
+    @current_player = @player_1
+  end
+
+  def switch_turn
+    @current_player == @player_1 ? @current_player = @player_2 : @current_player = @player_1
   end
 
   def play
     while @board.empty_positions?
-
-      @players.each do |player|
-        @board.place_mark(*get_position(player), player.mark_value)
-        @board.print_grid
-        return "GAME OVER" if win?(player) || tie?
-      end
-
+      @board.print_grid
+      place_player_mark(@current_player)
+      return "VICTORY! #{@current_player.mark_value} WON!" if win?(@current_player)
+      switch_turn
     end
+
+    puts "TIE"
   end
 
-  def tie?
-    if !@board.empty_positions?
-      puts "TIE"
-      return true
+  def place_player_mark(player)
+    # keep looping until position input is in board's borders
+    loop do
+      begin
+        position = get_position(@current_player)
+        mark = @current_player.mark_value
+        @board.place_mark(*position, mark)
+      rescue => exception
+        puts exception.message
+      else
+        return
+      end
     end
-
-    false
   end
 
   def win?(player)
     mark = player.mark_value
-    if @board.win_col?(mark) || @board.win_row?(mark) || @board.win_diagonal?(mark)
-      puts "#{mark} WON!"
-      return true 
-    end
-
-    false
+    @board.win_col?(mark) || @board.win_row?(mark) || @board.win_diagonal?(mark)
   end
 
   def get_position(player)
