@@ -1,7 +1,7 @@
 # Test suite for Tic Tac Toe ver. 1
-require "HumanPlayer.rb"
+require "tic_tac_toe_v1/HumanPlayer.rb"
 
-describe "HumanPlayer" do
+describe "HumanPlayer v1" do
   # silence terminal output on rspec run
   before do
     allow($stdout).to receive(:write)
@@ -38,7 +38,7 @@ describe "HumanPlayer" do
       expect{ player.get_position }.to raise_error(HumanPlayer::WrongNumOfArgumentsError)
 
       allow(player).to receive(:gets).and_return("a b")
-      expect{ player.get_position }.to raise_error(HumanPlayer::PositionError)
+      expect{ player.get_position }.to raise_error(HumanPlayer::NotNumberError)
     end
 
     it "returns an array of 2 numbers" do

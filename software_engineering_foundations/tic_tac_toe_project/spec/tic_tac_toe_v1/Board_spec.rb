@@ -1,7 +1,7 @@
 # Test suite for Tic Tac Toe ver. 1
-require "Board.rb"
+require "tic_tac_toe_v1/Board.rb"
 
-describe Board do  
+describe "Board v1" do  
   describe "#initialize" do
     let (:board_template) { [
       ["_", "_", "_"], 
