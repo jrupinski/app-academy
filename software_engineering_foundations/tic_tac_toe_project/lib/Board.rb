@@ -30,10 +30,8 @@ class Board
       mark
     elsif !valid?(row, col)
       raise InvalidCoordinatesError
-      false
     else
       raise AlreadyMarkedError
-      false
     end
   end
 
@@ -50,10 +48,7 @@ class Board
   end
 
   def win_col?(mark)
-    if mark == "_"
-      raise RestrictedSymbolError
-      return false
-    end
+    raise RestrictedSymbolError if mark == "_"
 
     self.grid.length.times do |col|
       curr_col = self.grid.transpose[col]
@@ -64,10 +59,7 @@ class Board
   end
 
   def win_row?(mark)
-    if mark == "_"
-      raise "symbol \"_\" is restricted"
-      return false
-    end
+    raise RestrictedSymbolError if mark == "_"
 
     self.grid.length.times do |row|
       curr_row = self.grid.transpose[row]
@@ -78,10 +70,7 @@ class Board
   end
 
   def win_diagonal?(mark)
-    if mark == "_"
-      raise "symbol \"_\" is restricted"
-      return false
-    end
+    raise RestrictedSymbolError if mark == "_"
 
     diagonal_left = []
     diagonal_right = []
@@ -98,6 +87,5 @@ class Board
 
   def print_grid
     self.grid.length.times { |row| p self.grid[row] }
-    nil
   end
 end
