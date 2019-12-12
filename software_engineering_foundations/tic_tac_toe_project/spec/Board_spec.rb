@@ -1,5 +1,5 @@
 # Test suite for Tic Tac Toe ver. 1
-require "board.rb"
+require "Board.rb"
 
 describe Board do  
   describe "#initialize" do
@@ -35,9 +35,9 @@ describe Board do
       expect(test.grid[0][0]).to eq("_")
       expect(test.grid[0][1]).to eq(:O)
       expect(test.grid[0][2]).to eq(:X)
-      expect { test.place_mark(0, 1, :Y) }.to raise_error(RuntimeError)
-      expect { test.place_mark(3, 5, :Y) }.to raise_error(RuntimeError)
-      expect { test.place_mark(-1, -1, :Y) }.to raise_error(RuntimeError)
+      expect { test.place_mark(0, 1, :Y) }.to raise_error(AlreadyMarkedError)
+      expect { test.place_mark(3, 5, :Y) }.to raise_error(InvalidCoordinatesError)
+      expect { test.place_mark(-1, -1, :Y) }.to raise_error(InvalidCoordinatesError)
     end
   end
 

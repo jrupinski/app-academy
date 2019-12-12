@@ -1,4 +1,3 @@
-require "byebug"
 #
 # Ver. 1: 3 x 3 grid
 # Board class, creates a game board for Tic Tac Toe.
@@ -12,6 +11,15 @@ require "byebug"
 class Board
   attr_reader :grid
 
+  class InvalidCoordinatesError < StandardError; end
+  class AlreadyMarkedError < StandardError; end
+  class RestrictedSymbolError < StandardError
+    def message
+      "\"_\" symbol is restricted, please use another"
+    end
+  end
+
+
   def initialize
     @grid = Array.new(3) { Array.new(3, "_") }
   end
@@ -21,10 +29,10 @@ class Board
       @grid[row][col] = mark
       mark
     elsif !valid?(row, col)
-      raise "invalid coordinates"
+      raise InvalidCoordinatesError
       false
     else
-      raise "place already marked"
+      raise AlreadyMarkedError
       false
     end
   end
@@ -43,13 +51,13 @@ class Board
 
   def win_col?(mark)
     if mark == "_"
-      raise "symbol \"_\" is restricted"
+      raise RestrictedSymbolError
       return false
     end
 
     self.grid.length.times do |col|
       curr_col = self.grid.transpose[col]
-      return true if curr_col.uniq.include?(mark) && curr_col.uniq.count == 1
+      return true if curr_col.uniq.include?(":#{mark}") && curr_col.uniq.count == 1
     end
     
     false
@@ -63,7 +71,7 @@ class Board
 
     self.grid.length.times do |row|
       curr_row = self.grid.transpose[row]
-      return true if curr_row.uniq.include?(mark) && curr_row.uniq.count == 1
+      return true if curr_row.uniq.include?(":#{mark}") && curr_row.uniq.count == 1
     end
     
     false
@@ -85,7 +93,7 @@ class Board
       diagonal_right << self.grid[row][right_diag_col]
     end
 
-    (diagonal_left.uniq.include?(mark) && diagonal_left.uniq.count == 1) || (diagonal_right.uniq.include?(mark) && diagonal_right.uniq.count == 1)
+    (diagonal_left.uniq.include?(":#{mark}") && diagonal_left.uniq.count == 1) || (diagonal_right.uniq.include?(":#{mark}") && diagonal_right.uniq.count == 1)
   end
 
   def print_grid
