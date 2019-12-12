@@ -27,7 +27,6 @@ class Board
   def place_mark(row, col, mark)
     if valid?(row, col) && empty?(row, col)
       @grid[row][col] = mark
-      mark
     elsif !valid?(row, col)
       raise InvalidCoordinatesError
     else
