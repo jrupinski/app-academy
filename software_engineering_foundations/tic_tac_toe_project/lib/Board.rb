@@ -52,7 +52,7 @@ class Board
 
     self.grid.length.times do |col|
       curr_col = self.grid.transpose[col]
-      return true if curr_col.uniq.include?(":#{mark}") && curr_col.uniq.count == 1
+      return true if curr_col.uniq.include?(mark) && curr_col.uniq.count == 1
     end
     
     false
@@ -63,7 +63,7 @@ class Board
 
     self.grid.length.times do |row|
       curr_row = self.grid.transpose[row]
-      return true if curr_row.uniq.include?(":#{mark}") && curr_row.uniq.count == 1
+      return true if curr_row.uniq.include?(mark) && curr_row.uniq.count == 1
     end
     
     false
@@ -82,7 +82,7 @@ class Board
       diagonal_right << self.grid[row][right_diag_col]
     end
 
-    (diagonal_left.uniq.include?(":#{mark}") && diagonal_left.uniq.count == 1) || (diagonal_right.uniq.include?(":#{mark}") && diagonal_right.uniq.count == 1)
+    (diagonal_left.uniq.include?(mark) && diagonal_left.uniq.count == 1) || (diagonal_right.uniq.include?(mark) && diagonal_right.uniq.count == 1)
   end
 
   def print_grid
