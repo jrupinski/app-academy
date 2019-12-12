@@ -8,7 +8,7 @@ class HumanPlayer
   # Exception classes
   class WrongNumOfArgumentsError < StandardError; end
   class TooManySpacesError < StandardError; end
-  class PositionError < StandardError
+  class NotNumberError < StandardError
     def message
       "position can have numbers only"
     end
@@ -31,10 +31,9 @@ class HumanPlayer
   end
 
   def valid_format?(position)
-    numbers = "0123456789"
     raise WrongNumOfArgumentsError if position.split(" ").count != 2 
     raise TooManySpacesError if !position.chars.select { |c| c == " " }.one?
-    raise PositionError if !position.split(" ").all? { |c| numbers.include?(c) } 
+    raise NotNumberError if !position.split(" ").all? { |c| (c =~ /[[:digit:]]/).is_a?(Numeric) } 
     true
   end
 
