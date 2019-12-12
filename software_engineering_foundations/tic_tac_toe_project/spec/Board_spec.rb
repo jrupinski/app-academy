@@ -45,27 +45,27 @@ describe Board do
     test_board = Board.new
 
     let (:win_vert) { [
-      [":X", "_", "_"], 
-      [":X", "_", "_"], 
-      [":X", "_", ":_"]
+      [:X, "_", "_"], 
+      [:X, "_", "_"], 
+      [:X, "_", ":_"]
     ] }
 
     let (:win_hor) { [
-      [":X", "_", "_"], 
-      [":X", "_", "_"], 
-      [":X", "_", ":_"]
+      [:X, "_", "_"], 
+      [:X, "_", "_"], 
+      [:X, "_", ":_"]
     ] }
 
     let (:win_diagonal) { [
-      [":X", "_", "_"], 
-      ["_", ":X", "_"], 
-      ["_", "_", ":X"]
+      [:X, "_", "_"], 
+      ["_", :X, "_"], 
+      ["_", "_", :X]
     ] }
 
     let (:win_diagonal_right) { [
-      ["_", "_", ":X"], 
-      ["_", ":X", "_"], 
-      [":X", "_", "_"]
+      ["_", "_", :X], 
+      ["_", :X, "_"], 
+      [:X, "_", "_"]
     ] }
 
     describe "win_col?" do
@@ -97,9 +97,9 @@ describe Board do
     test_board = Board.new
 
     let (:full) { [
-      [":X", ":X", ":Y"], 
-      [":Y", ":Y", ":X"], 
-      [":X", ":Y", ":X"]
+      [:X, :X, :Y], 
+      [:Y, :Y, :X], 
+      [:X, :Y, :X]
     ] }
 
     it "returns true if there are any empty positions left to mark" do
