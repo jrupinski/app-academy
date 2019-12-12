@@ -1,5 +1,5 @@
 #
-# Tic Tac Toe game, ver. 1
+# Tic Tac Toe game, ver. 2
 # NxN grid game with at least 2 human players
 #
 require_relative "./Board.rb"
@@ -8,18 +8,20 @@ require_relative "./HumanPlayer.rb"
 class Game
   class RestrictedSymbolError < StandardError
     def message
-      "\"_\" symbol is restricted, please use another"
+      "Symbols only. \"_\" symbol is restricted, please use another"
     end
   end
 
   def initialize(square_grid_size, *players_mark)
     raise "2+ players required" if players_mark.count < 2
-    raise RestrictedSymbolError if players_mark.any? { |mark| mark == "_" }
+    raise RestrictedSymbolError if players_mark.any? { |mark| mark == "_" || !mark.is_a?(Symbol) }
+    raise "Players can't use the same symbol" if players_mark.count != players_mark.flatten.uniq.count
     raise "3x3 grid minimum" if square_grid_size < 3
-
+    
     @board = Board.new(square_grid_size)
     @players = []
     players_mark.each { |mark| @players << HumanPlayer.new(mark) }
+
     @current_player_idx = 0
     @current_player = @players[@current_player_idx]
   end
