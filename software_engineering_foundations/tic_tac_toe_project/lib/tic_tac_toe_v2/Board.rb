@@ -13,12 +13,6 @@ class Board
 
   class InvalidCoordinatesError < StandardError; end
   class AlreadyMarkedError < StandardError; end
-  class RestrictedSymbolError < StandardError
-    def message
-      "\"_\" symbol is restricted, please use another"
-    end
-  end
-
 
   def initialize(n)
     @grid = Array.new(n) { Array.new(n, "_") }
@@ -47,8 +41,6 @@ class Board
   end
 
   def win_col?(mark)
-    raise RestrictedSymbolError if mark == "_"
-
     self.grid.length.times do |col|
       curr_col = self.grid.transpose[col]
       return true if curr_col.uniq.include?(mark) && curr_col.uniq.count == 1
@@ -58,8 +50,6 @@ class Board
   end
 
   def win_row?(mark)
-    raise RestrictedSymbolError if mark == "_"
-
     self.grid.length.times do |row|
       curr_row = self.grid.transpose[row]
       return true if curr_row.uniq.include?(mark) && curr_row.uniq.count == 1
@@ -69,8 +59,6 @@ class Board
   end
 
   def win_diagonal?(mark)
-    raise RestrictedSymbolError if mark == "_"
-
     diagonal_left = []
     diagonal_right = []
 

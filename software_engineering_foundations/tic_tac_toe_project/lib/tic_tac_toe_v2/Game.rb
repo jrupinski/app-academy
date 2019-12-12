@@ -6,8 +6,15 @@ require_relative "./Board.rb"
 require_relative "./HumanPlayer.rb"
 
 class Game
+  class RestrictedSymbolError < StandardError
+    def message
+      "\"_\" symbol is restricted, please use another"
+    end
+  end
+
   def initialize(square_grid_size, *players_mark)
     raise "2+ players required" if players_mark.count < 2
+    raise RestrictedSymbolError if players_mark.any? { |mark| mark == "_" }
     raise "3x3 grid minimum" if square_grid_size < 3
 
     @board = Board.new(square_grid_size)

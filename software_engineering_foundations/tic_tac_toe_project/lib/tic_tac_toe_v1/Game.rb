@@ -6,7 +6,15 @@ require_relative "./Board.rb"
 require_relative "./HumanPlayer.rb"
 
 class Game
+  class RestrictedSymbolError < StandardError
+    def message
+      "\"_\" symbol is restricted, please use another"
+    end
+  end
+
   def initialize(player_1_mark, player_2_mark)
+    raise RestrictedSymbolError if player_1_mark == "_" || player_2_mark == "_"
+    
     @board = Board.new
     @player_1 = HumanPlayer.new(player_1_mark)
     @player_2 = HumanPlayer.new(player_2_mark)
