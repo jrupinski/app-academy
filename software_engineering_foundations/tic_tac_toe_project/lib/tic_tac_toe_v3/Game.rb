@@ -13,19 +13,20 @@ class Game
     end
   end
 
-  def initialize(square_grid_size, *players_mark)
-    raise "2+ players required" if players_mark.count < 2
-    raise RestrictedSymbolError if players_mark.any? { |mark| mark == "_" || !mark.is_a?(Symbol) }
-    raise "Players can't use the same symbol" if players_mark.count != players_mark.flatten.uniq.count
-    raise "3x3 grid minimum" if square_grid_size < 3
+  def initialize(board_size, players_hash)
+    players = players_hash.values
+    marks = players_hash.keys
+    raise "2+ players required" if players.count < 2
+    raise RestrictedSymbolError if marks.any? { |mark| mark == "_" || !mark.is_a?(Symbol) }
+    raise "Players can't use the same symbol" if marks.count != marks.uniq.count
+    raise "3x3 grid minimum" if board_size < 3
     
-    @board = Board.new(square_grid_size)
+    @board = Board.new(board_size)
     @players = []
 
     # check if players are supposed to be AI or human 
-    players_mark.each do |mark|
-      print "Is #{mark} a Human player? Input \"yes\", else AI player will be assigned: "
-      gets.chomp == "yes" ? @players << HumanPlayer.new(mark) : @players << ComputerPlayer.new(mark)
+    players_hash.each do |mark, player_type|
+      player_type == "human" ? @players << HumanPlayer.new(mark) : @players << ComputerPlayer.new(mark)
     end
 
     @current_player_idx = 0
@@ -40,12 +41,20 @@ class Game
   def play
     while @board.empty_positions?
       @board.print_grid
+      puts
       place_player_mark(@current_player)
-      return "VICTORY! #{@current_player.mark_value} WON!" if win?(@current_player)
+
+      if win?(@current_player)
+        puts "VICTORY! #{@current_player.mark_value} WON!" 
+        return nil
+      end
+      
       switch_turn
     end
 
+    @board.print_grid
     puts "TIE"
+    nil
   end
 
   def place_player_mark(player)

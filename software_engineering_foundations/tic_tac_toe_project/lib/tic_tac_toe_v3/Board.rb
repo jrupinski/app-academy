@@ -74,6 +74,7 @@ class Board
 
   def print_grid
     self.grid.length.times { |row| p self.grid[row] }
+    nil
   end
 
   #
