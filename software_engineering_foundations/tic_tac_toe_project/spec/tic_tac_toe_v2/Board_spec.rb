@@ -10,14 +10,14 @@ describe "Board v2" do
     ] }
     
     it "generates a 3x3 game board" do
-        expect { Board.new }.to_not raise_error
-        expect(Board.new.grid).to eq(board_template)
+        expect { Board.new(3) }.to_not raise_error
+        expect(Board.new(3).grid).to eq(board_template)
     end
   end
 
   describe "valid?" do
     it "returns true if board position is within board bounds" do
-      board = Board.new
+      board = Board.new(3)
       expect(board.valid?(0, 0)).to eq(true)
       expect(board.valid?(1, 1)).to eq(true)
       expect(board.valid?(0, 2)).to eq(true)
@@ -28,7 +28,7 @@ describe "Board v2" do
 
   describe "place_mark" do
     it "allows to place player marks on board" do
-      test = Board.new
+      test = Board.new(3)
       expect { test.place_mark(0, 2, :X) }.to_not raise_error
       test.place_mark(0, 1, :O)
 
@@ -42,7 +42,7 @@ describe "Board v2" do
   end
 
   context "win conditions" do
-    test_board = Board.new
+    test_board = Board.new(3)
 
     let (:win_vert) { [
       [:X, "_", "_"], 
@@ -94,7 +94,7 @@ describe "Board v2" do
   end
 
   describe "empty_positions?" do
-    test_board = Board.new
+    test_board = Board.new(3)
 
     let (:full) { [
       [:X, :X, :Y], 
