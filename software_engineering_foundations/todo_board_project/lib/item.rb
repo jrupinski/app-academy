@@ -1,4 +1,6 @@
 class Item
+  attr_accessor :title, :description
+
   class InvalidDateError < StandardError
     def message
       "Invalid date. Correct format: YYYY-MM-DD"
