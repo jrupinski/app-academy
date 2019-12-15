@@ -1,5 +1,11 @@
 class Item
   attr_accessor :title, :description
+  attr_reader :deadline
+
+  def deadline=(new_deadline)
+    raise InvalidDateError if !Item.valid_date?(new_deadline)
+    @deadline = new_deadline
+  end
 
   class InvalidDateError < StandardError
     def message

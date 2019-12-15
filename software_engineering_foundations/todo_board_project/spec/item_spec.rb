@@ -27,8 +27,33 @@ describe "Item" do
     end
 
     it "allows to modify the title using =" do
-      expect { test_item.title = "test_title" }.to_not raise_error
-      expect(test_item.title).to eq("test_title")
+      expect { test_item.title = "changed_title" }.to_not raise_error
+      expect(test_item.title).to eq("changed_title")
+    end
+  end
+  
+  describe "#deadline" do
+    test_item = Item.new("test_item", "2007-03-22", "description")
+    it "returns deadline from Item object" do
+      expect(test_item.deadline).to eq("2007-03-22")
+    end
+
+    it "allows to modify the deadline using =" do
+      expect { test_item.deadline = "1999.05.05" }.to raise_error Item::InvalidDateError
+      expect { test_item.deadline = "1999-05-05" }.to_not raise_error
+      expect(test_item.deadline).to eq("1999-05-05")
+    end
+  end
+
+  describe "#description" do
+    test_item = Item.new("test_item", "2007-03-22", "description")
+    it "returns description from Item object" do
+      expect(test_item.description).to eq("description")
+    end
+
+    it "allows to modify the description using =" do
+      expect { test_item.title = "changed description" }.to_not raise_error
+      expect(test_item.title).to eq("changed description")
     end
   end
 end
