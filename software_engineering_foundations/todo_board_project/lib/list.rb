@@ -1,5 +1,4 @@
 require_relative "./item"
-
 class List
   attr_accessor :label
 
@@ -43,5 +42,18 @@ class List
 
   def priority
     @items.first
+  end
+
+  def print
+    puts "------------------------------------------"
+    puts "                #{self.label}"
+    puts "------------------------------------------"
+    puts "Index | Item                 | Deadline"
+    puts "------------------------------------------"
+    @items.each_with_index do |item, idx|
+      puts "#{idx}     | #{item.title}               | #{item.deadline}"
+    end
+    puts "------------------------------------------"    
+    nil
   end
 end
