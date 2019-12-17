@@ -48,10 +48,10 @@ class List
     puts "------------------------------------------"
     puts "                #{self.label}"
     puts "------------------------------------------"
-    puts "Index | Item                 | Deadline"
+    puts "Index | Item            | Deadline"
     puts "------------------------------------------"
     @items.each_with_index do |item, idx|
-      puts "#{idx}     | #{item.title}               | #{item.deadline}"
+      puts "#{idx.to_s.ljust(5)} | #{item.title.ljust(15)} | #{item.deadline}"
     end
     puts "------------------------------------------"    
     nil
