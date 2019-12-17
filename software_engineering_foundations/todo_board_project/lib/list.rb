@@ -66,5 +66,8 @@ class List
     puts "#{item.description}"
     puts "------------------------------------------"
   end
-  
+
+  def print_priority
+    self.print_full_item(0)
+  end
 end
