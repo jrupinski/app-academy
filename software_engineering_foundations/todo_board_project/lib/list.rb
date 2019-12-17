@@ -70,4 +70,16 @@ class List
   def print_priority
     self.print_full_item(0)
   end
+
+  def up(index, amount)
+    new_index = index - amount
+    return nil if !self.valid_index?(index) || !self.valid_index?(new_index)
+    self.swap(index, new_index)
+  end
+
+  def down(index, amount)
+    new_index = index + amount
+    return nil if !self.valid_index?(index) || !self.valid_index?(new_index)
+    self.swap(index, new_index)
+  end
 end
