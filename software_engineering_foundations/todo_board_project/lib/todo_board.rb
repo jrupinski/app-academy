@@ -12,7 +12,7 @@ class Todo_Board
   end
 
   def get_command
-    puts "Available commands: mktodo, up, down, swap, sort, priority, print, quit"
+    puts "Type help to list all available commands."
     print "Enter a command: "
     input = gets.chomp
     command = input.split.first.downcase
@@ -23,23 +23,7 @@ class Todo_Board
   def do_command(command, *args)
     case command
     when "help"
-      puts "mktodo <title> <deadline> <optional description>"
-      puts "    makes a todo with the given information"
-      puts "up <index> <optional amount>"
-      puts "    raises the todo up the list"
-      puts "down <index> <optional amount>"
-      puts "    lowers the todo down the list"
-      puts "swap <index_1> <index_2>"
-      puts "    swaps the position of todos"
-      puts "sort"
-      puts "    sorts the todos by date"
-      puts "priority"
-      puts "    prints the todo at the top of the list"
-      puts "print <optional index>"
-      puts "    prints all todos if no index is provided"
-      puts "    prints full information of the specified todo if an index is provided"
-      puts "quit"
-      puts "    returns false"
+      puts File.read("./lib/commands.txt")
     when "mktodo"
       title = args[0] || nil
       deadline = args[1] || nil

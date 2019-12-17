@@ -1,0 +1,24 @@
+mktodo <title> <deadline> <optional description>
+    Makes a todo with the given information
+
+up <index> <optional amount>
+    Raises the todo up the list
+
+down <index> <optional amount>
+    Lowers the todo down the list
+
+swap <index_1> <index_2>
+    Swaps the position of todos
+
+sort
+    Sorts the todos by date
+
+priority
+    Prints the todo at the top of the list
+
+print <optional index>
+    Prints all todos if no index is provided
+    Prints full information of the specified todo if an index is provided
+    
+quit
+    Returns false
