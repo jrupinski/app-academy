@@ -56,4 +56,15 @@ class List
     puts "------------------------------------------"    
     nil
   end
+
+  def print_full_item(index)
+    return nil if !self.valid_index?(index)
+    
+    item = self[index]
+    puts "------------------------------------------"
+    puts "#{item.title.ljust(15)} #{item.deadline}"
+    puts "#{item.description}"
+    puts "------------------------------------------"
+  end
+  
 end
