@@ -91,7 +91,7 @@ class List
   #
   # Print pretty output for the whole list and all it's items
   #
-  # @return [nil] Return nil
+  # @return [Nil] Return nil
   #
   def print
     puts "------------------------------------------"
@@ -110,7 +110,7 @@ class List
   #
   # @param [Integer] index Index of item
   #
-  # @return [nil] Return nil
+  # @return [Nil] Return nil
   #
   def print_full_item(index)
     return nil if !self.valid_index?(index)
@@ -125,7 +125,7 @@ class List
   #
   # Print first element of the list
   #
-  # @return [nil] Don't return anything
+  # @return [Nil] Don't return anything
   #
   def print_priority
     self.print_full_item(0)
@@ -137,7 +137,7 @@ class List
   # @param [Integer] index Index of item to move
   # @param [Integer] amount Amount of indexes to move it up the list
   #
-  # @return [nil] Return nil
+  # @return [Nil] Return nil
   #
   def up(index, amount)
     new_index = index - amount
@@ -151,11 +151,21 @@ class List
   # @param [Integer] index Index of item to move
   # @param [Integer] amount Amount of indexes to move it down the list
   #
-  # @return [nil] Return nil
+  # @return [Nil] Return nil
   #
   def down(index, amount)
     new_index = index + amount
     return nil if !self.valid_index?(index) || !self.valid_index?(new_index)
     self.swap(index, new_index)
+  end
+
+  #
+  # Destructively sort List items by date
+  #
+  # @return [Nil] Return nil
+  #
+  def sort_by_date!
+    @items.sort_by! { |item| item.deadline }
+    nil
   end
 end
