@@ -168,4 +168,15 @@ class List
     @items.sort_by! { |item| item.deadline }
     nil
   end
+
+  #
+  # Toggle if item is done or not
+  #
+  # @param [Integer] idx Index of item in list
+  #
+  # @return [Boolean] Current status after toggling it
+  #
+  def toggle_item(idx)
+    self[idx].toggle
+  end
 end
