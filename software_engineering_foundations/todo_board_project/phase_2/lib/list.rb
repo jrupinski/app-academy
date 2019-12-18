@@ -94,15 +94,15 @@ class List
   # @return [Nil] Return nil
   #
   def print
-    puts "------------------------------------------"
-    puts "                #{self.label}"
-    puts "------------------------------------------"
-    puts "Index | Item            | Deadline"
-    puts "------------------------------------------"
+    puts "-------------------------------------------------------"
+    puts "#{self.label.rjust(27)}"
+    puts "-------------------------------------------------------"
+    puts "Index | Item            | Deadline        | Done?"
+    puts "-------------------------------------------------------"
     @items.each_with_index do |item, idx|
-      puts "#{idx.to_s.ljust(5)} | #{item.title.ljust(15)} | #{item.deadline}"
+      puts "#{idx.to_s.ljust(5)} | #{item.title.ljust(15)} | #{item.deadline.ljust(15)} | #{item.done}"
     end
-    puts "------------------------------------------"    
+    puts "-------------------------------------------------------"
   end
 
   #
@@ -116,10 +116,10 @@ class List
     return nil if !self.valid_index?(index)
     
     item = self[index]
-    puts "------------------------------------------"
-    puts "#{item.title.ljust(15)} #{item.deadline}"
+    puts "-------------------------------------------------------"
+    puts "#{item.title.ljust(15)} #{item.deadline.ljust(15)} #{item.done}"
     puts "#{item.description}"
-    puts "------------------------------------------"
+    puts "-------------------------------------------------------"
   end
 
   #

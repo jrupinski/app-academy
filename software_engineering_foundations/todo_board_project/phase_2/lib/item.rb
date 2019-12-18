@@ -1,5 +1,5 @@
 class Item
-  attr_accessor :title, :description
+  attr_accessor :title, :description, :done
   attr_reader :deadline
 
   def deadline=(new_deadline)
