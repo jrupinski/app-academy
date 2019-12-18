@@ -1,12 +1,12 @@
 require_relative "./list"
 require "byebug"
 #
-# Todo Board, which contains a single list of items
+# Todo Board, which contains multiple list of items
 #
 class TodoBoard
 
-  def initialize(label)
-    @list = List.new(label)
+  def initialize
+    @list = Hash.new
   end
 
   def get_command
