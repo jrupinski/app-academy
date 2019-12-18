@@ -180,4 +180,10 @@ class List
     return nil if !self.valid_index?(index)
     self[index].toggle
   end
+
+  def remove_item(index)
+    return false if !self.valid_index?(index)
+    @items.delete_at(index)
+    true
+  end
 end
