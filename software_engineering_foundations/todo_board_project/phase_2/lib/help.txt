@@ -1,6 +1,9 @@
 mktodo <title> <deadline> <optional description>
     Makes a todo with the given information
 
+toggle <index>
+    Toggles done state of the item at given index
+    
 up <index> <optional amount>
     Raises the todo up the list
 

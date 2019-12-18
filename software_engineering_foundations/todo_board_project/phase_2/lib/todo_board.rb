@@ -29,6 +29,10 @@ class TodoBoard
       raise "invalid title or deadline" if title.nil? || deadline.nil?
       description = args[2..-1].join(" ") || ""
       @list.add_item(title, deadline, description)
+    when "toggle"
+      index = args[0] || nil
+      raise "invalid item index" if index.nil?
+      @list.toggle_item(index.to_i)
     when "up"
       index = args[0] || nil
       amount = args[1] || 1
