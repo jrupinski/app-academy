@@ -181,9 +181,26 @@ class List
     self[index].toggle
   end
 
+  #
+  # Remove item at given index
+  #
+  # @param [Integer] index Item index in list
+  #
+  # @return [Boolean] Indicate if item removed successfully
+  #
   def remove_item(index)
     return false if !self.valid_index?(index)
     @items.delete_at(index)
     true
+  end
+
+  #
+  # Remove all items marked as done
+  #
+  # @return [nil] 
+  #
+  def purge
+    @items.each_with_index { |item, idx| self.remove_item(idx) if item.done }
+    nil
   end
 end
