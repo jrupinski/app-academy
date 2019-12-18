@@ -3,9 +3,7 @@ require "byebug"
 #
 # Todo Board, which contains a single list of items
 #
-class Todo_Board
-
-  class InvalidCommandError < StandardError; end
+class TodoBoard
 
   def initialize(label)
     @list = List.new(label)
@@ -23,28 +21,29 @@ class Todo_Board
   def do_command(command, *args)
     case command
     when "help"
+      puts
       puts File.read("./lib/commands.txt")
     when "mktodo"
       title = args[0] || nil
       deadline = args[1] || nil
-      description = args[2..-1].join(" ") || ""
       raise "invalid title or deadline" if title.nil? || deadline.nil?
+      description = args[2..-1].join(" ") || ""
       @list.add_item(title, deadline, description)
     when "up"
-      index = args[0].to_i || nil
-      amount = args[1].to_i || 1
+      index = args[0] || nil
+      amount = args[1] || 1
       raise "Valid Item index required" if index.nil?
-      @list.up(index, amount)
+      @list.up(index.to_i, amount.to_i)
     when "down"
-      index = args[0].to_i || nil
+      index = args[0] || nil
       raise "Valid Item index required" if index.nil?
-      amount = args[1].to_i || 1
-      @list.down(index, amount)
+      amount = args[1] || 1
+      @list.down(index.to_i, amount.to_i)
     when "swap"
-      item_1 = args[0].to_i || nil
-      item_2 = args[1].to_i || nil
+      item_1 = args[0] || nil
+      item_2 = args[1] || nil
       raise "Two item indexes required." if item_1.nil? || item_2.nil?
-      @list.swap(item_1, item_2)
+      @list.swap(item_1.to_i, item_2.to_i)
     when "sort"
       @list.sort_by_date!
     when "priority"
@@ -56,10 +55,21 @@ class Todo_Board
       puts "Quitting..."
       return nil
     else
-      puts "Sorry, command not recognized."
-      raise InvalidCommandError
+      raise "Sorry, command not recognized."
     end
 
     true
+  end
+
+  def run
+    loop do
+      begin
+        while self.get_command; end
+      rescue => exception
+        puts exception.message
+      else
+        break
+      end
+    end
   end
 end
