@@ -1,12 +1,12 @@
 require_relative "./list"
 require "byebug"
 #
-# Todo Board, which contains multiple list of items
+# Todo Board, which contains multiple lists of items
 #
 class TodoBoard
 
   def initialize
-    @list = Hash.new
+    @lists = {}
   end
 
   def get_command
@@ -23,38 +23,83 @@ class TodoBoard
     when "help"
       puts
       puts File.read("./lib/help.txt")
+    when "mklist"
+      raise "Wrong num of arguments" if args.count != 1
+      label = args[0]
+      raise "List #{label} already exists!" if @lists.has_key?(label.to_sym)
+      @lists[label.to_sym] = List.new(label)
+      puts "List #{label} created!"
+    when "ls"
+      puts "Available lists:"
+      puts @lists.keys
+    when "showall"
+      @lists.values.each { |list| puts list.print }
     when "mktodo"
-      title = args[0] || nil
-      deadline = args[1] || nil
+      list_label = args[0] || nil
+      raise "wrong list label" if list_label.nil? || !@lists.has_key?(list_label.to_sym)
+      title = args[1] || nil
+      deadline = args[2] || nil
       raise "invalid title or deadline" if title.nil? || deadline.nil?
-      description = args[2..-1].join(" ") || ""
-      @list.add_item(title, deadline, description)
+      description = args[3..-1].join(" ") || ""
+      @lists[list_label.to_sym].add_item(title, deadline, description)
+      puts "item added!"
     when "toggle"
-      index = args[0] || nil
+      list_label = args[0] || nil
+      raise "wrong list label" if list_label.nil? || !@lists.has_key?(list_label.to_sym)
+      index = args[1] || nil
       raise "invalid item index" if index.nil?
-      @list.toggle_item(index.to_i)
+      @lists[list_label.to_sym].toggle_item(index.to_i)
+      puts "Done status toggled!"
+    when "rm"
+      list_label = args[0] || nil
+      raise "wrong list label" if list_label.nil? || !@lists.has_key?(list_label.to_sym)
+      index = args[1] || nil
+      raise "Valid Item index required" if index.nil?
+      @lists[list_label.to_sym].remove_item(index.to_i)
+      puts "deleted item!"
+    when "purge"
+      list_label = args[0] || nil
+      raise "wrong list label" if list_label.nil? || !@lists.has_key?(list_label.to_sym)
+      @lists[list_label.to_sym].purge
+      puts "list #{list_label} purged!"
     when "up"
-      index = args[0] || nil
+      list_label = args[0] || nil
+      raise "wrong list label" if list_label.nil? || !@lists.has_key?(list_label.to_sym)
+      index = args[1] || nil
       amount = args[1] || 1
       raise "Valid Item index required" if index.nil?
-      @list.up(index.to_i, amount.to_i)
+      @lists[list_label.to_sym].up(index.to_i, amount.to_i)
+      puts "moved item up by #{amount}"
     when "down"
-      index = args[0] || nil
+      list_label = args[0] || nil
+      raise "wrong list label" if list_label.nil? || !@lists.has_key?(list_label.to_sym)
+      index = args[1] || nil
       raise "Valid Item index required" if index.nil?
-      amount = args[1] || 1
-      @list.down(index.to_i, amount.to_i)
+      amount = args[2] || 1
+      @lists[list_label.to_sym].down(index.to_i, amount.to_i)
+      puts "moved item down by #{amount}"
     when "swap"
+      list_label = args[0] || nil
+      raise "wrong list label" if list_label.nil? || !@lists.has_key?(list_label.to_sym)
       item_1 = args[0] || nil
       item_2 = args[1] || nil
       raise "Two item indexes required." if item_1.nil? || item_2.nil?
-      @list.swap(item_1.to_i, item_2.to_i)
+      @lists[list_label.to_sym].swap(item_1.to_i, item_2.to_i)
+      puts "items swapped!"
     when "sort"
-      @list.sort_by_date!
+      list_label = args[0] || nil
+      raise "wrong list label" if list_label.nil? || !@lists.has_key?(list_label.to_sym)
+      @lists[list_label.to_sym].sort_by_date!
+      puts "Items sorted!"
     when "priority"
-      @list.print_priority
+      list_label = args[0] || nil
+      raise "wrong list label" if list_label.nil? || !@lists.has_key?(list_label.to_sym)
+      @lists[list_label.to_sym].print_priority
     when "print"
+      list_label = args[0] || nil
+      raise "wrong list label" if list_label.nil? || !@lists.has_key?(list_label.to_sym)
       item_idx = args[0]
-      item_idx.nil? ? @list.print : @list.print_full_item(item_idx.to_i)
+      item_idx.nil? ? @lists[list_label.to_sym].print : @lists[list_label.to_sym].print_full_item(item_idx.to_i)
     when "quit"
       puts "Quitting..."
       return nil
