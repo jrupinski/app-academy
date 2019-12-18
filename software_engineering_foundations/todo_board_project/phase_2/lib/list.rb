@@ -176,7 +176,8 @@ class List
   #
   # @return [Boolean] Current status after toggling it
   #
-  def toggle_item(idx)
-    self[idx].toggle
+  def toggle_item(index)
+    return nil if !self.valid_index?(index)
+    self[index].toggle
   end
 end
