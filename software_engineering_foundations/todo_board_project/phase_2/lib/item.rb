@@ -18,6 +18,7 @@ class Item
     @title = title
     @deadline = deadline
     @description = description
+    @done = false
   end
 
   def self.valid_date?(date)
@@ -32,5 +33,9 @@ class Item
     return false if year < 0 || month < 1 || month > 12 || day < 1 || day > 31
     
     true
+  end
+
+  def toggle
+    @done ? @done = false : @done = true
   end
 end
