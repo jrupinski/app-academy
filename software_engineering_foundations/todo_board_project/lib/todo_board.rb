@@ -22,7 +22,7 @@ class TodoBoard
     case command
     when "help"
       puts
-      puts File.read("./lib/commands.txt")
+      puts File.read("./lib/help.txt")
     when "mktodo"
       title = args[0] || nil
       deadline = args[1] || nil
