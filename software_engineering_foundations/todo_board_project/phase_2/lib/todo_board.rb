@@ -74,7 +74,7 @@ class TodoBoard
       list_label = args[0] || nil
       raise "wrong list label" if list_label.nil? || !@lists.has_key?(list_label.to_sym)
       index = args[1] || nil
-      amount = args[1] || 1
+      amount = args[2] || 1
       raise "Valid Item index required" if index.nil?
       @lists[list_label.to_sym].up(index.to_i, amount.to_i)
       puts "moved item up by #{amount}"
@@ -91,8 +91,8 @@ class TodoBoard
     when "swap"
       list_label = args[0] || nil
       raise "wrong list label" if list_label.nil? || !@lists.has_key?(list_label.to_sym)
-      item_1 = args[0] || nil
-      item_2 = args[1] || nil
+      item_1 = args[1] || nil
+      item_2 = args[2] || nil
       raise "Two item indexes required." if item_1.nil? || item_2.nil?
       @lists[list_label.to_sym].swap(item_1.to_i, item_2.to_i)
       puts "items swapped!"
@@ -111,7 +111,7 @@ class TodoBoard
     when "print"
       list_label = args[0] || nil
       raise "wrong list label" if list_label.nil? || !@lists.has_key?(list_label.to_sym)
-      item_idx = args[0]
+      item_idx = args[1]
       item_idx.nil? ? @lists[list_label.to_sym].print : @lists[list_label.to_sym].print_full_item(item_idx.to_i)
       
     when "quit"
@@ -136,3 +136,5 @@ class TodoBoard
     end
   end
 end
+
+TodoBoard.new.run
