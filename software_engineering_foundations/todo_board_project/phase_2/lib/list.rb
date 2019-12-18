@@ -100,7 +100,7 @@ class List
     puts "Index | Item            | Deadline        | Done?"
     puts "-------------------------------------------------------"
     @items.each_with_index do |item, idx|
-      mark = item.done ? "[ ]" : "[✓]"
+      mark = item.done ? "[✓]" : "[ ]"
       puts "#{idx.to_s.ljust(5)} | #{item.title.ljust(15)} | #{item.deadline.ljust(15)} | #{mark}"
     end
     puts "-------------------------------------------------------"
@@ -117,7 +117,7 @@ class List
     return nil if !self.valid_index?(index)
     
     item = self[index]
-    mark = item.done ? "[ ]" : "[✓]"
+    mmark = item.done ? "[✓]" : "[ ]"
     puts "-------------------------------------------------------"
     puts "#{item.title.ljust(15)} #{item.deadline.ljust(15)} #{mark}"
     puts "#{item.description}"
