@@ -15,4 +15,17 @@ class Array
 
     self
   end
+
+  #
+  # Takes a block and returns a new array containing only elements that satisfy the block. Use your my_each method!
+  #
+  # @param [Proc] &block Block of code to execute
+  #
+  # @return [Array] Elements of original array that satisfy the block 
+  #
+  def my_select(&block)
+    selected = []
+    self.my_each { |ele| selected << ele if block.call(ele) }
+    selected
+  end
 end
