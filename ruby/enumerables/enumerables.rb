@@ -41,4 +41,16 @@ class Array
     self.my_each { |ele| not_rejected << ele if !block.call(ele) }
     not_rejected
   end
+
+  #
+  # Return true if any elements of the array satisfy the block
+  #
+  # @param [Proc] &block Code block
+  #
+  # @return [Boolean] True if any element satisfies Block, false otherwise
+  #
+  def my_any?(&block)
+    self.my_each { |ele| return true if block.call(ele) }
+    false
+  end
 end
