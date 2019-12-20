@@ -53,4 +53,16 @@ class Array
     self.my_each { |ele| return true if block.call(ele) }
     false
   end
+  
+  #
+  # Return true only if all elements satisfy the block.
+  #
+  # @param [Proc] &block Code block
+  #
+  # @return [Boolean] True if all elements satisfy Block, false otherwise
+  #
+  def my_all?(&block)
+    self.my_each { |ele| return false if !block.call(ele) }
+    true
+  end
 end
