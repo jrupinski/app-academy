@@ -1,4 +1,4 @@
-# Methods for Ruby->Enumerables exercise
+# Enumerables for Ruby->Enumerables exercise
 class Array
   #
   # Extend the Array class to include a method named my_each that takes a block, calls the block on every element of the array, and returns the original array. Do not use Enumerable's each method.
