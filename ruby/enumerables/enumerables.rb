@@ -28,4 +28,17 @@ class Array
     self.my_each { |ele| selected << ele if block.call(ele) }
     selected
   end
+
+  #
+  # Take a block and return a new array excluding elements that satisfy the block.
+  #
+  # @param [Proc] &block Block of code to execute
+  #
+  # @return [Array] Array of elements excluding rejected ones
+  #
+  def my_reject(&block) 
+    not_rejected = []
+    self.my_each { |ele| not_rejected << ele if !block.call(ele) }
+    not_rejected
+  end
 end
