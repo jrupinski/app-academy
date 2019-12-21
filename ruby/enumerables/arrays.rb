@@ -54,4 +54,17 @@ class Array
     
     rotated
   end
+
+  #
+  # my_join returns a single string containing all the elements of the array, separated by the given string separator. If no separator is given, an empty string is used.
+  #
+  # @param [String] separator String separator
+  #
+  # @return [String] String with all arguments joined by separator
+  #
+  def my_join(separator = "")
+    joined = ""
+    self.each { |ele| joined += (ele.to_s + separator) }
+    joined.chomp(separator)
+  end
 end
