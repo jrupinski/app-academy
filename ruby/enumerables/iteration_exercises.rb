@@ -58,12 +58,14 @@
 class Array
   def bubble_sort!(&prc)
     sorted = false
-
+    prc ||= Proc.new { |num1, num2| num1 <=> num2 }
+    return self if prc.call(self) == 0
+    
     while !sorted
       sorted = true
       (0...self.length - 1).each do |ele|
 
-        if self[ele] > self[ele + 1]
+        if prc.call(self[ele], self[ele + 1]) == 1
           self[ele], self[ele + 1] = self[ele + 1], self[ele]
           sorted = false
         end
