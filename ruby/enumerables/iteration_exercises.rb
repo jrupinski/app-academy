@@ -75,6 +75,8 @@ class Array
   end
 
   def bubble_sort(&prc)
+    unsorted = self.dup
+    unsorted.bubble_sort!
   end
 end
 
