@@ -67,4 +67,15 @@ class Array
     self.each { |ele| joined += (ele.to_s + separator) }
     joined.chomp(separator)
   end
+
+  #
+  # Write a method that returns a new array containing all the elements of the original array in reverse order.
+  #
+  # @return [Array] New Array with elements reversed 
+  #
+  def my_reverse
+    reversed = []
+    self.reverse_each { |ele| reversed << ele } 
+    reversed
+  end
 end
