@@ -96,6 +96,15 @@ end
 # words).
 
 def substrings(string)
+  substring_list = []
+  (0...string.length).each do |char_start|
+    (char_start...string.length).each do |char_end|
+      current_substring = string[char_start..char_end]
+      substring_list << current_substring
+    end
+  end
+
+  substring_list
 end
 
 def subwords(word, dictionary)
