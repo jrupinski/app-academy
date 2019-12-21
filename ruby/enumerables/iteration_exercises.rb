@@ -57,6 +57,21 @@
 
 class Array
   def bubble_sort!(&prc)
+    sorted = false
+
+    while !sorted
+      sorted = true
+      (0...self.length - 1).each do |ele|
+
+        if self[ele] > self[ele + 1]
+          self[ele], self[ele + 1] = self[ele + 1], self[ele]
+          sorted = false
+        end
+        
+      end
+    end
+
+    self
   end
 
   def bubble_sort(&prc)
