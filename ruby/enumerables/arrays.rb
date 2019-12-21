@@ -34,4 +34,24 @@ class Array
       
     zipped
   end
+
+
+  #
+  # Write a method my_rotate that returns a new array containing all the elements of the original array in a rotated order. By default, the array should rotate by one element. If a negative value is given, the array is rotated in the opposite direction.
+  #
+  # @param [Integer] num_of_rotations How many times to rotate 
+  #
+  # @return [Array] Rotated Array
+  #
+  def my_rotate(num_of_rotations = 1)
+    rotated = self.clone
+
+    if num_of_rotations > 0
+      num_of_rotations.times { rotated << rotated.shift }
+    else
+      num_of_rotations.abs.times { rotated.unshift(rotated.pop) }
+    end
+    
+    rotated
+  end
 end
