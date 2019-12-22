@@ -169,6 +169,9 @@ end
 
 class Array
   def my_map(&prc)
+    mapped = []
+    self.each { |ele| mapped << prc.call(ele) }
+    mapped
   end
 
   def my_select(&block)
