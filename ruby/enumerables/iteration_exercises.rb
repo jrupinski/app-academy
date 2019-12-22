@@ -181,6 +181,9 @@ class Array
   end
 
   def my_inject(&blk)
+    value = self.first
+    self[1..-1].my_each { |ele| value = blk.call(value, ele) }
+    value
   end
 end
 
