@@ -144,7 +144,13 @@ end
 # ```
 
 class Array
-  def my_each(&prc)
+  def my_each(&block)
+    self.size.times do |index|
+      ele = self[index]
+      block.call(ele)
+    end
+
+    self
   end
 end
 
@@ -165,7 +171,10 @@ class Array
   def my_map(&prc)
   end
 
-  def my_select(&prc)
+  def my_select(&block)
+    selected = []
+    self.my_each { |ele| selected << ele if block.call(ele) }
+    selected
   end
 
   def my_inject(&blk)
