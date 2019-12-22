@@ -117,6 +117,7 @@ end
 # array with the original elements multiplied by two.
 
 def doubler(array)
+  array.map { |num| num * 2 }
 end
 
 # ### My Each
