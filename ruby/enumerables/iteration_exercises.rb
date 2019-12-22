@@ -197,4 +197,5 @@ end
 # ```
 
 def concatenate(strings)
+  strings.my_inject { |concat_string, string| concat_string += string }
 end
