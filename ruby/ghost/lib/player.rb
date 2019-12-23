@@ -1,6 +1,6 @@
 # Player class
 class Player
-    class alert_invalid_guess < StandardError
+    class Alert_invalid_guess < StandardError
         def message
             "Guess invalid!"
         end
