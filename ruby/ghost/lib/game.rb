@@ -1,3 +1,5 @@
+require_relative "player"
+
 #
 # 2-player game of Ghost with custom dictionaries
 #
@@ -6,7 +8,7 @@ class Game
     @fragment = ""
     dictionary_file = File.read("dictionary.txt").split("\n")
     @dictionary = Set.new(dictionary_file)
-    @players = [player_1, player_2]
+    @players = [Player.new(player_1), Player.new(player_2)]
   end
 
   def play_round
