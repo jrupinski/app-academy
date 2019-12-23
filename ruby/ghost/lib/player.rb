@@ -2,17 +2,18 @@
 class Player
   attr_reader :name
   
-  class Alert_invalid_guess < StandardError
-    def message
-      "Guess invalid!"
+  class InvalidName < StandardError; end
+    
+    def initialize(name)
+      raise InvalidName if !name.is_a?(String)
+      @name = name
     end
-  end
+    
+    def guess
+      # todo
+    end
 
-  def initialize(name)
-    @name = name
-  end
-
-  def guess
-    # todo
-  end
+    def Alert_invalid_guess 
+      # todo
+    end
 end
