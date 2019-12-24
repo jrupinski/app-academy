@@ -17,11 +17,12 @@ class Game
   end
 
   def current_player
-    @players[@current_player].name
+    @players[@current_player]
   end
 
   def previous_player
-    # TODO
+    prev_player = (@current_player - 1) % @players.count
+    @players[prev_player]
   end
 
   def next_player!
