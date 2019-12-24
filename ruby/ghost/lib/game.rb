@@ -26,7 +26,7 @@ class Game
   end
 
   def next_player!
-    # TODO
+    @current_player = (@current_player + 1) % @players.count
   end
 
   def take_turn(player)
