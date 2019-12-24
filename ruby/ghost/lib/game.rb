@@ -9,6 +9,7 @@ class Game
     dictionary_file = File.read("dictionary.txt").split("\n")
     @dictionary = Set.new(dictionary_file)
     @players = [Player.new(player_1), Player.new(player_2)]
+    @current_player = 0
   end
 
   def play_round
@@ -16,7 +17,7 @@ class Game
   end
 
   def current_player
-    # TODO
+    @players[@current_player].name
   end
 
   def previous_player
