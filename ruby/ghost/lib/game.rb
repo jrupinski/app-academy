@@ -33,7 +33,22 @@ class Game
     # TODO
   end
 
-  def valid_play?
-    # TODO
+  def valid_play?(string)
+    alphabet = ("a".."z").to_a
+
+    # Check if input is single letter
+    if !alphabet.include?(string) || string.length != 1
+      puts "wrong input"
+      return false
+    end
+    
+    new_fragment = @fragment + string
+    # check if any more words are available
+    alphabet.each do |letter|
+      return true if @dictionary.include?(new_fragment + letter)
+    end
+
+    puts "no more words available"
+    false
   end
 end
