@@ -4,6 +4,7 @@ require_relative "player"
 # 2-player game of Ghost with custom dictionaries
 #
 class Game
+  attr_accessor :fragment
   def initialize(player_1, player_2)
     @fragment = ""
     dictionary_file = File.read("dictionary.txt").split("\n")
@@ -30,7 +31,16 @@ class Game
   end
 
   def take_turn(player)
-    # TODO
+    loop do
+      puts "\nCurrent fragment: #{@fragment}"
+      print "Enter next letter to the fragment: "
+      input = gets.chomp
+      debugger
+      if valid_play?(input)
+        @fragment += input
+        break
+      end
+    end
   end
 
   def valid_play?(string)
