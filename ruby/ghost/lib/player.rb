@@ -1,3 +1,4 @@
+require "byebug"
 # Player class
 class Player
   attr_reader :name
@@ -10,10 +11,18 @@ class Player
   end
   
   def guess
-    # todo
+    print "enter a 1-letter guess: "
+    alert_invalid_guess(gets.chomp) ? false : true
   end
+  
+  def alert_invalid_guess(guess)
+    alphabet = ("a".."z").to_a
 
-  def Alert_invalid_guess 
-    # todo
+    if !alphabet.include?(guess.downcase)
+      puts "Invalid guess"
+      true
+    else
+      false
+    end
   end
 end
