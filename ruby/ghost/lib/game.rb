@@ -30,7 +30,7 @@ class Game
       
       puts record(self.current_player)
       if record(self.current_player) == "GHOST"
-        puts "#{self.current_player.name} eliminated!"
+        puts "#{self.current_player.name} eliminated!\n"
         @players.delete_at(@current_player_idx)
       end
 
@@ -39,7 +39,7 @@ class Game
       @fragment = ""
     end
 
-    puts "@players.first.name Won!"
+    puts "\n\n#{@players.first.name} Won!"
   end
 
   #
@@ -68,7 +68,7 @@ class Game
 
   def take_turn(player)
     loop do
-      puts "\nCurrent fragment: #{@fragment}"
+      puts "Current fragment: #{@fragment}\n\n"
       print "Enter next letter to the fragment: "
       input = gets.chomp
       if valid_play?(input)
@@ -78,8 +78,8 @@ class Game
 
       # round over? (no more words)
       if @dictionary.include?(@fragment + input)
-        puts "#{@fragment + input} is a valid word!"
-        puts "#{self.previous_player.name} won this round!"
+        puts "\n#{@fragment + input} is a valid word!"
+        puts "#{self.current_player.name} lost this round!\n"
         @losses[player] += 1
         return true
       end
@@ -91,14 +91,14 @@ class Game
 
     # Check if input is single letter
     if !alphabet.include?(string) || string.length != 1
-      puts "wrong input"
+      puts "\nwrong input\n"
       return false
     end
     
     # check if any more words are available
     new_fragment = @fragment + string
     if @dictionary.grep(/^#{new_fragment}./).empty?
-      puts "No words with #{new_fragment} available in dictionary"
+      puts "\nNo words beginning with #{new_fragment} available in dictionary\n"
       return false
     end
 
