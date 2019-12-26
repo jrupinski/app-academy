@@ -28,20 +28,21 @@ class Game
     until @players.count == 1
       self.play_round
       
-      puts record(self.current_player)
+      self.display_score
+
       if record(self.current_player) == "GHOST"
         puts "#{self.current_player.name} eliminated!\n"
         @players.delete_at(@current_player_idx)
       end
-
+      
       # clean fragment, last game's winner starts
       @current_player_idx -= 1
       @fragment = ""
     end
-
+    
     puts "\n\n#{@players.first.name} Won!"
   end
-
+  
   #
   # Return current user's loss score as part of "GHOST" word
   #
@@ -52,20 +53,20 @@ class Game
   def record(player)
     "GHOST"[0...@losses[player]]
   end
-
+  
   def current_player
     @players[@current_player_idx]
   end
-
+  
   def previous_player
     prev_player = (@current_player_idx - 1) % @players.count
     @players[prev_player]
   end
-
+  
   def next_player!
     @current_player_idx = (@current_player_idx + 1) % @players.count
   end
-
+  
   def take_turn(player)
     loop do
       puts "Current fragment: #{@fragment}\n\n"
@@ -75,7 +76,7 @@ class Game
         @fragment += input
         break
       end
-
+      
       # round over? (no more words)
       if @dictionary.include?(@fragment + input)
         puts "\n#{@fragment + input} is a valid word!"
@@ -85,10 +86,10 @@ class Game
       end
     end
   end
-
+  
   def valid_play?(string)
     alphabet = ("a".."z").to_a
-
+    
     # Check if input is single letter
     if !alphabet.include?(string) || string.length != 1
       puts "\nwrong input\n"
@@ -101,7 +102,13 @@ class Game
       puts "\nNo words beginning with #{new_fragment} available in dictionary\n"
       return false
     end
-
+    
     true
+  end
+  
+  def display_score
+    puts
+    @players.each { |player| puts "#{player.name}  =>  #{record(player)}" }
+    puts
   end
 end
