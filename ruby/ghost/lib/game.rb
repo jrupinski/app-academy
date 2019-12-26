@@ -35,7 +35,6 @@ class Game
       puts "\nCurrent fragment: #{@fragment}"
       print "Enter next letter to the fragment: "
       input = gets.chomp
-      debugger
       if valid_play?(input)
         @fragment += input
         break
@@ -52,13 +51,13 @@ class Game
       return false
     end
     
-    new_fragment = @fragment + string
     # check if any more words are available
-    alphabet.each do |letter|
-      return true if @dictionary.include?(new_fragment + letter)
+    new_fragment = @fragment + string
+    if @dictionary.grep(/^#{new_fragment}./).empty?
+      puts "no more words available"
+      return false
     end
 
-    puts "no more words available"
-    false
+    true
   end
 end
