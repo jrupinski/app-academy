@@ -11,15 +11,27 @@ class Game
     @dictionary = Set.new(dictionary_file)
     @players = [Player.new(player_1), Player.new(player_2)]
     @current_player = 0
+    @losses = Hash.new
+      @players.each { |player| @losses[player] = 0 }
   end
 
   def play_round
-    puts "Start round:"
-    loop do
-      puts "Current Player: #{self.current_player.name}"
-      break if take_turn(current_player)
-      next_player!
+    until @players.one? { |player| record(player) != "GHOST" } 
+      puts "Start round:"
+      loop do
+        puts "Current Player: #{self.current_player.name}"
+        break if take_turn(current_player)
+        next_player!
+      end
+
+      # clean fragment, last game's winner starts
+      @current_player -= 1
+      @fragment = ""
     end
+  end
+
+  def record(player)
+    "GHOST"[0...@losses[player]]
   end
 
   def current_player
@@ -48,7 +60,8 @@ class Game
       # round over? (no more words)
       if @dictionary.include?(@fragment + input)
         puts "#{@fragment + input} is a valid word!"
-        puts "#{self.previous_player.name} won!" 
+        puts "#{self.previous_player.name} won this round!"
+        @losses[player] += 1
         return true
       end
     end
