@@ -39,6 +39,12 @@ class Game
         @fragment += input
         break
       end
+
+      # round over? (no more words)
+      if @dictionary.include?(@fragment + input)
+        puts "#{self.previous_player.name} won!" 
+        return true
+      end
     end
   end
 
