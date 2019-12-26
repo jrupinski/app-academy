@@ -14,7 +14,12 @@ class Game
   end
 
   def play_round
-    # TODO
+    puts "Start round:"
+    loop do
+      puts "Current Player: #{self.current_player.name}"
+      break if take_turn(current_player)
+      next_player!
+    end
   end
 
   def current_player
@@ -42,6 +47,7 @@ class Game
 
       # round over? (no more words)
       if @dictionary.include?(@fragment + input)
+        puts "#{@fragment + input} is a valid word!"
         puts "#{self.previous_player.name} won!" 
         return true
       end
@@ -60,7 +66,7 @@ class Game
     # check if any more words are available
     new_fragment = @fragment + string
     if @dictionary.grep(/^#{new_fragment}./).empty?
-      puts "no more words available"
+      puts "No words with #{new_fragment} available in dictionary"
       return false
     end
 
