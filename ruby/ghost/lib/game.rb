@@ -10,41 +10,60 @@ class Game
     dictionary_file = File.read("dictionary.txt").split("\n")
     @dictionary = Set.new(dictionary_file)
     @players = [Player.new(player_1), Player.new(player_2)]
-    @current_player = 0
+    @current_player_idx = 0
     @losses = Hash.new
       @players.each { |player| @losses[player] = 0 }
   end
 
   def play_round
-    until @players.one? { |player| record(player) != "GHOST" } 
-      puts "Start round:"
-      loop do
-        puts "Current Player: #{self.current_player.name}"
-        break if take_turn(current_player)
-        next_player!
+    puts "Start round:"
+    loop do
+      puts "Current Player: #{self.current_player.name}"
+      break if take_turn(current_player)
+      next_player!
+    end
+  end
+  
+  def run
+    until @players.count == 1
+      self.play_round
+      
+      puts record(self.current_player)
+      if record(self.current_player) == "GHOST"
+        puts "#{self.current_player.name} eliminated!"
+        @players.delete_at(@current_player_idx)
       end
 
       # clean fragment, last game's winner starts
-      @current_player -= 1
+      @current_player_idx -= 1
       @fragment = ""
     end
+
+    puts "@players.first.name Won!"
   end
 
+  #
+  # Return current user's loss score as part of "GHOST" word
+  #
+  # @param [Player] player Player object
+  #
+  # @return [String] Part of GHOST string based on loss count
+  #
   def record(player)
     "GHOST"[0...@losses[player]]
   end
 
   def current_player
-    @players[@current_player]
+    @players[@current_player_idx]
   end
 
   def previous_player
-    prev_player = (@current_player - 1) % @players.count
+    prev_player = (@current_player_idx - 1) % @players.count
     @players[prev_player]
   end
 
   def next_player!
-    @current_player = (@current_player + 1) % @players.count
+    @current_player_idx = (@current_player_idx + 1) % @players.count
   end
 
   def take_turn(player)
