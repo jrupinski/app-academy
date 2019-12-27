@@ -72,7 +72,7 @@ class Game
       puts "Current fragment: #{@fragment}\n\n"
       print "Enter next letter to the fragment: "
       input = gets.chomp
-      if valid_play?(input)
+      if valid_play?(input) && !input.empty?
         @fragment += input
         break
       end
