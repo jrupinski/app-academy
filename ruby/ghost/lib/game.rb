@@ -5,11 +5,11 @@ require_relative "player"
 #
 class Game
   attr_accessor :fragment
-  def initialize(player_1, player_2)
+  def initialize(*players)
     @fragment = ""
     dictionary_file = File.read("dictionary.txt").split("\n")
     @dictionary = Set.new(dictionary_file)
-    @players = [Player.new(player_1), Player.new(player_2)]
+    @players = players.map { |player_name| Player.new(player_name) }
     @current_player_idx = 0
     @losses = Hash.new
       @players.each { |player| @losses[player] = 0 }
