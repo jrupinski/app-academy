@@ -4,12 +4,12 @@ require_relative "player"
 # 2-player game of Ghost with custom dictionaries
 #
 class Game
-  attr_reader :players
   def initialize(*players)
     @fragment = ""
     dictionary_file = File.read("dictionary.txt").split("\n")
     @dictionary = Set.new(dictionary_file)
-    @players = players.map { |player_name| Player.new(player_name) }
+    @players = Set.new
+    players.each { |player_name| @players.add(Player.new(player_name)) }
     @current_player_idx = 0
     @losses = Hash.new
       @players.each { |player| @losses[player] = 0 }
@@ -32,7 +32,7 @@ class Game
 
       if record(self.current_player) == "GHOST"
         puts "#{self.current_player.name} eliminated!\n"
-        @players.delete_at(@current_player_idx)
+        @players.delete(self.current_player)
       end
       
       # clean fragment, last game's winner starts
@@ -55,12 +55,12 @@ class Game
   end
   
   def current_player
-    @players[@current_player_idx]
+    @players.to_a[@current_player_idx]
   end
   
   def previous_player
     prev_player = (@current_player_idx - 1) % @players.count
-    @players[prev_player]
+    @players.to_a[prev_player]
   end
   
   def next_player!
