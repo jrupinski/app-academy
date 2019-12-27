@@ -4,7 +4,7 @@ require_relative "player"
 # 2-player game of Ghost with custom dictionaries
 #
 class Game
-  attr_accessor :fragment
+  attr_reader :players
   def initialize(*players)
     @fragment = ""
     dictionary_file = File.read("dictionary.txt").split("\n")
@@ -87,6 +87,10 @@ class Game
     end
   end
   
+  def any_words_left?
+    @dictionary.grep(/^#{new_fragment}./).empty?
+  end
+
   def valid_play?(string)
     alphabet = ("a".."z").to_a
     
