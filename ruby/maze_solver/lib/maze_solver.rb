@@ -18,10 +18,10 @@ class MazeSolver
   def solve
     # TODO: FIX THIS, DOES NOT WORK
     loop do
-      go_up until go_up == false
-      go_right until go_right == false
-      go_down until go_down == false
-      go_left until go_left == false
+      place_mark until go_up == false
+      place_mark until go_right == false
+      place_mark until go_down == false
+      place_mark until go_left == false
       break if current_neighbours.none? { |neighbour| is_empty?(neighbour) }
     end
   end
@@ -34,7 +34,6 @@ class MazeSolver
     space_up = [current_row - 1, current_column]
     return false if !is_empty?(space_up)
     @current_pos = space_up
-    place_mark
     true
   end
 
@@ -42,7 +41,6 @@ class MazeSolver
     space_down = [current_row + 1, current_column]
     return false if !is_empty?(space_down)
     @current_pos = space_down
-    place_mark
     true
   end
 
@@ -50,7 +48,6 @@ class MazeSolver
     space_left = [current_row, current_column - 1]
     return false if !is_empty?(space_left)
     @current_pos = space_left
-    place_mark
     true
   end
 
@@ -58,7 +55,6 @@ class MazeSolver
     space_right = [current_row, current_column + 1]
     return false if !is_empty?(space_right)
     @current_pos = space_right
-    place_mark
     true
   end
   
