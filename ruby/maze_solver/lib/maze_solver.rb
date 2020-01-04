@@ -3,8 +3,8 @@ require "byebug"
 class MazeSolver
   def initialize(filename)
     @filename = filename
-    @maze_array = File.foreach(filename).map { |line| line.chomp }    
-    
+    @maze_array = File.foreach(filename).map { |line| line.chomp }
+
     @maze_array.each_with_index do |line, row|
       line.chars.each_with_index do |ele, col|
         @start = [row, col] if ele == "S"
@@ -16,15 +16,14 @@ class MazeSolver
   end
 
   def solve
-    # TODO: remove debug lines in this methods
-    # vvvvvvvvvvvvvvvvvv
-    debugger
-    10.times { go_up }
-    3.times { go_right }
-    5.times { go_down }
-    3.times { go_left }
-    # ^^^^^^^^^^^^^^^^^^
-    # REMOVE AFTER DONE TESTING
+    # TODO: FIX THIS, DOES NOT WORK
+    loop do
+      go_up until go_up == false
+      go_right until go_right == false
+      go_down until go_down == false
+      go_left until go_left == false
+      break if current_neighbours.none? { |neighbour| is_empty?(neighbour) }
+    end
   end
 
   private
@@ -80,6 +79,17 @@ class MazeSolver
 
   def current_column
     @current_pos.last
+  end
+
+  def current_neighbours
+    neighbours = []
+    [-1, 1].each do |row|
+      [-1, 1].each do |col|
+        neighbours << [current_row + row, current_column + col]
+      end
+    end
+
+    neighbours
   end
 end
 
