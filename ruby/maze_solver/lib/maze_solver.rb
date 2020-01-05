@@ -3,15 +3,11 @@ require "byebug"
 class MazeSolver
   def initialize(filename)
     @filename = filename
-    @maze_array = File.foreach(filename).map { |line| line.chomp }
-
-    @maze_array.each_with_index do |line, row|
-      line.chars.each_with_index do |ele, col|
-        @start = [row, col] if ele == "S"
-        @end = [row, col] if ele == "E"
-      end
+    @maze_array = File.open(filename).map.with_index do |line, row|
+      @start = [row, line.index("S")] if line.include?("S")
+      @end = [row, line.index("E")] if line.include?("E")
+      line.chomp
     end
-    
     @current_pos = @start
   end
 
@@ -22,7 +18,7 @@ class MazeSolver
       place_mark until go_right == false
       place_mark until go_down == false
       place_mark until go_left == false
-      break if current_neighbours.none? { |neighbour| is_empty?(neighbour) }
+      break if current_nodes[:adjacent_nodes].none? { |node| is_empty?(node) }
     end
   end
 
@@ -31,30 +27,30 @@ class MazeSolver
   attr_reader :maze_array
 
   def go_up
-    space_up = [current_row - 1, current_column]
-    return false if !is_empty?(space_up)
-    @current_pos = space_up
+    node_up = [current_row - 1, current_column]
+    return false if !is_empty?(node_up)
+    @current_pos = node_up
     true
   end
 
   def go_down
-    space_down = [current_row + 1, current_column]
-    return false if !is_empty?(space_down)
-    @current_pos = space_down
+    node_down = [current_row + 1, current_column]
+    return false if !is_empty?(node_down)
+    @current_pos = node_down
     true
   end
 
   def go_left
-    space_left = [current_row, current_column - 1]
-    return false if !is_empty?(space_left)
-    @current_pos = space_left
+    node_left = [current_row, current_column - 1]
+    return false if !is_empty?(node_left)
+    @current_pos = node_left
     true
   end
 
   def go_right
-    space_right = [current_row, current_column + 1]
-    return false if !is_empty?(space_right)
-    @current_pos = space_right
+    node_right = [current_row, current_column + 1]
+    return false if !is_empty?(node_right)
+    @current_pos = node_right
     true
   end
   
@@ -64,8 +60,8 @@ class MazeSolver
   end
 
   # helper methods
-  def is_empty?(place)
-    row, col = place.first, place.last
+  def is_empty?(node)
+    row, col = node.first, node.last
     maze_array[row][col] == " "
   end
 
@@ -77,15 +73,19 @@ class MazeSolver
     @current_pos.last
   end
 
-  def current_neighbours
-    neighbours = []
-    [-1, 1].each do |row|
-      [-1, 1].each do |col|
-        neighbours << [current_row + row, current_column + col]
+  def current_nodes
+    nodes = { adjacent_nodes: [], parent_node: [current_row, current_column] }
+    (-1..1).each do |row|
+      (-1..1).each do |col|
+        adjacent_node = [current_row + row, current_column + col]
+
+        if nodes[:parent_node] != adjacent_node
+          nodes[:adjacent_nodes] << adjacent_node
+        end
       end
     end
 
-    neighbours
+    nodes
   end
 end
 
