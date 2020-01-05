@@ -1,4 +1,5 @@
 require "byebug"
+require "set"
 
 class MazeSolver
   def initialize(filename)
@@ -18,7 +19,8 @@ class MazeSolver
       place_mark until go_right == false
       place_mark until go_down == false
       place_mark until go_left == false
-      break if current_nodes[:adjacent_nodes].none? { |node| is_empty?(node) }
+      debugger
+      break if adjacent_nodes.to_a.none? { |node| is_empty?(node) }
     end
   end
 
@@ -73,15 +75,12 @@ class MazeSolver
     @current_pos.last
   end
 
-  def current_nodes
-    nodes = { adjacent_nodes: [], parent_node: [current_row, current_column] }
+  def adjacent_nodes
+    nodes = Set.new
     (-1..1).each do |row|
       (-1..1).each do |col|
         adjacent_node = [current_row + row, current_column + col]
-
-        if nodes[:parent_node] != adjacent_node
-          nodes[:adjacent_nodes] << adjacent_node
-        end
+        nodes << adjacent_node if !nodes.to_a.include?(adjacent_node)
       end
     end
 
