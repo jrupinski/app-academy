@@ -19,6 +19,7 @@ class MazeSolver
       place_mark until go_right == false
       place_mark until go_down == false
       place_mark until go_left == false
+      a_star
       break if adjacent_nodes.to_a.none? { |node| is_empty?(node) }
     end
   end
@@ -61,16 +62,43 @@ class MazeSolver
   end
 
   def a_star
-    # TODO: complete the rest of this method
+    # Starting the search
     parent_node = current_node
     open_list = Set[parent_node]
     adjacent_nodes.to_a.each { |node| open_list.add({parent_node => node}) if is_empty?(node) }
     open_list.delete(parent_node)
     closed_list = parent_node
+    # Path scoring
+    path_scores = open_list.map { |node| path_score(node.to_a.first) }
+    # Continuing the Search
+    # TODO
+
   end
 
 
   # helper methods
+  def path_score(node)
+    g = calculate_g(node.first)
+  end
+
+  def calculate_g(node)
+    # G - distance from starting point - 10 points for each square, 14 for diagonal
+    node_row, node_column = node.first, node.last
+    start_row, start_column = @start.first, @start.last
+
+    vertical_distance = (start_row - node_row).abs 
+    horizontal_distance = (start_column - node_column).abs
+    diagonal_distance = [vertical_distance, horizontal_distance].min
+    # recalculate how many squares are left after diagonals
+    unless diagonal_distance == 0
+      horizontal_distance %= diagonal_distance
+      vertical_distance %= diagonal_distance
+    end
+    # calculate G
+    debugger
+    diagonal_distance * 14 + (vertical_distance + horizontal_distance) * 10
+  end
+
   def is_empty?(node)
     row, col = node.first, node.last
     maze_array[row][col] == " "
