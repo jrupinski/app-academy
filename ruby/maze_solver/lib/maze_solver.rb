@@ -19,7 +19,6 @@ class MazeSolver
       place_mark until go_right == false
       place_mark until go_down == false
       place_mark until go_left == false
-      debugger
       break if adjacent_nodes.to_a.none? { |node| is_empty?(node) }
     end
   end
@@ -61,10 +60,24 @@ class MazeSolver
     puts maze_array
   end
 
+  def a_star
+    # TODO: complete the rest of this method
+    parent_node = current_node
+    open_list = Set[parent_node]
+    adjacent_nodes.to_a.each { |node| open_list.add({parent_node => node}) if is_empty?(node) }
+    open_list.delete(parent_node)
+    closed_list = parent_node
+  end
+
+
   # helper methods
   def is_empty?(node)
     row, col = node.first, node.last
     maze_array[row][col] == " "
+  end
+
+  def current_node
+    [current_row, current_column]
   end
 
   def current_row
@@ -80,7 +93,7 @@ class MazeSolver
     (-1..1).each do |row|
       (-1..1).each do |col|
         adjacent_node = [current_row + row, current_column + col]
-        nodes << adjacent_node if !nodes.to_a.include?(adjacent_node)
+        nodes << adjacent_node if !nodes.include?(adjacent_node)
       end
     end
 
