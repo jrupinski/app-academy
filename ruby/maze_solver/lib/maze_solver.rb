@@ -15,11 +15,11 @@ class MazeSolver
   def solve
     # TODO: FIX THIS, DOES NOT WORK
     loop do
+      a_star
       place_mark until go_up == false
       place_mark until go_right == false
       place_mark until go_down == false
       place_mark until go_left == false
-      a_star
       break if adjacent_nodes.to_a.none? { |node| is_empty?(node) }
     end
   end
@@ -62,14 +62,16 @@ class MazeSolver
   end
 
   def a_star
+    debugger
     # Starting the search
     parent_node = current_node
-    open_list = Set[parent_node]
-    adjacent_nodes.to_a.each { |node| open_list.add({parent_node => node}) if is_empty?(node) }
+    open_list = { parent_node => parent_node }
+    adjacent_nodes.each { |node| open_list[node] = parent_node if is_empty?(node) }
     open_list.delete(parent_node)
     closed_list = parent_node
-    # Path scoring
-    path_scores = open_list.map { |node| path_score(node.to_a.first) }
+    # Path scoring for open list
+    path_scores = {}
+    open_list.each { |node, parent_node| path_scores[node] = path_score(node) }
     # Continuing the Search
     # TODO
 
@@ -78,11 +80,14 @@ class MazeSolver
 
   # helper methods
   def path_score(node)
-    g = calculate_g(node.first)
+      g = calculate_g(node)
+      h = calculate_h(node)
+      f = g + h
+      { f: f, g: g, h: h }
   end
 
+  # G - distance from starting point - 10 points for each square, 14 for diagonal
   def calculate_g(node)
-    # G - distance from starting point - 10 points for each square, 14 for diagonal
     node_row, node_column = node.first, node.last
     start_row, start_column = @start.first, @start.last
 
@@ -95,8 +100,18 @@ class MazeSolver
       vertical_distance %= diagonal_distance
     end
     # calculate G
-    debugger
     diagonal_distance * 14 + (vertical_distance + horizontal_distance) * 10
+  end
+
+  # H - distance to end point, based on Manhattan method (literal straight distance)
+  def calculate_h(node)
+    node_row, node_column = node.first, node.last
+    end_row, end_column = @end.first, @end.last
+
+    vertical_distance = (end_row - node_row).abs 
+    horizontal_distance = (end_column - node_column).abs
+
+    (vertical_distance + horizontal_distance) * 10
   end
 
   def is_empty?(node)
