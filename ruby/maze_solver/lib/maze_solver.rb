@@ -13,77 +13,61 @@ class MazeSolver
   end
 
   def solve
-    # TODO: FIX THIS, DOES NOT WORK
-    loop do
       a_star
-      place_mark until go_up == false
-      place_mark until go_right == false
-      place_mark until go_down == false
-      place_mark until go_left == false
-      break if adjacent_nodes.to_a.none? { |node| is_empty?(node) }
-    end
   end
 
   private
-
   attr_reader :maze_array
-
-  def go_up
-    node_up = [current_row - 1, current_column]
-    return false if !is_empty?(node_up)
-    @current_pos = node_up
-    true
-  end
-
-  def go_down
-    node_down = [current_row + 1, current_column]
-    return false if !is_empty?(node_down)
-    @current_pos = node_down
-    true
-  end
-
-  def go_left
-    node_left = [current_row, current_column - 1]
-    return false if !is_empty?(node_left)
-    @current_pos = node_left
-    true
-  end
-
-  def go_right
-    node_right = [current_row, current_column + 1]
-    return false if !is_empty?(node_right)
-    @current_pos = node_right
-    true
-  end
   
+  def go_to(node)
+    @current_pos = node
+  end
+
   def place_mark
     maze_array[current_row][current_column] = "X"
     puts maze_array
   end
 
   def a_star
-    debugger
-    # Starting the search
-    parent_node = current_node
-    open_list = { parent_node => parent_node }
-    adjacent_nodes.each { |node| open_list[node] = parent_node if is_empty?(node) }
-    open_list.delete(parent_node)
-    closed_list = parent_node
-    # Path scoring for open list
-    path_scores = {}
-    open_list.each { |node, parent_node| path_scores[node] = path_score(node) }
-    # Continuing the Search
-    # TODO
+    # Todo: Fix heuristics
+    loop do
+      # Starting the search
+      parent_node = current_node
+      open_list = { parent_node => parent_node }
+      open_list.delete(parent_node)
+      closed_list = parent_node
+      adjacent_nodes.each { |node| open_list[node] = parent_node if is_empty?(node) && !closed_list.include?(node) }
+      # Path scoring for open list
+      @path_scores = current_path_scores(open_list)
+      # Continuing the Search
+      go_to(fastest_node)
+      closed_list << current_node
 
+      place_mark
+    
+      return true if closed_list.include?(@end)
+      return false if open_list.empty?
+    end
+  end
+  
+  # helper methods
+  def current_path_scores(node_list)
+    debugger
+    path_scores = {}
+    node_list.each { |node, parent_node| path_scores[node] = path_score(node, parent_node) }
+    path_scores
   end
 
-
-  # helper methods
-  def path_score(node)
-      g = calculate_g(node)
-      h = calculate_h(node)
-      f = g + h
-      { f: f, g: g, h: h }
+  def path_score(node, parent_node)
+    @path_scores.nil? ? parent_g = 0 : parent_g = @path_scores[parent_node][:g]
+    g = calculate_g(node) + parent_g
+    h = calculate_h(node)
+    f = g + h
+    { f: f, g: g, h: h }
+  end
+  
+  def fastest_node
+    @path_scores.min_by { |node, scores| scores[:f] }.first 
   end
 
   # G - distance from starting point - 10 points for each square, 14 for diagonal
