@@ -13,6 +13,7 @@ class MazeSolver
   end
 
   def solve
+      # fix heuristics
       a_star
   end
 
@@ -30,17 +31,28 @@ class MazeSolver
 
   def a_star
     # Todo: Fix heuristics
+    closed_list = []
+    @path_scores = {}
+    parent_node = @start
     loop do
+      debugger
       # Starting the search
+      open_list = { current_node => parent_node }
       parent_node = current_node
-      open_list = { parent_node => parent_node }
       open_list.delete(parent_node)
-      closed_list = parent_node
-      adjacent_nodes.each { |node| open_list[node] = parent_node if is_empty?(node) && !closed_list.include?(node) }
+
+      # get current paths
+      adjacent_nodes.each do |node|
+        if is_empty?(node) && !closed_list.include?(node) && node != @start
+          open_list[node] = parent_node 
+        end
+      end
+        
       # Path scoring for open list
-      @path_scores = current_path_scores(open_list)
+      @path_scores.merge!(current_path_scores(open_list))
       # Continuing the Search
-      go_to(fastest_node)
+      show_possible_moves(open_list)
+      go_to(fastest_node(open_list))
       closed_list << current_node
 
       place_mark
@@ -52,22 +64,29 @@ class MazeSolver
   
   # helper methods
   def current_path_scores(node_list)
-    debugger
     path_scores = {}
     node_list.each { |node, parent_node| path_scores[node] = path_score(node, parent_node) }
     path_scores
   end
 
   def path_score(node, parent_node)
-    @path_scores.nil? ? parent_g = 0 : parent_g = @path_scores[parent_node][:g]
-    g = calculate_g(node) + parent_g
+    g = calculate_g(node)
+    unless parent_node == @start 
+      parent_g_value = @path_scores[parent_node][:g]
+      g += parent_g_value
+      if @path_scores.include?(node)
+        old_g = @path_scores[node][:g]
+        return @path_scores[node] if g >= old_g
+      end
+    end
     h = calculate_h(node)
     f = g + h
     { f: f, g: g, h: h }
   end
   
-  def fastest_node
-    @path_scores.min_by { |node, scores| scores[:f] }.first 
+  def fastest_node(node_list)
+    node_scores = @path_scores.select { |node, score| node_list.include?(node) }
+    node_scores.min_by { |node, scores| scores[:f] }.first 
   end
 
   # G - distance from starting point - 10 points for each square, 14 for diagonal
@@ -100,7 +119,16 @@ class MazeSolver
 
   def is_empty?(node)
     row, col = node.first, node.last
-    maze_array[row][col] == " "
+    maze_array[row][col] != "*"
+  end
+
+  def show_possible_moves(available_node_list)
+    possible_moves_maze_array = maze_array.dup
+    available_node_list.keys.each { |node| possible_moves_maze_array[node.first][node.last] = "0" }
+    puts possible_moves_maze_array
+    available_node_list.keys.each { |node| possible_moves_maze_array[node.first][node.last] = " " }
+    possible_moves_scores = @path_scores.select { |node, scores| available_node_list.include?(node) }
+    possible_moves_scores.each {|node, scores| puts "#{node} : #{scores}" }
   end
 
   def current_node
