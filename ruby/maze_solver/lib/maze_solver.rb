@@ -1,6 +1,10 @@
 require "byebug"
 require "set"
 
+#
+# Solver for text maze files. It solves maze1.txt file by default.
+# Takes maze file as parameter
+#
 class MazeSolver
   def initialize(filename)
     @filename = filename
@@ -13,7 +17,8 @@ class MazeSolver
   end
 
   def solve
-      a_star
+    raise "no start or end node!" if [@end, @start].any?(&:nil?)
+    a_star
   end
 
   private
@@ -40,7 +45,7 @@ class MazeSolver
       # get current paths
       current_paths = {}
       adjacent_nodes.each do |node|
-        if is_empty?(node) && !@closed_list.include?(node) 
+        if in_bounds?(node) && is_empty?(node) && !@closed_list.include?(node) && node != @start
           @open_list[node] = parent_node 
           current_paths[node] = parent_node
         end
@@ -63,6 +68,12 @@ class MazeSolver
         return false
       end
     end
+  end
+
+  def in_bounds?(node)
+    maze_rows, maze_columns = maze_array.length, maze_array.max.length
+    node_row, node_column = node.first, node.last
+    maze_rows > node_row && maze_columns > node_column
   end
 
   def path_found?
