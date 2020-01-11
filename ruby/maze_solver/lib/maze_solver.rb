@@ -59,7 +59,20 @@ class MazeSolver
       end
       
       # Path scoring for possible paths
-      @path_scores.merge!(current_paths_scores(current_paths))
+      # update nodes only if G from current node is less than from it's parent 
+      current_paths_scores = path_scores(current_paths)
+      best_nodes = current_paths.reject do |node|
+        
+        if @path_scores.include?(node)
+          current_paths_scores[node][:g] >= @path_scores[node][:g]
+        end
+      end
+
+      # prioritize new nodes and old nodes with better G going from current node
+      current_paths = best_nodes if !best_nodes.empty?
+      
+      @path_scores.merge!(path_scores(current_paths))
+      
       # Continuing the Search
       best_node = fastest_node(current_paths)
       @closed_list << best_node
@@ -98,21 +111,17 @@ class MazeSolver
     puts maze_array
   end
 
-  def current_paths_scores(node_list)
+  def path_scores(node_list)
     path_scores = {}
-    node_list.each { |node, parent_node| path_scores[node] = path_score(node, parent_node) }
+    node_list.each { |node, parent_node| path_scores[node] = node_score(node, parent_node) }
     path_scores
   end
   
-  def path_score(node, parent_node)
+  def node_score(node, parent_node)
     g = calculate_g(node, parent_node)
     unless parent_node == @start 
       parent_g_value = @path_scores[parent_node][:g]
       g += parent_g_value
-      if @path_scores.include?(node)
-        old_g = @path_scores[node][:g]
-        return @path_scores[node] if g >= old_g
-      end
     end
     h = calculate_h(node)
     f = g + h
@@ -162,7 +171,7 @@ class MazeSolver
   end
 
   def show_possible_moves(available_node_list)
-    possible_moves_maze_array = maze_array.dup
+    possible_moves_maze_array = maze_array.map(&:clone)
     available_node_list.keys.each { |node| possible_moves_maze_array[node.first][node.last] = "0" }
     puts possible_moves_maze_array
     available_node_list.keys.each { |node| possible_moves_maze_array[node.first][node.last] = " " }
