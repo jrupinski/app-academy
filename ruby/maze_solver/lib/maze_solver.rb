@@ -54,6 +54,7 @@ class MazeSolver
       # no more paths on current path - start from another node
       if current_paths.empty? && @open_list.count > 1
         go_to(@start)
+        clean_marks
         next
       end
       
@@ -116,6 +117,10 @@ class MazeSolver
     h = calculate_h(node)
     f = g + h
     { f: f, g: g, h: h }
+  end
+
+  def clean_marks
+    @closed_list.each { |node| maze_array[node.first][node.last] = " "}
   end
   
   def fastest_node(node_list)
