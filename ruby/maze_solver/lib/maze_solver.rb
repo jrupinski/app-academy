@@ -13,7 +13,6 @@ class MazeSolver
   end
 
   def solve
-      # fix heuristics
       a_star
   end
 
@@ -29,48 +28,48 @@ class MazeSolver
     puts maze_array
   end
 
+  
+  # helper methods
   def a_star
     # Todo: Fix heuristics
     closed_list = []
     @path_scores = {}
-    parent_node = @start
+    open_list = { @start => @start }
     loop do
-      debugger
       # Starting the search
-      open_list = { current_node => parent_node }
       parent_node = current_node
-      open_list.delete(parent_node)
-
       # get current paths
+      current_paths = {}
       adjacent_nodes.each do |node|
-        if is_empty?(node) && !closed_list.include?(node) && node != @start
+        if is_empty?(node) && !closed_list.include?(node) 
           open_list[node] = parent_node 
+          current_paths[node] = parent_node
         end
       end
-        
-      # Path scoring for open list
-      @path_scores.merge!(current_path_scores(open_list))
+      
+      # Path scoring for possible paths
+      @path_scores.merge!(current_paths_scores(current_paths))
       # Continuing the Search
-      show_possible_moves(open_list)
-      go_to(fastest_node(open_list))
-      closed_list << current_node
-
+      show_possible_moves(current_paths)
+      best_node = fastest_node(current_paths)
+      closed_list << best_node
+      go_to(best_node)
+      
       place_mark
-    
-      return true if closed_list.include?(@end)
+      
       return false if open_list.empty?
+      return true if closed_list.include?(@end)
     end
   end
-  
-  # helper methods
-  def current_path_scores(node_list)
+
+  def current_paths_scores(node_list)
     path_scores = {}
     node_list.each { |node, parent_node| path_scores[node] = path_score(node, parent_node) }
     path_scores
   end
-
+  
   def path_score(node, parent_node)
-    g = calculate_g(node)
+    g = calculate_g(node, parent_node)
     unless parent_node == @start 
       parent_g_value = @path_scores[parent_node][:g]
       g += parent_g_value
@@ -90,12 +89,12 @@ class MazeSolver
   end
 
   # G - distance from starting point - 10 points for each square, 14 for diagonal
-  def calculate_g(node)
+  def calculate_g(node, parent_node)
     node_row, node_column = node.first, node.last
-    start_row, start_column = @start.first, @start.last
+    parent_row, parent_column = parent_node.first, parent_node.last
 
-    vertical_distance = (start_row - node_row).abs 
-    horizontal_distance = (start_column - node_column).abs
+    vertical_distance = (parent_row - node_row).abs 
+    horizontal_distance = (parent_column - node_column).abs
     diagonal_distance = [vertical_distance, horizontal_distance].min
     # recalculate how many squares are left after diagonals
     unless diagonal_distance == 0
