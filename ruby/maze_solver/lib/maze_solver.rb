@@ -35,7 +35,6 @@ class MazeSolver
   
   # helper methods
   def a_star
-    # Todo: Fix heuristics
     @closed_list = []
     @path_scores = {}
     @open_list = { @start => @start }
@@ -102,7 +101,7 @@ class MazeSolver
   end
 
   def no_paths_left?
-    @open_list.one? # starting node only?
+    @open_list.one? || adjacent_nodes.all? { |node| @closed_list.include?(node) } # starting node only?
   end
     
 
@@ -128,20 +127,17 @@ class MazeSolver
     { f: f, g: g, h: h }
   end
 
-  def clean_marks
-    @closed_list.each { |node| maze_array[node.first][node.last] = " "}
-  end
   
   def fastest_node(node_list)
     node_scores = @path_scores.select { |node, score| node_list.include?(node) }
     node_scores.min_by { |node, scores| scores[:f] }.first 
   end
-
+  
   # G - distance from starting point - 10 points for each square, 14 for diagonal
   def calculate_g(node, parent_node)
     node_row, node_column = node.first, node.last
     parent_row, parent_column = parent_node.first, parent_node.last
-
+    
     vertical_distance = (parent_row - node_row).abs 
     horizontal_distance = (parent_column - node_column).abs
     diagonal_distance = [vertical_distance, horizontal_distance].min
@@ -153,57 +149,66 @@ class MazeSolver
     # calculate G
     diagonal_distance * 14 + (vertical_distance + horizontal_distance) * 10
   end
-
+  
   # H - distance to end point, based on Manhattan method (literal straight distance)
   def calculate_h(node)
     node_row, node_column = node.first, node.last
     end_row, end_column = @end.first, @end.last
-
+    
     vertical_distance = (end_row - node_row).abs 
     horizontal_distance = (end_column - node_column).abs
-
+    
     (vertical_distance + horizontal_distance) * 10
   end
-
+  
   def is_empty?(node)
     row, col = node.first, node.last
     maze_array[row][col] != "*"
   end
-
-  def show_possible_moves(available_node_list)
-    possible_moves_maze_array = maze_array.map(&:clone)
-    available_node_list.keys.each { |node| possible_moves_maze_array[node.first][node.last] = "0" }
-    puts possible_moves_maze_array
-    available_node_list.keys.each { |node| possible_moves_maze_array[node.first][node.last] = " " }
-    possible_moves_scores = @path_scores.select { |node, scores| available_node_list.include?(node) }
-    possible_moves_scores.each {|node, scores| puts "#{node} : #{scores}" }
-  end
-
+  
   def current_node
     [current_row, current_column]
   end
-
+  
   def current_row
     @current_pos.first
   end
-
+  
   def current_column
     @current_pos.last
   end
-
+  
   def adjacent_nodes
     nodes = Set.new
     (-1..1).each do |row|
       (-1..1).each do |col|
-        adjacent_node = [current_row + row, current_column + col]
-        nodes << adjacent_node if !nodes.include?(adjacent_node)
+        adjacent_node = [(current_row + row).abs, (current_column + col).abs]
+        nodes << adjacent_node if !nodes.include?(adjacent_node) && in_bounds?(adjacent_node)
       end
     end
-
+    
     nodes
   end
 end
 
+# DEBUG METHODS
+def show_possible_moves(available_node_list)
+  possible_moves_maze_array = maze_array.map(&:clone)
+  available_node_list.keys.each { |node| possible_moves_maze_array[node.first][node.last] = "0" }
+  puts possible_moves_maze_array
+  possible_moves_scores = @path_scores.select { |node, scores| available_node_list.include?(node) }
+  possible_moves_scores.each {|node, scores| puts "#{node} : #{scores}" }
+end
+
+def clean_marks
+  @closed_list.each { |node| maze_array[node.first][node.last] = " "}
+end
+
+def show_closed
+  closed_maze = maze_array.map(&:clone)
+  @closed_list.each { |node| closed_maze[node.first][node.last] = "C" }
+  puts closed_maze
+end
 
 if $PROGRAM_NAME == __FILE__
   filename = ARGV[0] || "maze1.txt"
