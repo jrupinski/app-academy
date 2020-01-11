@@ -18,7 +18,12 @@ class MazeSolver
 
   def solve
     raise "no start or end node!" if [@end, @start].any?(&:nil?)
+    puts "a_star:"
     a_star
+
+    clean_marks
+    puts "dijkstra: "
+    dijkstra
   end
 
   private
@@ -89,6 +94,71 @@ class MazeSolver
       end
     end
   end
+  
+
+  def dijkstra
+    @closed_list = []
+    @path_scores = {}
+    @open_list = { @start => @start }
+    go_to(@start)
+    loop do
+      # Starting the search
+      parent_node = current_node
+      # get current paths
+      current_paths = {}
+      adjacent_nodes.each do |node|
+        if in_bounds?(node) && is_empty?(node) && !@closed_list.include?(node) && node != @start
+          @open_list[node] = parent_node 
+          current_paths[node] = parent_node
+        end
+      end
+
+      # no more paths on current path - start from another node
+      if current_paths.empty? && @open_list.count > 1
+        go_to(@start)
+        clean_marks
+        next
+      end
+      
+      # Path scoring for possible paths
+      # update nodes only if G from current node is less than from it's parent 
+      current_paths_scores = dijkstra_path_scores(current_paths)
+      best_nodes = current_paths.reject do |node|
+        if @path_scores.include?(node)
+          current_paths_scores[node][:g] >= @path_scores[node][:g]
+        end
+      end
+      
+      # prioritize new nodes and old nodes with better G going from current node
+      current_paths = best_nodes if !best_nodes.empty?
+      
+      # remove diagonal nodes for dijkstra
+      current_paths.reject! do |node|
+        node_row, node_column = node.first, node.last
+        current_node_row, current_node_column = current_node.first, current_node.last
+        
+        node_row != current_node_row && node_column != current_node_column
+      end
+      
+      @path_scores.merge!(dijkstra_path_scores(current_paths))
+      
+      # Continuing the Search
+      best_node = fastest_node(current_paths)
+      @closed_list << best_node
+      @open_list.delete(best_node)
+      go_to(best_node)
+      
+      place_mark unless [@start, @end].include?(current_node) 
+      
+      if path_found?
+        print_path
+        return true
+      elsif no_paths_left?
+        puts "No path to exit found"
+        return false
+      end
+    end
+  end
 
   def in_bounds?(node)
     maze_rows, maze_columns = maze_array.length, maze_array.max.length
@@ -128,9 +198,25 @@ class MazeSolver
   end
 
   
+  # dijkstra has H = 0, so update H and F accordingly
+  def dijkstra_path_scores(node_list)
+    path_scores = {}
+    node_list.each { |node, parent_node| path_scores[node] = dijkstra_node_score(node, parent_node) }
+    path_scores
+  end
+
+  def dijkstra_node_score(node, parent_node)
+    dijkstra_scores = node_score(node, parent_node)
+    dijkstra_scores[:h] = 0
+    dijkstra_scores[:f] = dijkstra_scores[:g] + dijkstra_scores[:h]
+    dijkstra_scores
+  end
+
+  
   def fastest_node(node_list)
     node_scores = @path_scores.select { |node, score| node_list.include?(node) }
-    node_scores.min_by { |node, scores| scores[:f] }.first 
+    min_f = node_scores.values.min_by { |scores| scores[:f] }
+    node_scores.keys.select { |node| node_scores[node] == min_f }.last
   end
   
   # G - distance from starting point - 10 points for each square, 14 for diagonal
@@ -201,7 +287,7 @@ def show_possible_moves(available_node_list)
 end
 
 def clean_marks
-  @closed_list.each { |node| maze_array[node.first][node.last] = " "}
+  @closed_list.each { |node| maze_array[node.first][node.last] = " " unless node == @end}
 end
 
 def show_closed
