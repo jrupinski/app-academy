@@ -25,24 +25,23 @@ class MazeSolver
 
   def place_mark
     maze_array[current_row][current_column] = "X"
-    puts maze_array
   end
 
   
   # helper methods
   def a_star
     # Todo: Fix heuristics
-    closed_list = []
+    @closed_list = []
     @path_scores = {}
-    open_list = { @start => @start }
+    @open_list = { @start => @start }
     loop do
       # Starting the search
       parent_node = current_node
       # get current paths
       current_paths = {}
       adjacent_nodes.each do |node|
-        if is_empty?(node) && !closed_list.include?(node) 
-          open_list[node] = parent_node 
+        if is_empty?(node) && !@closed_list.include?(node) 
+          @open_list[node] = parent_node 
           current_paths[node] = parent_node
         end
       end
@@ -50,16 +49,34 @@ class MazeSolver
       # Path scoring for possible paths
       @path_scores.merge!(current_paths_scores(current_paths))
       # Continuing the Search
-      show_possible_moves(current_paths)
       best_node = fastest_node(current_paths)
-      closed_list << best_node
+      @closed_list << best_node
       go_to(best_node)
       
-      place_mark
+      place_mark unless [@start, @end].include?(current_node) 
       
-      return false if open_list.empty?
-      return true if closed_list.include?(@end)
+      if path_found?
+        print_path
+        return true
+      elsif no_paths_left?
+        puts "No path to exit found"
+        return false
+      end
     end
+  end
+
+  def path_found?
+    @closed_list.include?(@end)
+  end
+
+  def no_paths_left?
+    @open_list.empty?
+  end
+    
+
+  def print_path
+    puts "Path found!"
+    puts maze_array
   end
 
   def current_paths_scores(node_list)
