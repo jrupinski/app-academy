@@ -50,12 +50,19 @@ class MazeSolver
           current_paths[node] = parent_node
         end
       end
+
+      # no more paths on current path - start from another node
+      if current_paths.empty? && @open_list.count > 1
+        go_to(@start)
+        next
+      end
       
       # Path scoring for possible paths
       @path_scores.merge!(current_paths_scores(current_paths))
       # Continuing the Search
       best_node = fastest_node(current_paths)
       @closed_list << best_node
+      @open_list.delete(best_node)
       go_to(best_node)
       
       place_mark unless [@start, @end].include?(current_node) 
@@ -81,7 +88,7 @@ class MazeSolver
   end
 
   def no_paths_left?
-    @open_list.empty?
+    @open_list.one? # starting node only?
   end
     
 
