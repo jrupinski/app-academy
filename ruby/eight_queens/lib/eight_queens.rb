@@ -12,15 +12,22 @@ class EightQueens
     # TODO
   end
   
-  def no_piece_diagonally?(row)
-    board.each(&:one?)
+  def cannot_be_attacked?(position_row, position_column)
+    no_attacks_vertically(position_row, position_column)
+    no_attacks_horizontally(position_row, position_column)
+    no_attacks_diagonally(position_row, position_column)
   end
 
-  def no_piece_vertically?(column)
-    board.transpose.each(&:one?)
+  def no_attacks_horizontally?
+    a.board.none? { |row| row.count(true) > 1 }
   end
 
-  def no_piece_horizontally?
+  def no_attacks_vertically?
+    a.board.transpose.none? { |column| column.count(true) > 1 }
+  end
+
+  # TODO: Check EVERY diagonal
+  def no_attacks_diagonally?(row)
     diagonal_left = []
     (0...board.length).each do |row|
       column = row
