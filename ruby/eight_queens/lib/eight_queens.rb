@@ -16,27 +16,26 @@ class EightQueens
     positions
   end
   
-  def cannot_be_attacked?(position_row, position_column)
-    no_attacks_vertically(position_row, position_column)
-    no_attacks_horizontally(position_row, position_column)
-    no_attacks_diagonally(position_row, position_column)
+  def no_conflicts?
+    no_attacks_vertically? && no_attacks_horizontally? && no_attacks_diagonally?
   end
 
   def no_attacks_horizontally?
-    a.board.none? { |row| row.count(true) > 1 }
+    board.none? { |row| row.count(true) > 1 }
   end
 
   def no_attacks_vertically?
-    a.board.transpose.none? { |column| column.count(true) > 1 }
+    board.transpose.none? { |column| column.count(true) > 1 }
   end
 
   # TODO: Check EVERY diagonal
-  def no_attacks_diagonally?(row)
-    diagonal_left = []
-    (0...board.length).each do |row|
-      column = row
-      diagonal_left << board[row][column]
-      diagonal_right << board[row].reverse[column]
+  def no_attacks_diagonally?
+    queens_positions.each_slice(2).none? do |queen_1, queen_2|
+      queen_1_row, queen_1_col = queen_1.first, queen_1.last
+      queen_2_row, queen_2_col = queen_2.first, queen_2.last
+      delta_row = (queen_1_row - queen_2_row).abs
+      delta_column = (queen_1_col - queen_2_col).abs
+      delta_column == delta_row
     end
   end
 
