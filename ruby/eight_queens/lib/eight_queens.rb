@@ -1,5 +1,5 @@
 require "set"
-
+require "byebug"
 #
 # Find positions of eight queens on 8x8 grid where they don't attack each other
 #
@@ -11,13 +11,29 @@ class EightQueens
   end
 
   def get_non_conflict_positions
-    # TODO: create recursive function to permutate all positions
-    
-    # TOO EXPENSIVE, CRASHES TERMINAL
-    possible_placements = Set.new(valid_positions.permutation(8))
+    # UNTESTED, UNCOMMENT AND TEST LATER.
+    # TODO: make this method test each possibility, not check random ones
+=begin
+    until no_conflicts?
+      clean_board
+      place_8_random_queens
+    end
+
+    puts "Correct placement found:\n #{queens_positions.inspect}"
+=end
   end      
 
   private 
+
+  def place_8_random_queens
+    (0...8).to_a.each { |row| place_random_queen(row) }
+  end
+
+
+  def place_random_queen(row)
+    random_column = (0...8).to_a.sample
+    @board[row][random_column] = QUEEN
+  end
 
   def valid_positions
     rows = (1..8).to_a
@@ -26,9 +42,11 @@ class EightQueens
   end    
     
   def queens_positions
+    rows = (1..8).to_a
+    columns = ("a".."h").to_a
     positions = []
     @board.each.with_index do |line, row|
-      line.each.with_index { |position, col| positions << [row, col] if position == QUEEN }
+      line.each.with_index { |position, col| positions << [rows[row], columns[col]] if position == QUEEN }
     end
     positions
   end
