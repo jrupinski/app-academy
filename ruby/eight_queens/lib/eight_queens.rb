@@ -4,22 +4,22 @@ require "set"
 # Find positions of eight queens on 8x8 grid where they don't attack each other
 #
 class EightQueens
+  QUEEN = true
+
   def initialize
     @board = Array.new(8) { Array.new(8, false) }
   end
 
   def get_non_conflict_positions
-    checked_combinations = Set.new
-    possible_combinations = Set.new(possible_positions.repeated_permutation(2))
+    # TODO: create recursive function to permutate all positions
     
-    until no_conflicts?
-      # TODO
-    end
-  end
+    # TOO EXPENSIVE, CRASHES TERMINAL
+    possible_placements = Set.new(valid_positions.permutation(8))
+  end      
 
   private 
 
-  def possible_positions
+  def valid_positions
     rows = (1..8).to_a
     columns = ("a".."h").to_a
     rows.product(columns)
@@ -28,7 +28,7 @@ class EightQueens
   def queens_positions
     positions = []
     @board.each.with_index do |line, row|
-      line.each.with_index { |position, col| positions << [row, col] if position == true }
+      line.each.with_index { |position, col| positions << [row, col] if position == QUEEN }
     end
     positions
   end
@@ -38,11 +38,11 @@ class EightQueens
   end
   
   def no_conflicts_horizontally?
-    @board.none? { |row| row.count(true) > 1 }
+    @board.none? { |row| row.count(QUEEN) > 1 }
   end
   
   def no_conflicts_vertically?
-    @board.transpose.none? { |column| column.count(true) > 1 }
+    @board.transpose.none? { |column| column.count(QUEEN) > 1 }
   end
   
   def no_conflicts_diagonally?
