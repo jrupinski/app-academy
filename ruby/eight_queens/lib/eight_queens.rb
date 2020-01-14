@@ -9,16 +9,22 @@ class EightQueens
   end
 
   def get_non_conflict_positions
-    # TODO
-    # until no_conflicts
-    #   8.times do
-    #     (0...8).each do |row|
-    #       (0...8).each do |col|
-    #       position = [row][col]
+    checked_combinations = Set.new
+    possible_combinations = Set.new(possible_positions.repeated_permutation(2))
+    
+    until no_conflicts?
+      # TODO
+    end
   end
 
   private 
 
+  def possible_positions
+    rows = (1..8).to_a
+    columns = ("a".."h").to_a
+    rows.product(columns)
+  end    
+    
   def queens_positions
     positions = []
     @board.each.with_index do |line, row|
