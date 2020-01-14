@@ -8,8 +8,12 @@ class EightQueens
     @board = Array.new(8) { Array.new(8, false) }
   end
   
-  def find_position
-    # TODO
+  def queens_positions
+    positions = []
+    board.each.with_index do |line, row|
+      line.each.with_index { |position, col| positions << [row, col] if position == true }
+    end
+    positions
   end
   
   def cannot_be_attacked?(position_row, position_column)
@@ -41,5 +45,5 @@ class EightQueens
 end
   
 if $PROGRAM_NAME == __FILE__
-  EightQueens.new.find_position
+  # TODO
 end
