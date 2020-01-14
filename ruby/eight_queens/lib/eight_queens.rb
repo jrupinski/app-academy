@@ -8,8 +8,17 @@ class EightQueens
     @board = Array.new(8) { Array.new(8, false) }
   end
 
+  def get_non_conflict_positions
+    # TODO
+    # until no_conflicts
+    #   8.times do
+    #     (0...8).each do |row|
+    #       (0...8).each do |col|
+    #       position = [row][col]
+  end
+
   private 
-  
+
   def queens_positions
     positions = []
     @board.each.with_index do |line, row|
@@ -39,8 +48,12 @@ class EightQueens
       delta_column == delta_row
     end
   end
+
+  def clean_board
+    @board.map { |row| row.fill(false) }
+  end
 end
 
 if $PROGRAM_NAME == __FILE__
-  # TODO
+  EightQueens.new.get_non_conflict_positions
 end
