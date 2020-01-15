@@ -11,16 +11,14 @@ class EightQueens
   end
 
   def get_non_conflict_positions
-    # UNTESTED, UNCOMMENT AND TEST LATER.
     # TODO: make this method test each possibility, not check random ones
-=begin
     until no_conflicts? && queens_positions.count == 8
       clean_board
       place_8_random_queens
     end
 
     puts "Correct placement found:\n #{queens_positions_formatted.inspect}"
-=end
+    @board.each { |row| puts "#{row}" }
   end      
 
   private 
@@ -71,7 +69,7 @@ class EightQueens
   end
   
   def no_conflicts_diagonally?
-    queens_positions.each_slice(2).none? do |queen_1, queen_2|
+    queens_positions.permutation(2).none? do |queen_1, queen_2|
       queen_1_row, queen_1_col = queen_1.first, queen_1.last
       queen_2_row, queen_2_col = queen_2.first, queen_2.last
       delta_row = (queen_1_row - queen_2_row).abs
