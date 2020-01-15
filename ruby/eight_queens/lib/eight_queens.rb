@@ -14,12 +14,12 @@ class EightQueens
     # UNTESTED, UNCOMMENT AND TEST LATER.
     # TODO: make this method test each possibility, not check random ones
 =begin
-    until no_conflicts?
+    until no_conflicts? && queens_positions.count == 8
       clean_board
       place_8_random_queens
     end
 
-    puts "Correct placement found:\n #{queens_positions.inspect}"
+    puts "Correct placement found:\n #{queens_positions_formatted.inspect}"
 =end
   end      
 
@@ -42,15 +42,22 @@ class EightQueens
   end    
     
   def queens_positions
-    rows = (1..8).to_a
-    columns = ("a".."h").to_a
     positions = []
     @board.each.with_index do |line, row|
-      line.each.with_index { |position, col| positions << [rows[row], columns[col]] if position == QUEEN }
+      line.each.with_index { |position, col| positions << [row, col] if position == QUEEN }
     end
     positions
   end
   
+  def queens_positions_formatted
+    rows = (1..8).to_a
+    columns = ("a".."h").to_a
+    queens_positions.map do |queen_pos|
+      queen_row, queen_column = queen_pos.first, queen_pos.last
+      [rows[queen_row], columns[queen_column]] 
+    end
+  end
+
   def no_conflicts?
     no_conflicts_vertically? && no_conflicts_horizontally? && no_conflicts_diagonally?
   end
