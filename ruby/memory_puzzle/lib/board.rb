@@ -73,7 +73,7 @@ class Board
   end
 
   def all_cards_revealed?
-    # TODO
+    @board.flatten.none? { |card| card.value.nil? }
   end
 
 end
