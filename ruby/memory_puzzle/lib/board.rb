@@ -2,6 +2,7 @@ require_relative "card.rb"
 
 class Board
   def initialize(size)
+    raise "Size error - wrong size for card pairs" if !size.even?
     @board = Array.new(size) { Array.new(size) }
   end
 
@@ -21,8 +22,7 @@ class Board
     reveal_card(row, col)
   end
 
-  # TODO - implement private methods
-  # private
+  private
 
   def fill_board_with_card_pairs
     shuffled_cards = generate_card_pairs.shuffle
@@ -65,7 +65,7 @@ class Board
       print "#{row_idx}\t"
 
       row.each.with_index do |card|
-        if card.value.nil?
+        if card.nil? || card.value.nil?
           print " \t"
         else
           print "#{card}\t"
