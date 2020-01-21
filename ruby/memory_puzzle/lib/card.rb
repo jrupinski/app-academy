@@ -4,23 +4,19 @@ class Card
     @face_up = false
   end
 
-  def show_value
-    value
-  end
-  
-  private
-
   def value
     @face_up ? @value : nil
+  end
+
+  def reveal
+    @face_up = true
   end
   
   def hide
     @face_up = false
   end
 
-  def reveal
-    @face_up = true
-  end
+  private
 
   def to_s
     @value.to_s

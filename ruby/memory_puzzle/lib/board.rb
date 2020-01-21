@@ -64,8 +64,12 @@ class Board
     end
   end
 
-  def reveal_card(position)
-    # TODO
+  def reveal_card(row, col)
+    card = @board[row][col]
+    if card.value.nil?
+      card.reveal
+      card.value
+    end
   end
 
   def all_cards_revealed?
