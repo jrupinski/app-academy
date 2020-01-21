@@ -6,7 +6,7 @@ class Board
   end
 
   def populate
-    fill_board_with_cards
+    fill_board_with_card_pairs
   end
 
   def render
@@ -24,8 +24,14 @@ class Board
   # TODO - implement private methods
   # private
 
-  def fill_board_with_cards
-    # TODO
+  def fill_board_with_card_pairs
+    shuffled_cards = generate_card_pairs.shuffle
+    
+    (0...@board.size).each do |row|
+      (0...@board.size).each do |col|
+        @board[row][col] = shuffled_cards.pop
+      end
+    end
   end
 
   def generate_card_pairs
