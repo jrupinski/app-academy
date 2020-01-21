@@ -37,7 +37,7 @@ class Board
   def generate_card_pairs
     shuffled_chars = ("A".."Z").to_a.shuffle
     generated_pairs = []
-    number_of_cards.times.each do |card_num|
+    number_of_pairs.times.each do |card_num|
       current_char = shuffled_chars[card_num]
       pair = 2.times.map { Card.new(current_char) }
       generated_pairs += pair
@@ -50,8 +50,18 @@ class Board
     @board.flatten.count
   end
 
+  def number_of_pairs
+    number_of_cards / 2
+  end
+
   def print_current_board
-    # TODO
+    @board.each do |row|
+      row.each do |card|
+        print "#{card}\t"
+      end
+
+      puts
+    end
   end
 
   def reveal_card(position)
