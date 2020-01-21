@@ -17,8 +17,8 @@ class Board
     all_cards_revealed?
   end
 
-  def reveal(guessed_position)
-    reveal_card(guessed_position)
+  def reveal(row, col)
+    reveal_card(row, col)
   end
 
   # TODO - implement private methods
@@ -55,9 +55,21 @@ class Board
   end
 
   def print_current_board
-    @board.each do |row|
-      row.each do |card|
-        print "#{card}\t"
+    # print column coordinates
+    print "\t"
+    (0...@board.length).each { |col| print "#{col}\t"}
+    puts
+    
+    @board.each_with_index do |row, row_idx|
+      # print row coordinates
+      print "#{row_idx}\t"
+
+      row.each.with_index do |card|
+        if card.value.nil?
+          print " \t"
+        else
+          print "#{card}\t"
+        end 
       end
 
       puts
