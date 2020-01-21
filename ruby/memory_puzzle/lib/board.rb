@@ -6,7 +6,7 @@ class Board
   end
 
   def populate
-    fill_board_with(pairs_of_characters)
+    fill_board_with_cards
   end
 
   def render
@@ -22,14 +22,26 @@ class Board
   end
 
   # TODO - implement private methods
-  private
+  # private
 
-  def fill_board_with(characters)
+  def fill_board_with_cards
     # TODO
   end
 
-  def pairs_of_characters
-    # TODO
+  def generate_card_pairs
+    shuffled_chars = ("A".."Z").to_a.shuffle
+    generated_pairs = []
+    number_of_cards.times.each do |card_num|
+      current_char = shuffled_chars[card_num]
+      pair = 2.times.map { Card.new(current_char) }
+      generated_pairs += pair
+    end
+
+    generated_pairs
+  end
+
+  def number_of_cards
+    @board.flatten.count
   end
 
   def print_current_board
