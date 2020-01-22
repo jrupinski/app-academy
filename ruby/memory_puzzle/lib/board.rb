@@ -19,10 +19,23 @@ class Board
   end
 
   def reveal(row, col)
+    raise "Coordinates out of bounds." if !in_grid?(row, col)
     reveal_card(row, col)
   end
 
   private
+
+  def reveal_card(row, col)
+    card = @board[row][col]
+    if card.value.nil?
+      card.reveal
+      card.value
+    end
+  end
+
+  def all_cards_revealed?
+    @board.flatten.none? { |card| card.value.nil? }
+  end
 
   def fill_board_with_card_pairs
     shuffled_cards = generate_card_pairs.shuffle
@@ -44,14 +57,6 @@ class Board
     end
 
     generated_pairs
-  end
-
-  def number_of_cards
-    @board.flatten.count
-  end
-
-  def number_of_pairs
-    number_of_cards / 2
   end
 
   def print_current_board
@@ -76,16 +81,15 @@ class Board
     end
   end
 
-  def reveal_card(row, col)
-    card = @board[row][col]
-    if card.value.nil?
-      card.reveal
-      card.value
-    end
+  def in_grid?(row, col)
+    (row <= @board.length && col <= @board.length) && (row >= 0 && col >= 0)
   end
 
-  def all_cards_revealed?
-    @board.flatten.none? { |card| card.value.nil? }
+  def number_of_cards
+    @board.flatten.count
   end
 
+  def number_of_pairs
+    number_of_cards / 2
+  end
 end
