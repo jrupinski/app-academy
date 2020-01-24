@@ -12,7 +12,11 @@ class Game
       render_board
       position = prompt_for_input
       make_guess(position)
+      clear_terminal
     end
+
+    render_board
+    puts "GAME OVER!"
   end
 
   private
@@ -30,10 +34,15 @@ class Game
   end
 
   def make_guess(position)
-    current_card = reveal_card(position)
+    reveal_card(position)
+    current_card = position
+
     if checking_another_card?
-      unless @previous_guess == current_card
-        [@previous_guess, current_card].each(&:hide)
+      unless @board[@previous_guess] == @board[current_card]
+        render_board
+        puts "try again"
+        sleep 2
+        [@previous_guess, current_card].each { |pos| @board[pos].hide }
       end
       
       @previous_guess = nil
@@ -55,6 +64,10 @@ class Game
 
   def checking_another_card?
     @previous_guess.nil? ? false : true
+  end
+
+  def clear_terminal
+    system 'clear'
   end
 end
 

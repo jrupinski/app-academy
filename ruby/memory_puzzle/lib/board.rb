@@ -23,6 +23,11 @@ class Board
     reveal_card(row, col)
   end
 
+  def [](position)
+    row, col = position
+    @board[row][col]
+  end
+
   private
 
   def reveal_card(row, col)
