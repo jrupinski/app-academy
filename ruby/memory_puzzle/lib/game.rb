@@ -10,7 +10,8 @@ class Game
     generate_board
     until game_over
       render_board
-      check_pair_of_cards
+      position = prompt_for_input
+      make_guess(position)
     end
   end
 
@@ -20,28 +21,40 @@ class Game
     @board.render
   end
 
-  def check_pair_of_cards
-    # TODO
-  end
-
   def generate_board
     @board.populate
   end
 
   def game_over
-    @board.win?
+    @board.won?
   end
 
-  def reveal_card
-    row, col = get_user_coordinates
-    @previous_guess = @board.reveal(row, col)
+  def make_guess(position)
+    current_card = reveal_card(position)
+    if checking_another_card?
+      unless @previous_guess == current_card
+        [@previous_guess, current_card].each(&:hide)
+      end
+      
+      @previous_guess = nil
+    else
+      @previous_guess = current_card
+    end
   end
 
-  def get_user_coordinates
+  def prompt_for_input
     print  "Enter row and col numbers, separated by a comma:"
     input = gets.chomp
     # convert string "n, n" to number array [n, n]
     input.split.map(&:to_i)
+  end
+
+  def reveal_card(position)
+    @board.reveal(*position)
+  end
+
+  def checking_another_card?
+    @previous_guess.nil? ? false : true
   end
 end
 
