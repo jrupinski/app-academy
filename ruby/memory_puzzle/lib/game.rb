@@ -1,16 +1,18 @@
 require_relative "board.rb"
+require_relative "human_player.rb"
 
 class Game
   def initialize(size = 4)
     @board = Board.new(size)
     @previous_guess = nil
+    @player = HumanPlayer.new
   end
 
   def play
     generate_board
     until game_over
       render_board
-      position = prompt_for_input
+      position = @player.prompt_for_input
       make_guess(position)
       clear_terminal
     end
@@ -49,13 +51,6 @@ class Game
     else
       @previous_guess = current_card
     end
-  end
-
-  def prompt_for_input
-    print  "Enter row and col numbers, separated by a comma:"
-    input = gets.chomp
-    # convert string "n, n" to number array [n, n]
-    input.split.map(&:to_i)
   end
 
   def reveal_card(position)
