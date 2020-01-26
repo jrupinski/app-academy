@@ -1,4 +1,8 @@
 class HumanPlayer
+  def guess
+    prompt_for_input
+  end
+
   def prompt_for_input
     print  "Enter row and col numbers, separated by a comma:"
     get_input
