@@ -76,7 +76,11 @@ class AiPlayer
   def choose_random_unknown_card
     # based on board size 4
     all_positions = (0...4).to_a.repeated_permutation(2).to_a
-    all_positions.reject { |pos| @matched_cards.include?(pos || @first_card) }.sample
+    all_positions
+      .reject do |pos|
+        [*@matched_cards, *@known_cards, @first_card].include?(pos)
+      end
+      .sample
   end
 
   def add_received_card(value, position)
@@ -92,6 +96,6 @@ class AiPlayer
   end
 
   def remove_from_known_cards(card_1_position, card_2_position)
-    @known_cards.delete_if { |k, v| v == card_1_position || card_2_position }
+    @known_cards.delete_if { |k, v| v.include?(card_1_position || card_2_position) }
   end
 end
