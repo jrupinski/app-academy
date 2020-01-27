@@ -1,24 +1,41 @@
+require "set"
+
 class AiPlayer
   def initialize
     @known_cards = Hash.new { |hash, key| hash[key] = Array.new }
     @matched_cards = Set.new
+    @first_card_guessed = false
   end
 
   def guess
-    [first_card_guess, second_card_guess]
+    if @first_card_guessed
+      second_guess
+    else
+      first_guess
+    end
   end
 
   def receive_revealed_card(value, position)
     add_received_card(value, position)
   end
-
+  
   def receive_match(card_1_position, card_2_position)
     add_matched_cards(card_1_position, card_2_position)
   end
-
-  private
   
-    def first_card_guess
+  private
+
+  def first_guess
+    @first_card_guessed = true
+    first_card_guess
+  end
+
+  def second_guess
+    @first_card_guessed = false
+    second_card_guess
+  end
+  
+  def first_card_guess
       unless unmatched_pairs.empty?
         @first_card = guess_unmatched_card_position
       else
@@ -59,7 +76,7 @@ class AiPlayer
   def choose_random_unknown_card
     # based on board size 4
     all_positions = (0...4).to_a.repeated_permutation(2).to_a
-    all_positions.reject { |pos| @matched_cards.include?(pos) }.sample
+    all_positions.reject { |pos| @matched_cards.include?(pos || @first_card) }.sample
   end
 
   def add_received_card(value, position)
