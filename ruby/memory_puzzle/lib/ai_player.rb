@@ -5,8 +5,7 @@ class AiPlayer
   end
 
   def guess
-    # TODO: Add second card guess
-    first_card = first_card_guess
+    [first_card_guess, second_card_guess]
   end
 
   def receive_revealed_card(value, position)
@@ -18,22 +17,43 @@ class AiPlayer
   end
 
   private
+  
+    def first_card_guess
+      unless unmatched_pairs.empty?
+        @first_card = guess_unmatched_card_position
+      else
+        @first_card = choose_random_unknown_card
+      end
+    end
 
-  def first_card_guess
-    unless unmatched_pairs.empty?
-      guess_unmatched_card
+  def second_card_guess
+    unless first_card_pair.empty?
+      first_card_pair
+      .reject { |pos| pos == @first_card }
+      .flatten
     else
       choose_random_unknown_card
     end
   end
 
   def guess_unmatched_card_position
-    random_matched_pair = unmatched_pairs.values.sample
-    random_matched_pair.sample
+    unless unmatched_pairs.empty?
+      random_matched_pair = unmatched_pairs.values.sample
+      random_matched_pair.sample
+    end
   end
 
   def unmatched_pairs
     @known_cards.select { |cards, pos| pos.count > 1 }
+  end
+
+  def first_card_pair
+    unmatched_pairs
+      .select { |cards, positions| positions.include?(@first_card) }
+      .values
+      .flatten
+      .each_slice(2)
+      .to_a
   end
 
   def choose_random_unknown_card
