@@ -1,20 +1,27 @@
 require_relative "board.rb"
 require_relative "human_player.rb"
+require_relative "ai_player.rb"
 
 class Game
   def initialize(size = 4)
     @board = Board.new(size)
     @previous_guess = nil
-    @player = HumanPlayer.new
+    @players = [HumanPlayer.new, AiPlayer.new]
+    @current_player = 0
   end
 
   def play
     generate_board
     until game_over
-      render_board
-      position = @player.prompt_for_input
-      make_guess(position)
-      clear_terminal
+      2.times do
+        render_board
+        position = current_player.guess
+        update_known_positions
+        make_guess(position)
+        clear_terminal
+      end
+      
+      next_player
     end
 
     render_board
@@ -63,6 +70,18 @@ class Game
 
   def clear_terminal
     system 'clear'
+  end
+
+  def update_known_positions
+    # TODO
+  end
+  
+  def current_player
+    @players[@current_player]
+  end
+
+  def next_player
+    @current_player = (@current_player + 1) % @players.count 
   end
 end
 
