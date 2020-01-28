@@ -10,4 +10,9 @@ class Board
     file_array = file_data.map(&:chars)
     file_array.map { |row| row.map { |value| Tile.new(value, false) } }
   end
+
+  def render
+    @grid.each { |row| row.each { |tile| print "#{tile.to_s} " }; puts }
+    nil
+  end
 end
