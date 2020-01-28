@@ -7,7 +7,7 @@ class Tile
   end
 
   def to_s
-    tile_given? ? @value.to_s.colorize(:red) : @value.to_s.colorize(:blue)
+    tile_given? ? @value.to_s.colorize(:blue) : @value.to_s.colorize(:blue)
   end
   
   def value=(number)
