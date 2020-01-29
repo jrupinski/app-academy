@@ -14,7 +14,7 @@ class Board
   end
 
   def render
-    @grid.each { |row| row.each { |tile| print "#{tile.to_s} " }; puts }
+    grid.each { |row| row.each { |tile| print "#{tile.to_s} " }; puts }
     nil
   end
 
@@ -46,5 +46,9 @@ class Board
 
   def all_columns_solved?
     grid.transpose.all? { |column| row_solved?(column) }
+  end
+
+  def square_solved?(square)
+    row_solved?(square.flatten)
   end
 end
