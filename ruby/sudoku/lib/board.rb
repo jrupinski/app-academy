@@ -1,5 +1,5 @@
 require_relative "tile.rb"
-
+require "byebug"
 class Board
   attr_reader :grid
 
@@ -48,7 +48,38 @@ class Board
     grid.transpose.all? { |column| row_solved?(column) }
   end
 
+  def all_squares_solved?
+    squares = divide_grid_into_squares
+    squares.all? { |square| square_solved?(square) }
+  end
+
   def square_solved?(square)
     row_solved?(square.flatten)
+  end
+
+  def divide_grid_into_squares
+    squares = []
+    grid.each do |row|
+      squares += row.each_slice(3).to_a
+    end
+    debugger
+
+    proper_squares = []
+    (0...squares.length).step(3) do |idx|
+      proper_squares << squares[idx]
+    end
+
+    proper_squares.each_slice(3)
+  end
+
+
+  # helper method
+  def render_squares
+    divide_grid_into_squares.each do |square|
+      square.each { |row| row.each { |tile| print "#{tile.to_s} " }; puts }
+      puts
+    end
+
+    nil
   end
 end
