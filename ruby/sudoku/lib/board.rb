@@ -1,6 +1,8 @@
 require_relative "tile.rb"
 
 class Board
+  attr_reader :grid
+
   def initialize(grid)
     @grid = Board.from_file(grid)
   end
@@ -16,6 +18,14 @@ class Board
     nil
   end
 
+  def solved?
+    all_rows_solved?
+    all_columns_solved?
+    all_squares_solved?
+  end
+  
+  # private
+
   def self.file_array_to_tile_grid(file_array)
     file_array.map do |row|
       row.map do |value|
@@ -24,4 +34,13 @@ class Board
     end
   end
 
+  def all_rows_solved?
+    grid.all? { |row| row_solved?(row) }
+  end
+
+  def row_solved?(row)
+    (1..9).all? do |num|
+      row.one? { |tile| tile.value == num }
+    end
+  end
 end
