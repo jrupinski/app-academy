@@ -43,4 +43,8 @@ class Board
       row.one? { |tile| tile.value == num }
     end
   end
+
+  def all_columns_solved?
+    grid.transpose.all? { |column| row_solved?(column) }
+  end
 end
