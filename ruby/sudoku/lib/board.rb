@@ -1,5 +1,6 @@
 require_relative "tile.rb"
 require "byebug"
+
 class Board
   attr_reader :grid
 
@@ -10,7 +11,7 @@ class Board
   def self.from_file(filename)
     file_data = File.read("../puzzles/#{filename}").split
     file_array = file_data.map(&:chars)
-    # file_array_to_tile_grid(file_array)
+    file_array_to_tile_grid(file_array)
   end
 
   def render
@@ -60,8 +61,6 @@ class Board
   def divide_grid_into_squares
     squares = []
 
-    # create squares for each square column (column length = three tiles)
-    square_column_indexes = (0...grid.length).step(3).to_a
     square_column_indexes.each do |column_num|
       squares += create_square_column(column_num)
     end
@@ -72,6 +71,9 @@ class Board
 
 
   # helper methods
+  def square_column_indexes
+    square_column_indexes = (0...grid.length).step(3).to_a
+  end
 
   def create_square_column(square_column_idx)
     grid.map do |row| 
