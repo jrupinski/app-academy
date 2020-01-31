@@ -58,14 +58,11 @@ class Board
   end
 
   def divide_grid_into_squares
-    sliced_grid = divide_rows_into_squares
     squares = []
 
     # create squares for each square column (column length = three tiles)
     (0...grid_square_width).each do |column_num|
-      (column_num...sliced_grid.length).step(3) do |idx|
-        squares << sliced_grid[idx]
-      end
+      squares += create_square_column(column_num)
     end
 
     # slice each column into squares of 3 height(3x3)
@@ -81,6 +78,17 @@ class Board
     threes = []
     grid.each { |row| threes += row.each_slice(3).to_a }
     threes
+  end
+
+  def create_square_column(column_num)
+    square_column = []
+    sliced_grid = divide_rows_into_squares
+
+    (column_num...sliced_grid.length).step(3) do |idx|
+      square_column << sliced_grid[idx]
+    end
+
+    square_column
   end
 
   def grid_square_width
