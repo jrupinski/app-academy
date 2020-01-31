@@ -1,17 +1,10 @@
 require_relative "tile.rb"
-require "byebug"
 
 class Board
   attr_reader :grid
 
   def initialize(grid)
     @grid = Board.from_file(grid)
-  end
-
-  def self.from_file(filename)
-    file_data = File.read("../puzzles/#{filename}").split
-    file_array = file_data.map(&:chars)
-    file_array_to_tile_grid(file_array)
   end
 
   def render
@@ -24,7 +17,7 @@ class Board
     all_columns_solved?
     all_squares_solved?
   end
-  
+
   private
 
   def all_rows_solved?
@@ -74,6 +67,13 @@ class Board
         row[square_start...square_end]
     end
     .each_slice(3).to_a
+  end
+
+  # generate board from a text file
+  def self.from_file(filename)
+    file_data = File.read("../puzzles/#{filename}").split
+    file_array = file_data.map(&:chars)
+    file_array_to_tile_grid(file_array)
   end
 
   # convert board of chars to board of tiles
