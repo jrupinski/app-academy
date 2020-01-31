@@ -10,7 +10,7 @@ class Board
   def self.from_file(filename)
     file_data = File.read("../puzzles/#{filename}").split
     file_array = file_data.map(&:chars)
-    file_array_to_tile_grid(file_array)
+    # file_array_to_tile_grid(file_array)
   end
 
   def render
@@ -61,7 +61,8 @@ class Board
     squares = []
 
     # create squares for each square column (column length = three tiles)
-    (0...grid_square_width).each do |column_num|
+    square_column_indexes = (0...grid.length).step(3).to_a
+    square_column_indexes.each do |column_num|
       squares += create_square_column(column_num)
     end
 
@@ -72,23 +73,12 @@ class Board
 
   # helper methods
 
-  # divide every row into squares of n=3
-  # eg. [1,2,3,4,5,6,7,8,9] => [1,2,3], [4,5,6], [7,8,9]
-  def divide_rows_into_squares
-    threes = []
-    grid.each { |row| threes += row.each_slice(3).to_a }
-    threes
-  end
-
-  def create_square_column(column_num)
-    square_column = []
-    sliced_grid = divide_rows_into_squares
-
-    (column_num...sliced_grid.length).step(3) do |idx|
-      square_column << sliced_grid[idx]
+  def create_square_column(square_column_idx)
+    grid.map do |row| 
+        square_start = square_column_idx
+        square_end = square_start + 3
+        row[square_start...square_end]
     end
-
-    square_column
   end
 
   def grid_square_width
