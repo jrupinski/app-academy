@@ -11,7 +11,7 @@ class Board
   def self.from_file(filename)
     file_data = File.read("../puzzles/#{filename}").split
     file_array = file_data.map(&:chars)
-    # file_array_to_tile_grid(file_array)
+    file_array_to_tile_grid(file_array)
   end
 
   def render
@@ -25,25 +25,12 @@ class Board
     all_squares_solved?
   end
   
-  # private
-
-  def self.file_array_to_tile_grid(file_array)
-    file_array.map do |row|
-      row.map do |value|
-        value.to_i > 0 ? Tile.new(value, false) : Tile.new(value)
-      end
-    end
-  end
+  private
 
   def all_rows_solved?
     grid.all? { |row| row_solved?(row) }
   end
 
-  def row_solved?(row)
-    (1..9).all? do |num|
-      row.one? { |tile| tile.value == num }
-    end
-  end
 
   def all_columns_solved?
     grid.transpose.all? { |column| row_solved?(column) }
@@ -54,6 +41,14 @@ class Board
     squares.all? { |square| square_solved?(square) }
   end
 
+  # helper methods
+
+  def row_solved?(row)
+    (1..9).all? do |num|
+      row.one? { |tile| tile.value == num }
+    end
+  end
+  
   def square_solved?(square)
     row_solved?(square.flatten)
   end
@@ -68,8 +63,6 @@ class Board
     squares
   end
 
-
-  # helper methods
   def square_column_indexes
     square_column_indexes = (0...grid.length).step(3).to_a
   end
@@ -83,16 +76,12 @@ class Board
     .each_slice(3).to_a
   end
 
-  def grid_square_width
-    grid.length / 3
-  end
-
-  def render_squares
-    divide_grid_into_squares.each do |square|
-      square.each { |row| row.each { |tile| print "#{tile.to_s} " }; puts }
-      puts
+  # convert board of chars to board of tiles
+  def self.file_array_to_tile_grid(file_array)
+    file_array.map do |row|
+      row.map do |value|
+        value.to_i > 0 ? Tile.new(value, false) : Tile.new(value)
+      end
     end
-
-    nil
   end
 end
