@@ -11,7 +11,7 @@ class Board
   def self.from_file(filename)
     file_data = File.read("../puzzles/#{filename}").split
     file_array = file_data.map(&:chars)
-    file_array_to_tile_grid(file_array)
+    # file_array_to_tile_grid(file_array)
   end
 
   def render
@@ -62,11 +62,10 @@ class Board
     squares = []
 
     square_column_indexes.each do |column_num|
-      squares += create_square_column(column_num)
+      squares += create_squares_from_column(column_num)
     end
 
-    # slice each column into squares of 3 height(3x3)
-    squares.each_slice(3)
+    squares
   end
 
 
@@ -75,12 +74,13 @@ class Board
     square_column_indexes = (0...grid.length).step(3).to_a
   end
 
-  def create_square_column(square_column_idx)
+  def create_squares_from_column(square_column_idx)
     grid.map do |row| 
         square_start = square_column_idx
         square_end = square_start + 3
         row[square_start...square_end]
     end
+    .each_slice(3).to_a
   end
 
   def grid_square_width
