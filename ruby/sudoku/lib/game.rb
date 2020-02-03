@@ -9,7 +9,6 @@ class Game
     until board.solved?
       board.render
       position = get_positon
-      puts "POSITION VALID!"
       value = get_value
     end
   end
@@ -23,12 +22,29 @@ class Game
     end
   end
 
+  def get_value
+    print "Enter value:> "
+    loop do
+      value = parse_value(user_input)
+      return value if valid_value?(value)
+      print "Invalid value (values between 1 and 9 only). Retry:> "
+    end
+  end
+
   def valid_position?(position)
     position.count == 2 && position.all? { |value| value >= 0 && value < board.size }
   end
 
+  def valid_value?(value)
+    value > 0 && value < 10
+  end
+
   def parse_position(input)
     input.split(",").map(&:to_i)
+  end
+
+  def parse_value(input)
+    input.to_i
   end
 
   def user_input
