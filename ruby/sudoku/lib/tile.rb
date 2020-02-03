@@ -1,9 +1,9 @@
 require 'colorize'
 
 class Tile
-  def initialize(value, given = true)
+  def initialize(value)
     @value = value
-    @given = given
+    @given = value == "0" ? false : true
   end
 
   def to_s
@@ -15,7 +15,11 @@ class Tile
   end
   
   def value=(number)
-    tile_given? ? @value = number : false
+    if tile_given?
+      puts "You cannot change the value of this tile."
+    else
+      @value = number
+    end
   end
 
   private
