@@ -3,7 +3,7 @@ require 'colorize'
 class Tile
   def initialize(value)
     @value = value
-    @given = value == "0" ? false : true
+    @given = value == 0 ? false : true
   end
 
   def to_s
@@ -11,7 +11,7 @@ class Tile
   end
 
   def value
-    @value.to_i
+    @value
   end
   
   def value=(number)

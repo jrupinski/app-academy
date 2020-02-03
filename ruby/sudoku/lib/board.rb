@@ -3,8 +3,19 @@ require_relative "tile.rb"
 class Board
   attr_reader :grid
 
+  # generate board from a text file
+  def self.from_file(filename)
+    rows = File.readlines("../puzzles/#{filename}").map(&:chomp)
+    tiles = rows.map do |row|
+      nums = row.chars.map { |char| Integer(char) }
+      nums.map { |num| Tile.new(num) }
+    end
+
+    self.new(tiles)
+  end
+
   def initialize(grid)
-    @grid = Board.from_file(grid)
+    @grid = grid
   end
 
   def render
@@ -79,19 +90,5 @@ class Board
         row[square_start...square_end]
     end
     .each_slice(3).to_a
-  end
-
-  # generate board from a text file
-  def self.from_file(filename)
-    file_data = File.read("../puzzles/#{filename}").split
-    file_array = file_data.map(&:chars)
-    file_array_to_tile_grid(file_array)
-  end
-
-  # convert board of chars to board of tiles
-  def self.file_array_to_tile_grid(file_array)
-    file_array.map do |row|
-      row.map { |value| Tile.new(value) }
-    end
   end
 end

@@ -1,8 +1,13 @@
 require_relative "board.rb"
 
 class Game
-  def initialize(filename)
-    @board = Board.new(filename)
+  def self.from_file(filename)
+    board = Board.from_file(filename)
+    self.new(board)
+  end
+
+  def initialize(board)
+    @board = board
   end
 
   def play
