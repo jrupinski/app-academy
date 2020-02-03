@@ -1,6 +1,6 @@
 require_relative "board.rb"
 
-class Game
+class Sudoku
   def self.from_file(filename)
     board = Board.from_file(filename)
     self.new(board)
