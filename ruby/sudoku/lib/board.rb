@@ -18,6 +18,17 @@ class Board
     all_squares_solved?
   end
 
+  def [](position)
+    row, col = position
+    grid[row][col]
+  end
+
+  def []=(position, value)
+    row, col = position
+    tile = grid[row][col]
+    tile.value = value
+  end
+
   private
 
   def all_rows_solved?
@@ -42,6 +53,7 @@ class Board
     end
   end
   
+  # square is a 3x3 tile
   def square_solved?(square)
     row_solved?(square.flatten)
   end
@@ -79,9 +91,7 @@ class Board
   # convert board of chars to board of tiles
   def self.file_array_to_tile_grid(file_array)
     file_array.map do |row|
-      row.map do |value|
-        value.to_i > 0 ? Tile.new(value, false) : Tile.new(value)
-      end
+      row.map { |value| Tile.new(value) }
     end
   end
 end
