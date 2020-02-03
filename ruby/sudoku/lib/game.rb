@@ -1,22 +1,24 @@
 require_relative "board.rb"
 
 class Game
-  attr_reader :board
-
   def initialize(filename)
     @board = Board.new(filename)
   end
 
   def play
-    until board.solved?
-      board.render
-      position = get_positon
-      value = get_value
-      board[position] = value
-      clear_terminal
-    end
-
+    play_turn until board.solved?
     game_over
+  end
+
+  private
+
+  def play_turn
+    board.render
+    position = get_positon
+    value = get_value
+    board[position] = value
+    pause
+    clear_terminal
   end
 
   def get_positon
@@ -37,6 +39,31 @@ class Game
     end
   end
 
+  def game_over
+    board.render
+    puts "\nSudoku solved!"
+  end
+  
+  # helper methods
+
+  attr_reader :board
+
+  def pause
+    sleep 2 unless board.solved?
+  end
+  
+  def clear_terminal
+    system 'clear'
+  end
+
+  def grid
+    @board.grid
+  end
+
+  def user_input
+    gets.chomp
+  end
+
   def valid_position?(position)
     position.count == 2 && position.all? { |value| value >= 0 && value < grid.size }
   end
@@ -51,24 +78,5 @@ class Game
 
   def parse_value(input)
     input.to_i
-  end
-
-  def user_input
-    gets.chomp
-  end
-
-  def grid
-    @board.grid
-  end
-
-  def clear_terminal
-    sleep(0.5)
-    system 'clear'
-  end
-
-  def game_over
-    puts "Sudoku solved!"
-    board.render
-    sleep 4
   end
 end
