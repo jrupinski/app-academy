@@ -1,6 +1,8 @@
 require_relative "board.rb"
 
 class Game
+  attr_reader :board
+
   def initialize(filename)
     @board = Board.new(filename)
   end
@@ -10,7 +12,11 @@ class Game
       board.render
       position = get_positon
       value = get_value
+      board[position] = value
+      clear_terminal
     end
+
+    game_over
   end
 
   def get_positon
@@ -32,7 +38,7 @@ class Game
   end
 
   def valid_position?(position)
-    position.count == 2 && position.all? { |value| value >= 0 && value < board.size }
+    position.count == 2 && position.all? { |value| value >= 0 && value < grid.size }
   end
 
   def valid_value?(value)
@@ -51,7 +57,18 @@ class Game
     gets.chomp
   end
 
-  def board
+  def grid
     @board.grid
+  end
+
+  def clear_terminal
+    sleep(0.5)
+    system 'clear'
+  end
+
+  def game_over
+    puts "Sudoku solved!"
+    board.render
+    sleep 4
   end
 end
