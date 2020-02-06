@@ -34,7 +34,8 @@ class Homework
   end
 
   # Write a function reverse(string) that takes in a string and returns it reversed.
-  def self.reverse
-    # TODO
+  def self.reverse(string)
+    return "" if string.length == 0
+    reverse(string[1..-1]) + string.chars.first 
   end
 end
