@@ -15,16 +15,29 @@ describe "homework" do
     end
   end
 
-  describe"#add_numbers(nums_array)" do
+  describe "#add_numbers(nums_array)" do
     it "Accepts a number array as an argument" do
       expect { Homework.add_numbers([1,2,3]) }.to_not raise_error
     end
 
-    it "returns the sum of those numbers" do
+    it "Returns the sum of those numbers" do
       expect(Homework.add_numbers([1,2,3,4])).to eq(10)
       expect(Homework.add_numbers([3])).to eq(3)
       expect(Homework.add_numbers([-80,34,7])).to eq(-39)
       expect(Homework.add_numbers([])).to eq(nil)
+    end
+  end
+
+  describe "gamma_function" do
+    it "Accepts an integer as an argument" do
+      expect { Homework.gamma_function }.to_not raise_error
+    end
+
+    it "Solves Gamma Function recursively" do
+      expect(Homework.gamma_function(0)).to eq(nil)
+      expect(Homework.gamma_function(1)).to eq(1)
+      expect(Homework.gamma_function(4)).to eq(6)
+      expect(Homework.gamma_function(8)).to eq(5040)
     end
   end
 end
