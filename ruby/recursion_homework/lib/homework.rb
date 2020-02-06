@@ -22,13 +22,15 @@ class Homework
   def self.gamma_function(n)
     return nil if n <= 0
     return 1 if n == 1
-    (n - 1) * self.gamma_function(n - 1)
+    (n - 1) * gamma_function(n - 1)
   end
 
   # Write a function ice_cream_shop(flavors, favorite) that takes in an array of ice cream flavors available at the ice cream shop, as well as the user's favorite ice cream flavor.
   # Recursively find out whether or not the shop offers their favorite flavor.
-  def self.ice_cream_shop
-    # TODO
+  def self.ice_cream_shop(flavors, favorite)
+    return false if flavors.length <= 0
+    return true if flavors.first == favorite
+    ice_cream_shop(flavors.drop(1), favorite)
   end
 
   # Write a function reverse(string) that takes in a string and returns it reversed.
