@@ -30,7 +30,7 @@ describe "homework" do
 
   describe "gamma_function" do
     it "Accepts an integer as an argument" do
-      expect { Homework.gamma_function }.to_not raise_error
+      expect { Homework.gamma_function(5) }.to_not raise_error
     end
 
     it "Solves Gamma Function recursively" do
