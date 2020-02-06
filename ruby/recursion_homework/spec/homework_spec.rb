@@ -53,4 +53,19 @@ describe "homework" do
       expect(Homework.ice_cream_shop([], 'honey lavender')).to eq(false)
     end
   end
+
+  describe "::reverse" do
+    it "Accepts a string as an argument" do
+      expect { Homework.reverse("test") }.to_not raise_error
+    end
+
+    it "takes in a string and returns it reversed" do
+      expect(Homework.reverse("house")).to eq("esuoh")
+      expect(Homework.reverse("dog")).to eq("god")
+      expect(Homework.reverse("atom")).to eq("mota")
+      expect(Homework.reverse("q")).to eq("q")
+      expect(Homework.reverse("id")).to eq("di")
+      expect(Homework.reverse("")).to eq("")
+    end
+  end
 end
