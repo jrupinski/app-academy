@@ -14,4 +14,17 @@ describe "homework" do
       expect(Homework.sum_to(-8)).to eq(nil)
     end
   end
+
+  describe"#add_numbers(nums_array)" do
+    it "Accepts a number array as an argument" do
+      expect { Homework.add_numbers([1,2,3]) }.to_not raise_error
+    end
+
+    it "returns the sum of those numbers" do
+      expect(Homework.add_numbers([1,2,3,4])).to eq(10)
+      expect(Homework.add_numbers([3])).to eq(3)
+      expect(Homework.add_numbers([-80,34,7])).to eq(-39)
+      expect(Homework.add_numbers([])).to eq(nil)
+    end
+  end
 end
