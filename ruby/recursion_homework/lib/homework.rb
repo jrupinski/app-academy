@@ -20,13 +20,9 @@ class Homework
   # Let's write a method that will solve Gamma Function recursively.
   # The Gamma Function is defined Γ(n) = (n-1)!. 
   def self.gamma_function(n)
-    Homework.factorial(n - 1)
-  end
-
-  def self.factorial(n)
-    return nil if n < 0
-    return 1 if n == 0
-    n * factorial(n - 1)
+    return nil if n <= 0
+    return 1 if n == 1
+    (n - 1) * self.gamma_function(n - 1)
   end
 
   # Write a function ice_cream_shop(flavors, favorite) that takes in an array of ice cream flavors available at the ice cream shop, as well as the user's favorite ice cream flavor.
