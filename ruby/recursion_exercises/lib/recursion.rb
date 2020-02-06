@@ -30,7 +30,9 @@ class Recursion
   # exp(b, 1) = b
   # exp(b, n) = exp(b, n / 2) ** 2             [for even n]
   # exp(b, n) = b * (exp(b, (n - 1) / 2) ** 2) [for odd n]
-  def self.exp_ver_2
-    # TODO
+  def self.exp_ver_2(b, n)
+    return 1 if n == 0
+    return b if n == 1
+    n.even? ? exp_ver_2(b, n / 2) ** 2 : b * (exp_ver_2(b, (n - 1) / 2) ** 2) 
   end
 end
