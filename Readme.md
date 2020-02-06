@@ -22,3 +22,5 @@ Repo for documenting and storing my progress in App Academy bootcamp. For person
 - Text maze solver project using A-Star and Dijkstra pathfinding algorithms
 - Sudoku game
 - Memory game with optional AI players
+- Learning writing Rspec tests and debugging using ByeBug
+- Learning basics of using Bundler
