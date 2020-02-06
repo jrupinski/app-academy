@@ -20,9 +20,9 @@ class Recursion
   # recursion 1
   # exp(b, 0) = 1
   # exp(b, n) = b * exp(b, n - 1)
-  def self.exp_ver_1(b, n)
-    return 1 if n == 0
-    b * exp_ver_1(b, n - 1)
+  def self.exponentation_ver_1(base, exponent)
+    return 1 if exponent == 0
+    base * exponentation_ver_1(base, exponent - 1)
   end
 
   # recursion 2
@@ -30,9 +30,18 @@ class Recursion
   # exp(b, 1) = b
   # exp(b, n) = exp(b, n / 2) ** 2             [for even n]
   # exp(b, n) = b * (exp(b, (n - 1) / 2) ** 2) [for odd n]
-  def self.exp_ver_2(b, n)
-    return 1 if n == 0
-    return b if n == 1
-    n.even? ? exp_ver_2(b, n / 2) ** 2 : b * (exp_ver_2(b, (n - 1) / 2) ** 2) 
+  def self.exponentation_ver_2(base, exponent)
+    return 1 if exponent == 0
+    return base if exponent == 1
+    exponentation_result = 0
+    if exponent.even?
+      even_exponentation = exponentation_ver_2(base, exponent / 2) ** 2 
+      exponentation_result = even_exponentation
+    else
+      odd_exponentation = base * (exponentation_ver_2(base, (exponent - 1) / 2) ** 2)
+      exponentation_result = odd_exponentation
+    end
+
+    exponentation_result
   end
 end
