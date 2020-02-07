@@ -67,4 +67,28 @@ class Recursion
     return multi_dim_array.dup if !multi_dim_array.is_a?(Array)
     multi_dim_array.map { |array| deep_dup(array) } 
   end
+
+  #
+  # Fibonacci method, recursive implementation
+  # The method should take in an integer n and return the first n Fibonacci numbers in an array.
+  #
+  # @param [Integer] n Number of fibonacci numbers to return 
+  #
+  # @return [Array] Array of first n fibonacci numberes
+  #
+  def fibonacci_recursive(n)
+    # TODO
+  end
+
+  #
+  # Fibonacci method, iterative implementation
+  # The method should take in an integer n and return the first n Fibonacci numbers in an array.
+  #
+  # @param [Integer] n Number of fibonacci numbers to return 
+  #
+  # @return [Array] Array of first n fibonacci numberes
+  #
+  def fibonacci_iterative(n)
+    # TODO
+  end
 end
