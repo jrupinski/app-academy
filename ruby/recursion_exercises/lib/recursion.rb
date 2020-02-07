@@ -55,4 +55,9 @@ class Recursion
 
     exponent_result
   end
+
+  def self.deep_dup(multi_dim_array)
+    return multi_dim_array.dup if !multi_dim_array.is_a?(Array)
+    multi_dim_array.map { |array| deep_dup(array) } 
+  end
 end
