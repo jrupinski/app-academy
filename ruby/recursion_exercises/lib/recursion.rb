@@ -31,9 +31,9 @@ class Recursion
   # recursion 1
   # exp(b, 0) = 1
   # exp(b, n) = b * exp(b, n - 1)
-  def self.exponentation_ver_1(base, exponent)
-    return 1 if exponent == 0
-    base * exponentation_ver_1(base, exponent - 1)
+  def self.exponent_ver_1(base, power)
+    return 1 if power == 0
+    base * exponent_ver_1(base, power - 1)
   end
 
   # recursion 2
@@ -41,18 +41,18 @@ class Recursion
   # exp(b, 1) = b
   # exp(b, n) = exp(b, n / 2) ** 2             [for even n]
   # exp(b, n) = b * (exp(b, (n - 1) / 2) ** 2) [for odd n]
-  def self.exponentation_ver_2(base, exponent)
-    return 1 if exponent == 0
-    return base if exponent == 1
-    exponentation_result = 0
-    if exponent.even?
-      even_exponentation = exponentation_ver_2(base, exponent / 2) ** 2 
-      exponentation_result = even_exponentation
+  def self.exponent_ver_2(base, power)
+    return 1 if power == 0
+    return base if power == 1
+    exponent_result = 0
+    if power.even?
+      even_exponent = exponent_ver_2(base, power / 2) ** 2 
+      exponent_result = even_exponent
     else
-      odd_exponentation = base * (exponentation_ver_2(base, (exponent - 1) / 2) ** 2)
-      exponentation_result = odd_exponentation
+      odd_exponent = base * (exponent_ver_2(base, (power - 1) / 2) ** 2)
+      exponent_result = odd_exponent
     end
 
-    exponentation_result
+    exponent_result
   end
 end
