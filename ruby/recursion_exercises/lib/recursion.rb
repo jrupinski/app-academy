@@ -56,6 +56,13 @@ class Recursion
     exponent_result
   end
 
+  #
+  # Create a deep duplicate copy of multi-dimensional Array
+  #
+  # @param [Array] multi_dim_array Multi-dimensional Array
+  #
+  # @return [Array] Independent duplicate of argument Array
+  #
   def self.deep_dup(multi_dim_array)
     return multi_dim_array.dup if !multi_dim_array.is_a?(Array)
     multi_dim_array.map { |array| deep_dup(array) } 
