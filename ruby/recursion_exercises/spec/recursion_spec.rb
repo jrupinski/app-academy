@@ -19,4 +19,24 @@ describe Recursion do
       expect(duped_array).to_not eq(original_array)
     end
   end
+
+  describe "::fibonacci_recursive" do
+    it "accepts a positive Integer as an arg" do
+      expect { Recursion.fibonacci_recursive(1) }.to_not raise_error
+    end
+
+    it "returns first n-numbers in a fibonacci sequence" do
+      expect(Recursion.fibonacci_recursive(-1)).to eq([])
+      expect(Recursion.fibonacci_recursive(0)).to eq([])
+      expect(Recursion.fibonacci_recursive(1)).to eq([0])
+      expect(Recursion.fibonacci_recursive(2)).to eq([0, 1])
+      expect(Recursion.fibonacci_recursive(3)).to eq([0, 1, 1])
+      expect(Recursion.fibonacci_recursive(6)).to eq([0, 1, 1, 2, 3, 5])
+    end
+
+    it "Is recursive" do
+      expect(Recursion).to receive(:fibonacci_recursive).at_least(:twice)
+      Recursion.fibonacci_recursive(5)
+    end
+  end
 end

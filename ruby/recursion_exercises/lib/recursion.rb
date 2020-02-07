@@ -76,7 +76,7 @@ class Recursion
   #
   # @return [Array] Array of first n fibonacci numberes
   #
-  def fibonacci_recursive(n)
+  def self.fibonacci_recursive(n)
     # TODO
   end
 
@@ -88,7 +88,7 @@ class Recursion
   #
   # @return [Array] Array of first n fibonacci numberes
   #
-  def fibonacci_iterative(n)
+  def self.fibonacci_iterative(n)
     # TODO
   end
 end
