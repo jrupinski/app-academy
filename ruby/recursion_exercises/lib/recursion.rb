@@ -110,4 +110,28 @@ class Recursion
 
     list
   end
+
+  #
+  # Recursive binary search: bsearch(array, target). Note that binary search only works on sorted arrays
+  #
+  # @return [Integer] Index of target in Array
+  #
+  def self.bsearch(array, target)
+    return nil if array.empty?
+    # TODO: Fix indexing for target other than index > 1 and middle_idx
+    current_idx = array.length / 2
+    
+    middle_idx = array.length / 2
+    middle_ele = array[middle_idx]
+
+    if middle_ele == target
+      return current_idx
+    elsif middle_ele > target
+      current_idx += middle_idx
+      bsearch(array[0...middle_idx], target)
+    else
+      current_idx -= middle_idx
+      bsearch(array[middle_idx..-1], target)
+    end
+  end
 end
