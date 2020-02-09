@@ -74,23 +74,17 @@ class Recursion
   #
   # @param [Integer] n Number of fibonacci numbers to return 
   #
-  # @return [Array] Array of first n fibonacci numberes
+  # @return [Array] Array of first n fibonacci numbers
   #
   def self.fibonacci_recursive(n)
-    case n
-      when -Float::INFINITY..0
-        return 0
-      when 1
-        return 1
+    if n == 1
+      return [0]
+    elsif n == 2
+      return [0, 1]
     end
     
-    list = []
-    # TODO: Make each number here go into a list, without using arrays as arguments
-    # Turns out it's not as easy as I thought it would be
-    # TODO: Fix duplicates; Fix going into the whole recursion twice
-      list.append(Recursion.fibonacci_recursive(n - 1) + Recursion.fibonacci_recursive(n - 2))
-      p list
-      Recursion.fibonacci_recursive(n - 1) + Recursion.fibonacci_recursive(n - 2)
+    list = Recursion.fibonacci_recursive(n - 1)
+    list << list[-1] + list[-2]
   end
 
   #
