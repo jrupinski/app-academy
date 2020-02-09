@@ -1,3 +1,5 @@
+require "byebug"
+
 class Recursion
   # This method crashes before stack overflows, so one can read the stack trace
   # STACK TRACE METHOD START
@@ -77,12 +79,14 @@ class Recursion
   # @return [Array] Array of first n fibonacci numbers
   #
   def self.fibonacci_recursive(n)
-    if n == 1
+    if n <= 0
+      return []
+    elsif n == 1
       return [0]
     elsif n == 2
       return [0, 1]
     end
-    
+
     list = Recursion.fibonacci_recursive(n - 1)
     list << list[-1] + list[-2]
   end
@@ -96,6 +100,14 @@ class Recursion
   # @return [Array] Array of first n fibonacci numberes
   #
   def self.fibonacci_iterative(n)
-    # TODO
+    return [] if n <= 0
+    return [0] if n == 1
+
+    list = [0, 1]
+    (n - 2).times do |num|
+      list << list[-1] + list[-2]
+    end
+
+    list
   end
 end
