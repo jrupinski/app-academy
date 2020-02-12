@@ -118,20 +118,19 @@ class Recursion
   #
   def self.bsearch(array, target)
     return nil if array.empty?
-    # TODO: Fix indexing for target other than index > 1 and middle_idx
-    current_idx = array.length / 2
-    
-    middle_idx = array.length / 2
-    middle_ele = array[middle_idx]
 
-    if middle_ele == target
-      return current_idx
-    elsif middle_ele > target
-      current_idx += middle_idx
-      bsearch(array[0...middle_idx], target)
-    else
-      current_idx -= middle_idx
-      bsearch(array[middle_idx..-1], target)
+    middle = array.length / 2
+    less_than = array.take(middle)
+    more_than = array.drop(middle + 1)
+    
+    if array[middle] == target
+      return middle
+    elsif target < array[middle]
+      bsearch(less_than, target)
+    elsif target > array[middle]
+      # keep it in a different variable to keep OG array indexing, not sub-array's
+      sub_answer = bsearch(more_than, target)
+      sub_answer.nil? ? nil : sub_answer + (middle + 1)
     end
   end
 end
