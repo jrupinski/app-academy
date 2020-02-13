@@ -142,6 +142,36 @@ class Recursion
   # @return [Array] Sorted array
   #
   def self.merge_sort(array)
-    # TODO
+    return array if array.length <= 1
+
+    middle = array.length / 2
+    left = array.take(middle)
+    right = array.drop(middle)
+    sorted = []
+    merge(merge_sort(left), merge_sort(right))
+  end
+
+  def self.merge(array_1, array_2)
+    sorted = []
+    arr_1_idx, arr_2_idx = 0, 0
+
+    until sorted.length == (array_1.length + array_2.length)
+      arr_1_ele = array_1[arr_1_idx] 
+      arr_2_ele = array_2[arr_2_idx] 
+
+      if arr_1_ele.nil? || arr_2_ele.nil?
+        sorted << (arr_1_ele || arr_2_ele)
+        arr_1_idx += 1
+        arr_2_idx += 1
+      elsif arr_1_ele < arr_2_ele
+        sorted << arr_1_ele
+        arr_1_idx += 1
+      else
+        sorted << arr_2_ele
+        arr_2_idx += 1
+      end
+    end
+
+    sorted
   end
 end
