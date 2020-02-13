@@ -35,8 +35,7 @@ describe Recursion do
     end
 
     it "Is recursive" do
-      # TODO : FIX, DOESN'T WORK AS INTENDED
-      expect(Recursion).to receive(:fibonacci_recursive).at_least(:twice)
+      expect(Recursion).to receive(:fibonacci_recursive).at_least(:twice).and_call_original
       Recursion.fibonacci_recursive(5)
     end
   end
@@ -47,12 +46,12 @@ describe Recursion do
     end
 
     it "returns index of given target in a sorted Array" do
-      expect(Recursion.bsearch[], 3).to eq(nil)
-      expect(Recursion.bsearch[1,2,3], 0).to eq(nil)
-      expect(Recursion.bsearch[1,2,3], 1).to eq(0)
-      expect(Recursion.bsearch[1,2,3,4,5,6,7], 7).to eq(6)
-      expect(Recursion.bsearch[1,2,3,4,5,6,7], 1).to eq(0)
-      expect(Recursion.bsearch[1,2,3,4,5,6,7,8], 4).to eq(3)
+      expect(Recursion.bsearch([], 3)).to eq(nil)
+      expect(Recursion.bsearch([1,2,3], 0)).to eq(nil)
+      expect(Recursion.bsearch([1,2,3], 1)).to eq(0)
+      expect(Recursion.bsearch([1,2,3,4,5,6,7], 7)).to eq(6)
+      expect(Recursion.bsearch([1,2,3,4,5,6,7], 1)).to eq(0)
+      expect(Recursion.bsearch([1,2,3,4,5,6,7,8], 4)).to eq(3)
     end
   end
 end
