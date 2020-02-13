@@ -133,4 +133,15 @@ class Recursion
       sub_answer.nil? ? nil : sub_answer + (middle + 1)
     end
   end
+
+  #
+  # Recursive merge_sort implementation. Sort an array using Merge sort algorithm.
+  #
+  # @param [Array] array An unsorted array
+  #
+  # @return [Array] Sorted array
+  #
+  def self.merge_sort(array)
+    # TODO
+  end
 end

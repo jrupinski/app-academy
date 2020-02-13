@@ -54,4 +54,23 @@ describe Recursion do
       expect(Recursion.bsearch([1,2,3,4,5,6,7,8], 4)).to eq(3)
     end
   end
+
+  describe "::merge_sort" do
+    it "accepts an array of numbers" do
+      expect { Recursion.merge_sort([9,7,4,2,1]) }.to_not raise_error
+    end
+
+    it "returns sorted version of the array" do
+      expect(Recursion.merge_sort([1])).to eq([1])
+      expect(Recursion.merge_sort([])).to eq([])
+      expect(Recursion.merge_sort([9,7,4,2,1])).to eq([1,2,4,7,9])
+      expect(Recursion.merge_sort([1,2,4,7,9])).to eq([1,2,4,7,9])
+      expect(Recursion.merge_sort([4,7,4,7,2,9,1])).to eq([1,2,4,4,7,7,9])
+    end
+
+    it "Is recursive" do
+      expect(Recursion).to receive(:merge_sort).at_least(:twice).and_call_original
+      Recursion.merge_sort([9,7,4,2,1])
+    end
+  end
 end
