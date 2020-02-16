@@ -174,4 +174,8 @@ class Recursion
 
     sorted
   end
+
+  def self.subsets(array_of_nums)
+    # TODO
+  end
 end

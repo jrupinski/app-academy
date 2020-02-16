@@ -73,4 +73,17 @@ describe Recursion do
       Recursion.merge_sort([9,7,4,2,1])
     end
   end
+
+  describe "::subsets" do
+    it "accepts an array of numbers" do
+      expect { Recursion.subsets([9,7,4,2,1]) }.to_not raise_error
+    end
+
+    it "returns an array of arrays with all subsets of an array" do
+      expect(Recursion.subsets([])).to eq([[]])
+      expect(Recursion.subsets([1])).to eq([[], [1]])
+      expect(Recursion.subsets([1, 2])).to eq([[], [1], [2], [1, 2]])
+      expect(Recursion.subsets([1, 2, 3])).to eq([[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]])
+    end
+  end
 end
