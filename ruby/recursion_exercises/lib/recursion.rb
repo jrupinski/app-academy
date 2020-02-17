@@ -175,7 +175,16 @@ class Recursion
     sorted
   end
 
+  #
+  # Method for returning every subset of Array elements
+  #
+  # @param [Array] array_of_nums Array of n elements
+  #
+  # @return [Array] Array populated by every subset of elements in Array
+  #
   def self.subsets(array_of_nums)
-    # TODO
+    return [[]] if array_of_nums.empty?
+    subset = subsets(array_of_nums[0...-1]) 
+    subset + subset.map { |set| set + [array_of_nums.last] }
   end
 end
