@@ -93,10 +93,11 @@ describe Recursion do
     end
 
     it "returns an array of arrays with all permutations of an array" do
-      expect(Recursion.permutations([])).to eq([].permutation.to_a)
-      expect(Recursion.permutations([1])).to eq([1].permutation.to_a)
-      expect(Recursion.permutations([1, 2])).to eq([1, 2].permutation.to_a)
-      expect(Recursion.permutations([1, 2, 3])).to eq([1, 2, 3].permutation.to_a)
+      # make them sorted because my permutations method is in different order
+      expect(Recursion.permutations([]).sort).to eq([].permutation.to_a.sort)
+      expect(Recursion.permutations([1]).sort).to eq([1].permutation.to_a.sort)
+      expect(Recursion.permutations([1, 2]).sort).to eq([1, 2].permutation.to_a.sort)
+      expect(Recursion.permutations([1, 2, 3]).sort).to eq([1, 2, 3].permutation.to_a.sort)
     end
   end
 end

@@ -196,6 +196,15 @@ class Recursion
   # @return [Array] Array populated by every permutation of elements in Array
   #
   def self.permutations(array_of_nums)
-    # TODO
+    list = []
+    return [list] if array_of_nums.empty?
+    return [array_of_nums, array_of_nums.reverse] if array_of_nums.length == 2
+
+    array_of_nums.length.times do
+      list += permutations(array_of_nums[1..-1]).map { |perm| perm.unshift(array_of_nums.first) }
+      array_of_nums.rotate!
+    end
+
+    list
   end
 end
