@@ -86,4 +86,17 @@ describe Recursion do
       expect(Recursion.subsets([1, 2, 3])).to eq([[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]])
     end
   end
+
+  describe "::permutations" do
+    it "accepts an array of numbers" do
+      expect { Recursion.permutations([9,7,4,2,1]) }.to_not raise_error
+    end
+
+    it "returns an array of arrays with all permutations of an array" do
+      expect(Recursion.permutations([])).to eq([].permutation.to_a)
+      expect(Recursion.permutations([1])).to eq([1].permutation.to_a)
+      expect(Recursion.permutations([1, 2])).to eq([1, 2].permutation.to_a)
+      expect(Recursion.permutations([1, 2, 3])).to eq([1, 2, 3].permutation.to_a)
+    end
+  end
 end

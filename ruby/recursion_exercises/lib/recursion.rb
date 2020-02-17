@@ -187,4 +187,15 @@ class Recursion
     subset = subsets(array_of_nums[0...-1]) 
     subset + subset.map { |set| set + [array_of_nums.last] }
   end
+
+  #
+  # Method for returning every permutation of Array elements
+  #
+  # @param [Array] array_of_nums Array of n elements
+  #
+  # @return [Array] Array populated by every permutation of elements in Array
+  #
+  def self.permutations(array_of_nums)
+    # TODO
+  end
 end
