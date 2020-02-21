@@ -33,6 +33,11 @@ class WordChainer
     print "all seen words: #{@all_seen_words}"
   end
 
+  #
+  # Explore every adjacent word of current word/words, and add them to a list
+  #
+  # @return [Array] Array of every word that's possible to reach from current word
+  #
   def explore_current_words
     new_current_words = []
 
