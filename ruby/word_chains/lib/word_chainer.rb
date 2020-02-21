@@ -15,6 +15,40 @@ class WordChainer
   end
 
   #
+  # Enumerate all the words that are reachable from source to target, changing one char at a time
+  #
+  # @param [String] source source String
+  # @param [String] target target String, destination
+  #
+  # @return [Array] Array including every word from breadth first enumeration of words that you can reach from the source
+  #
+  def run(source, target)
+    @current_words = [source]
+    @all_seen_words = [source]
+
+    n = 1
+    until @current_words.empty? || @all_seen_words.include?(target)
+      new_current_words = []
+      
+      @current_words.each do |current_word|
+        adjacent_words(current_word).each do |adjacent_word|
+          next if @all_seen_words.include?(adjacent_word)
+          new_current_words << adjacent_word
+          @all_seen_words << adjacent_word
+        end
+      end
+
+      print "#{n} letters away from source: #{new_current_words}\n"
+      n += 1
+      @current_words = new_current_words
+    end
+
+    puts "\n\n\nall seen words: "
+    print @all_seen_words
+  end
+
+
+  #
   # Returns all words in the dictionary one letter different than the current word
   #
   # @param [String] word A word
