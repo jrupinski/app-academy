@@ -10,8 +10,6 @@ class WordChainer
   def initialize(dictionary_file_name)
     dictionary_file = File.read(dictionary_file_name).split("\n")
     @dictionary = Set.new(dictionary_file)
-
-    puts @dictionary
   end
 
   #
@@ -24,15 +22,39 @@ class WordChainer
   #
   def run(source, target)
     @current_words = [source]
-    @all_seen_words = [source]
+    @all_seen_words = { source => nil }
 
-    until @current_words.empty? || @all_seen_words.include?(target)
+    until @current_words.empty? || all_seen_words.include?(target)
       explore_current_words
     end
 
-    print "all seen words: #{@all_seen_words}"
+    build_path(target).reverse
   end
 
+  private
+
+  #
+  # Accessor for all_seen_words hash
+  #
+  # @return [Array] keys of @all_seen_words
+  #
+  def all_seen_words
+    @all_seen_words.keys
+  end
+
+  #
+  # Build an Array that shows the path to a target word from modifying the source word
+  #
+  # @param [String] target Target word
+  #
+  # @return [Array] Array with a path 
+  #
+  def build_path(target)
+    return [] if target.nil?
+    path = [target]
+    path += build_path(@all_seen_words[target])
+  end
+  
   #
   # Explore every adjacent word of current word/words, and add them to a list
   #
@@ -45,9 +67,15 @@ class WordChainer
       adjacent_words(current_word).map do |adjacent_word|
         next if @all_seen_words.include?(adjacent_word)
         new_current_words << adjacent_word
-        @all_seen_words << adjacent_word
+        @all_seen_words[adjacent_word] = current_word
       end
     end
+
+    # uncomment to show every word and it's source
+    # # print current words and where they came from(source word)
+    # new_current_words.each do |word|
+    #   print "#{word} => #{@all_seen_words[word]}\n"
+    # end
 
     @current_words = new_current_words
   end
