@@ -28,7 +28,7 @@ class WordChainer
       explore_current_words
     end
 
-    build_path(target).reverse
+    puts build_path(target).reverse
   end
 
   private
@@ -127,6 +127,17 @@ class WordChainer
   end
 end
 
-if __FILE__ == $PROGRAM_NAME
-  WordChainer.new(ARGV[0] || "dictionary.txt")
+if __FILE__ == $PROGRAM_NAME  
+  if (ARGV.count != 4 && ARGV[0] == "-d") || ARGV.count != 2
+    puts "usage: \nword_chainer (-d path_to_dictionary; optional) source_word target_word"
+    return nil
+  end
+   
+  if ARGV[0] == "-d"
+    wordchainer = WordChainer.new(ARGV[1])
+    wordchainer.run(ARGV[1], ARGV[2])
+  else
+    wordchainer = WordChainer.new("#{__dir__}/dictionary.txt")
+    wordchainer.run(ARGV[0], ARGV[1])
+  end  
 end
