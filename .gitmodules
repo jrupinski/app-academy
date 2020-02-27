@@ -1,3 +1,6 @@
 [submodule "ruby/screwedoku"]
 	path = ruby/screwedoku
 	url = ./ruby/screwedoku/
+[submodule "ruby/minesweeper"]
+	path = ruby/minesweeper
+	url = ./ruby/minesweeper/
