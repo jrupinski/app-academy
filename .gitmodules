@@ -1,0 +1,3 @@
+[submodule "ruby/screwedoku"]
+	path = ruby/screwedoku
+	url = ./ruby/screwedoku/
