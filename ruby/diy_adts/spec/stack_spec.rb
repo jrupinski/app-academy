@@ -1,8 +1,9 @@
 require "stack"
 
-describe "Stack" do
+describe Stack do
   it "creates new Stack instance" do
     expect { Stack.new }.to_not raise_error
+    expect(Stack.new.inspect).to eq([])
   end
 
   let(:object1) { 1 }
