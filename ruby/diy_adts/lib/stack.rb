@@ -1,17 +1,24 @@
   class Stack
     def initialize
-      # create ivar to store stack here!
+      @stack = []
     end
 
+    # adds an element to the stack
     def push(el)
-      # adds an element to the stack
+      @stack.push(el)
     end
 
+    # removes one element from the stack
     def pop
-      # removes one element from the stack
+      @stack.pop
     end
 
+    # returns, but doesn't remove, the top element in the stack
     def peek
-      # returns, but doesn't remove, the top element in the stack
+      @stack.last
+    end
+
+    def inspect()
+      @stack
     end
   end
