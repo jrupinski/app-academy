@@ -43,10 +43,31 @@ class PolyTreeNode
   #
   def dfs(target_value)
     return self if self.value == target_value
+    
     self.children.each do |child|
       result = child.dfs(target_value)
       return result unless result.nil?
     end
+    
+    nil
+  end
+
+  #
+  # Breadth-first tree search
+  #
+  # @param [Numeric/String] target_value Target node value
+  #
+  # @return [Node] Node, or nil if target not found
+  #
+  def bfs(target_value)
+    queue = [self]
+    
+    until queue.empty?
+      node = queue.shift
+      return node if node.value == target_value
+      queue += node.children
+    end
+
     nil
   end
 
