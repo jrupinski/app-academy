@@ -34,5 +34,26 @@ class PolyTreeNode
     child_node.parent.nil? ? (raise "Node is not a child!") : child_node.parent = nil
   end
 
-  
+  #
+  # Depth-first tree search
+  #
+  # @param [Numeric/String] target_value Target node value
+  #
+  # @return [Node] Node, or nil if target not found
+  #
+  def dfs(target_value)
+    return self if self.value == target_value
+    self.children.each do |child|
+      result = child.dfs(target_value)
+      return result unless result.nil?
+    end
+    nil
+  end
+
+  #
+  # Format output when printing
+  #
+  def inspect
+    { 'value' => value, 'parent_value' => parent }.inspect
+  end
 end

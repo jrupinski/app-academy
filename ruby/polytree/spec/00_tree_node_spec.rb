@@ -125,6 +125,7 @@ describe 'Searchable' do
     it_behaves_like 'search method'
 
     it "should take correct path to descendant" do
+      puts nodes.inspect
       expect(nodes[2]).to_not receive(:dfs)
       [0, 1, 3, 4].each do |index|
         expect(nodes[index]).to receive(:dfs).and_call_original.ordered
