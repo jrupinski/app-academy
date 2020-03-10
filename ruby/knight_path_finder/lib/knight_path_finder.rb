@@ -1,3 +1,14 @@
+DELTAS = [
+  [-2, 1],
+  [-2, -1],
+  [2, 1],
+  [2, -1],
+  [1, 2],
+  [1, -2],
+  [-1, 2],
+  [-1, -2]
+].freeze
+
 #
 # Find the shortest path for a Chess Knight from a starting position to an end position.
 # Both the start and end positions should be on a standard 8x8 chess board.
@@ -12,8 +23,21 @@ class KnightPathFinder
     @considered_positions = [starting_position]
   end
 
+  #
+  # Get all valid chess knight moves from given position
+  #
+  # @param [Array] pos Chess knight position on board
+  #
+  # @return [Array] Valid moves for Chess knight to make
+  #
   def self.valid_moves(pos)
-    # todo
+    DELTAS.map do |dx, dy|
+      [pos[0] + dx, pos[1] + dy]
+    end.select do |row, col|
+      [row, col].all? do |coord|
+        coord.between?(0, 8) # board size is 8x8
+      end
+    end
   end
 
   #
