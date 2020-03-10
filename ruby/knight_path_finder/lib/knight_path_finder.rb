@@ -36,7 +36,7 @@ class KnightPathFinder
   #
   # @return [Array] Valid moves for Chess knight to make
   #
-  def self.valid_moves(pos)
+  def valid_moves(pos)
     DELTAS.map do |dx, dy|
       [pos[0] + dx, pos[1] + dy]
     end.select do |row, col|
@@ -57,5 +57,32 @@ class KnightPathFinder
     new_positions = valid_moves(pos) - @considered_positions
     @considered_positions += new_positions
     new_positions
+  end
+
+  #
+  # Build a move tree in a breadth-first manner
+  #
+  # @return [Array] Tree of possible moves 
+  #
+  def build_move_tree
+    tree = []
+
+    queue = [root_node]
+
+    until queue.empty?
+      current_node = queue.shift
+      current_pos = current_node.value
+
+      possible_nodes = new_move_positions(current_pos).map do |pos|
+        new_node = PolyTreeNode.new(pos)
+        new_node.parent = current_node
+        new_node
+      end
+      
+      tree += possible_nodes
+      queue += possible_nodes
+    end
+
+    tree
   end
 end
