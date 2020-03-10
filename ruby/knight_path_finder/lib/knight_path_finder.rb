@@ -1,3 +1,5 @@
+require_relative "polytree_node"
+
 DELTAS = [
   [-2, 1],
   [-2, -1],
@@ -19,10 +21,14 @@ class KnightPathFinder
   def initialize(starting_position)
     @board = Array.new(8) { Array.new(8) }
     @position = starting_position
-    @root_node = starting_position
+    @root_node = self.root_node
     @considered_positions = [starting_position]
   end
 
+  def root_node
+    PolyTreeNode.new(@position)
+  end
+  
   #
   # Get all valid chess knight moves from given position
   #
