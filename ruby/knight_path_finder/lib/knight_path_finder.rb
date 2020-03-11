@@ -24,6 +24,20 @@ class KnightPathFinder
   end
 
   #
+  # Find a path from starting Chess Knight position to given position on Chess Board
+  #
+  # @param [Array] end_pos Row and column of position on destination Board
+  #
+  # @return [Array] Path to take starting from start position to destination 
+  #
+  def find_path(end_pos)
+    end_node = root_node.dfs(end_pos)
+    trace_path_back(end_node)
+      .reverse
+      .map(&:value)
+  end
+
+  #
   # Get all valid chess knight moves from given position
   #
   # @param [Array] pos Chess knight position on board
@@ -44,6 +58,7 @@ class KnightPathFinder
     valid_moves
   end
 
+  private_constant :MOVES
   private
 
   attr_accessor :root_node
@@ -79,4 +94,28 @@ class KnightPathFinder
       end
     end
   end
+
+  #
+  # Trace node path from end node to root node
+  #
+  # @param [Node] end_node End node
+  #
+  # @return [Array] Array of nodes that create a path from end to root node
+  #
+  def trace_path_back(end_node)
+    path = []
+
+    current_node = end_node
+    until current_node.nil?
+      path << current_node
+      current_node = current_node.parent
+    end
+
+    path
+  end
+end
+
+if $PROGRAM_NAME == __FILE__
+  kpf = KnightPathFinder.new([0, 0])
+  p kpf.find_path([6, 2])
 end
