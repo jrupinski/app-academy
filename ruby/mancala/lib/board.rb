@@ -1,6 +1,9 @@
 class Board
+  private
+  attr_reader :name1, :name2
+
+  public
   attr_accessor :cups
-  require "byebug"
 
   def initialize(name1, name2)
     @name1 = name1
@@ -40,9 +43,9 @@ class Board
 
       # place stones in appropriate cup of current player
       if curr_cup_idx == 6 
-        cups[6] << stones_in_hand.pop if current_player_name == @name1
+        cups[6] << stones_in_hand.pop if current_player_name == name1
       elsif curr_cup_idx == 13 
-        cups[13] << stones_in_hand.pop if current_player_name == @name2
+        cups[13] << stones_in_hand.pop if current_player_name == name2
       else
         cups[curr_cup_idx] << stones_in_hand.pop
       end
@@ -75,8 +78,16 @@ class Board
   end
 
   def one_side_empty?
+    side1, side2 = cups[0...7], cups[7...14]
+    side1.all?(&:empty?) || side2.all?(&:empty?)
   end
 
   def winner
+    # winner is the player with less stones in score cup
+    case cups[6] <=> cups[13]
+    when -1 then name2
+    when 0 then :draw
+    when 1 then name1
+    end
   end
 end
