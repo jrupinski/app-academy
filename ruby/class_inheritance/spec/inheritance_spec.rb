@@ -19,6 +19,7 @@ describe "Class inheritance" do
     before { ned.employees << darren }
     let (:shawna) { Employee.new("Shawna", "TA", 12000, darren) }
     let (:david) { Employee.new("David", "TA", 10000, darren) }
+    before { darren.employees += [shawna, david] }
 
     describe "Method overriding" do
       

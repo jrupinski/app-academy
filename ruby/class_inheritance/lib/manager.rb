@@ -11,8 +11,13 @@ class Manager < Employee
   end
 
   def bonus(multiplier)
-    debugger
-    bonus = employees.sum(&:salary) * multiplier
+    return salary if !self.is_a?(Manager)
+    employees_salaries = employees.sum { |employee| employee.bonus(1) }
+
+    # OH BOY IS THIS HACKY AS HELL
+    return salary + employees_salaries if multiplier == 1
+    bonus = employees_salaries * multiplier
+    
     bonus
   end
 end
