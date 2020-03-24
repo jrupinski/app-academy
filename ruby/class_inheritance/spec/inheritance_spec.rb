@@ -15,6 +15,8 @@ describe "Class inheritance" do
 
     let (:ned) { Manager.new("Ned", "Founder", 1000000,  nil) }
     let (:darren) { Manager.new("Darren", "TA Manager", 78000, ned) }
+    
+    before { ned.employees << darren }
     let (:shawna) { Employee.new("Shawna", "TA", 12000, darren) }
     let (:david) { Employee.new("David", "TA", 10000, darren) }
 
