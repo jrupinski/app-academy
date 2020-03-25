@@ -11,19 +11,21 @@ class Board
     # initialize board with placeholder pieces for now
     @rows = Array.new(8) { Array.new(8, nil) }
     # place pieces on both sides' two first rows
-    initial_rows = [0, 1, 6, 7]
-    initial_rows.each do |row|
+    white_rows, black_rows = [0, 1], [6, 7]
+
+    [*white_rows, *black_rows].each do |row|
       (0...8).each do |col|
         pos = [row, col]
-        self[pos] = Piece.new(pos, self)
+        color = white_rows.include?(row) ? "white" : "black"
+        self[pos] = Piece.new(pos, self, color)
       end
     end
   end
 
   def move_piece(start_pos, end_pos)
-    if self[start_pos].nil? || !valid_pos?(start_pos)
+    if empty?(start_pos) || !valid_pos?(start_pos)
       raise ArgumentError.new("No piece at starting position!")
-    elsif !self[end_pos].nil? || !valid_pos?(end_pos)
+    elsif !empty?(end_pos) || !valid_pos?(end_pos)
       raise ArgumentError.new("Cannot move to end position!")
     end
 
@@ -48,5 +50,9 @@ class Board
 
   def valid_pos?(pos)
     pos.all? { |coor| coor < rows.size && coor >= 0 }
+  end
+
+  def empty?(pos)
+    self[pos].nil?
   end
 end
