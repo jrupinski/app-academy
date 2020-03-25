@@ -4,7 +4,12 @@
 # Parent piece of all pieces in chess
 #
 class Piece
-  def initialize
-    # TODO; Placeholder for now
+  attr_reader :board
+  attr_accessor :pos
+
+  def initialize(pos, board)
+    @pos = pos
+    @board = board
   end
+
 end
