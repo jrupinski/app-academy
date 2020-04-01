@@ -11,6 +11,7 @@ module Slidable
 
   def moves(*move_dirs)
     moves = []
+    [HORIZONTAL_DIRS, VERTICAL_DIRS, DIAGONAL_DIRS].each(&:clear)
 
     update_valid_diagonals if move_dirs.include?(:diagonal)
     update_valid_horizontals if move_dirs.include?(:horizontal)
@@ -35,14 +36,14 @@ module Slidable
     # check diagonals of current piece idx
     deltas = [[-1, -1], [-1, 1], [1, -1], [1, 1]]
     deltas.each do |(dx, dy)|
-      new_pos = piece_row, piece_col
+      new_pos = piece_row, piece_col 
 
-      piece_col.downto(0).each do |idx|
+      0.upto(7).each do |idx|
         # update with delta
         new_pos = new_pos[0] + dx, new_pos[1] + dy
         next unless board.valid_pos?(new_pos)
         
-        if board.empty?(new_pos)
+        if board[new_pos].empty?
           DIAGONAL_DIRS << new_pos
           next
         elsif board[new_pos].color != color
@@ -62,7 +63,7 @@ module Slidable
     piece_row.downto(0).each do |idx|
       new_pos = idx, piece_col
 
-      if board.empty?(new_pos)
+      if board[new_pos].empty?
         VERTICAL_DIRS << new_pos
       elsif board[new_pos].color != color
         VERTICAL_DIRS << new_pos
@@ -74,7 +75,7 @@ module Slidable
     piece_row.upto(7).each do |idx|
       new_pos = idx, piece_col
 
-      if board.empty?(new_pos)
+      if board[new_pos].empty?
         VERTICAL_DIRS << new_pos
       elsif board[new_pos].color != color
         VERTICAL_DIRS << new_pos
@@ -90,7 +91,7 @@ module Slidable
     piece_col.downto(0).each do |idx|
       new_pos = piece_row, idx
 
-      if board.empty?(new_pos)
+      if board[new_pos].empty?
         HORIZONTAL_DIRS << new_pos
       elsif board[new_pos].color != color
         HORIZONTAL_DIRS << new_pos
@@ -102,7 +103,7 @@ module Slidable
     piece_col.upto(7).each do |idx|
       new_pos = piece_row, idx
 
-      if board.empty?(new_pos)
+      if board[new_pos].empty?
         HORIZONTAL_DIRS << new_pos
       elsif board[new_pos].color != color
         HORIZONTAL_DIRS << new_pos

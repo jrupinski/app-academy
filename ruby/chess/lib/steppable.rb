@@ -7,7 +7,7 @@ module Steppable
       new_pos = [cur_x + diff_x, cur_y + diff_y]
       next unless board.valid_pos?(new_pos)
 
-      if board.empty?(new_pos)
+      if board[new_pos].empty?
         valid_moves << new_pos 
       elsif board[new_pos].color != color
         valid_moves << new_pos 
