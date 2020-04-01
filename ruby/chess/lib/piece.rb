@@ -13,4 +13,7 @@ class Piece
     @color = color
   end
 
+  def empty?
+    false
+  end
 end
