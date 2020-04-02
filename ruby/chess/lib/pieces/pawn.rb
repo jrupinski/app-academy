@@ -4,7 +4,7 @@ require_relative "steppable"
 class Pawn < Piece
 
   def move_dirs
-    [*forward_steps, *side_attacks]
+    side_attacks.empty? ? forward_steps : side_attacks
   end
 
   def symbol
@@ -21,7 +21,7 @@ class Pawn < Piece
   end
 
   def forward_dir
-    color == :white? ? -1 : 1
+    color == :white ? 1 : -1
   end
 
   def forward_steps
@@ -45,6 +45,8 @@ class Pawn < Piece
     sides = [-1, 1]
     sides.each do |side|
       side_pos = row + forward_dir, col + side
+      next unless board.valid_pos?(side_pos)
+
       if board[side_pos].color == color || board[side_pos].empty?
         next
       else

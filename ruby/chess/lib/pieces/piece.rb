@@ -16,4 +16,18 @@ class Piece
   def empty?
     false
   end
+
+  def to_s
+    symbol
+  end
+
+  # formats output in terminal nicely
+  def inspect
+    "#{symbol}, color: #{color}, position: #{pos}"
+  end
+
+  def symbol
+    # implemented by class's children
+    raise NotImplementedError
+  end
 end

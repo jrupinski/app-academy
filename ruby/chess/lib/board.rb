@@ -44,14 +44,18 @@ class Board
   end
 
   def populate_chessboard
-    # place pieces on both sides' two first rows
-    white_rows, black_rows = [0, 1], [6, 7]
+    # TODO - add rest of chess pieces after implementing them
+    place_pawns
+  end
 
-    [*white_rows, *black_rows].each do |row|
+  def place_pawns
+    pawn_rows = [1, 6]
+
+    pawn_rows.each do |row|
       (0...8).each do |col|
         pos = [row, col]
-        color = white_rows.include?(row) ? "white" : "black"
-        self[pos] = Piece.new(pos, self, color)
+        color = row == 1 ? :white : :black
+        self[pos] = Pawn.new(pos, self, color)
       end
     end
   end
