@@ -9,7 +9,7 @@ class Board
 
   def initialize
     # initialize board with placeholder pieces for now
-    @rows = Array.new(8) { Array.new(8, NullPiece.instance) }
+    @sentinel = NullPiece.instance
     populate_chessboard
   end
 
@@ -22,7 +22,7 @@ class Board
 
     # move piece
     self[end_pos] = self[start_pos] 
-    self[start_pos] = NullPiece.instance
+    self[start_pos] = sentinel
     # update piece's position
     self[end_pos].pos = end_pos
   end
@@ -43,9 +43,15 @@ class Board
     pos.all? { |coor| coor < rows.size && coor >= 0 }
   end
 
+  private
+
+  attr_reader :sentinel
+
   def populate_chessboard
+    @rows = Array.new(8) { Array.new(8, sentinel) }
     # TODO - add rest of chess pieces after implementing them
     place_pawns
+    
   end
 
   def place_pawns
@@ -60,3 +66,9 @@ class Board
     end
   end
 end
+
+a = Board.new
+p a[[1, 0]]
+p a[[1, 0]].horizontal_and_vertical_dirs
+p a[[1, 0]].diagonal_dirs
+p a[[1, 0]].move_dirs

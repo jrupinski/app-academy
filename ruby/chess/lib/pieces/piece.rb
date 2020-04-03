@@ -8,6 +8,9 @@ class Piece
   attr_accessor :pos
 
   def initialize(pos, board, color)
+    raise "invalid pos" unless board.valid_pos?(pos)
+    raise "invalid color" unless %i[black white].include?(color)
+
     @pos = pos
     @board = board
     @color = color
@@ -18,7 +21,7 @@ class Piece
   end
 
   def to_s
-    symbol
+    " #{symbol} "
   end
 
   # formats output in terminal nicely

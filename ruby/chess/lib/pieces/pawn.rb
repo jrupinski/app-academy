@@ -1,21 +1,20 @@
 require_relative "piece"
-require_relative "steppable"
 
 class Pawn < Piece
 
-  def move_dirs
-    side_attacks.empty? ? forward_steps : side_attacks
+  def moves
+    forward_steps + side_attacks
   end
 
   def symbol
-    "♙"
+    "♟"
   end
 
   private
 
   def at_start_row?
     row, col = pos
-    start_row = color == :white ? 1 : 6
+    start_row = (color == :white) ? 1 : 6
 
     row == start_row
   end
@@ -28,10 +27,11 @@ class Pawn < Piece
     forward_steps = []
     row, col = pos
     next_pos = pos.dup
-    
-    (at_start_row? ? 2 : 1).times do
+    num_of_steps = (at_start_row? ? 2 : 1)
+
+    num_of_steps.times do
       next_pos[0] += forward_dir
-      break unless board[next_pos].empty?
+      break unless board.valid_pos?(next_pos) && board[next_pos].empty?
       forward_steps << next_pos.dup
     end
 

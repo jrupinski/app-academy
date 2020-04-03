@@ -2,9 +2,8 @@ require_relative "piece"
 require "singleton"
 
 class NullPiece < Piece
+  attr_reader :symbol
   include Singleton
-
-  attr_reader :symbol, :color
   
   def initialize
     @color = :none

@@ -1,4 +1,4 @@
-module Steppable
+module Stepable
   def moves
     valid_moves = []
     cur_x, cur_y = pos
@@ -17,6 +17,8 @@ module Steppable
     valid_moves
   end
 
+  private
+  
   def move_diffs
     # subclasses implement it
     raise NotImplementedError
