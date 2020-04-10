@@ -16,7 +16,7 @@ module Slideable
     [1, 1]
   ].freeze
   
-  def horizontal_and_diagonal_dirs
+  def horizontal_and_vertical_dirs
     HORIZONTAL_AND_VERTICAL_DIRS
   end
 
@@ -42,7 +42,6 @@ module Slideable
   end
 
   def valid_moves_in_dir(dx, dy)
-    debugger
     cur_row, cur_col = pos
     moves = []
 

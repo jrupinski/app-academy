@@ -49,20 +49,47 @@ class Board
 
   def populate_chessboard
     @rows = Array.new(8) { Array.new(8, sentinel) }
-    # TODO - add rest of chess pieces after implementing them
-    place_pawns
-    
-  end
 
-  def place_pawns
-    pawn_rows = [1, 6]
-
-    pawn_rows.each do |row|
+    (0...8).each do |row|
       (0...8).each do |col|
         pos = [row, col]
-        color = row == 1 ? :white : :black
-        self[pos] = Pawn.new(pos, self, color)
+        piece = piece_at(pos)
+        color = color_at(pos)
+
+        if piece == sentinel
+          self[pos] = sentinel
+        else
+          self[pos] = piece.new(pos, self, color)
+        end
       end
     end
   end
+
+  def piece_at(pos)
+    row, col = pos
+    if row == 1 || row == 6
+      return Pawn
+    elsif row != 0 && row !=7 
+      return sentinel
+    end
+
+    case col
+    when 0, 7
+      Rook
+    when 1, 6
+      Knight
+    when 2, 5
+      Bishop
+    when 3
+      Queen
+    when 4
+      King
+    end
+  end
+
+  def color_at(pos)
+    row, col = pos
+    (row == 0 || row == 1) ? :white : :black
+  end
+
 end
