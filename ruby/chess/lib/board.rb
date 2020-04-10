@@ -66,9 +66,3 @@ class Board
     end
   end
 end
-
-a = Board.new
-p a[[1, 0]]
-p a[[1, 0]].horizontal_and_vertical_dirs
-p a[[1, 0]].diagonal_dirs
-p a[[1, 0]].move_dirs
