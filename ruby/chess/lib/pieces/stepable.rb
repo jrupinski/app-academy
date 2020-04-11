@@ -1,3 +1,6 @@
+#
+# Module for generating possible moves for stepable chesspieces (King, Knight)
+#
 module Stepable
   def moves
     valid_moves = []

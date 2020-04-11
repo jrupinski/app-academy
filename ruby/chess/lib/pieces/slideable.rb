@@ -1,5 +1,5 @@
 #
-# Module for getting sliding pieces' valid next moves on chessboard
+# Module for generating possible moves for slidable chesspieces (Bishop, Queen, Rook)
 #
 module Slideable
   HORIZONTAL_AND_VERTICAL_DIRS = [

@@ -16,6 +16,11 @@ class Piece
     @color = color
   end
 
+  #
+  # Is Piece empty? (Only true on NullPiece)
+  #
+  # @return [Boolean] True if given Piece is empty(position is a NullPiece)
+  #
   def empty?
     false
   end
@@ -24,7 +29,9 @@ class Piece
     " #{symbol} "
   end
 
-  # formats output in terminal nicely
+  #
+  # Formats output in terminal nicely
+  #
   def inspect
     "#{symbol}, color: #{color}, position: #{pos}"
   end

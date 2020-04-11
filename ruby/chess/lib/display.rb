@@ -8,10 +8,20 @@ class Display
     @cursor = Cursor.new([0, 0], board)
   end
 
+  #
+  # Render ChessBoard in terminal
+  #
+  # @return [Nil]
+  #
   def render
-    @board.rows.each_with_index do |row, row_idx|
-      row.each_with_index do |col, col_idx|
-        pos = [row_idx, col_idx]
+    ("A".."H").each { |col| print "     #{col}"}
+    print "\n\n"
+
+    (0...8).each do |row|
+      row_idx = (7 - row) % @board.rows.count + 1
+      print "#{row_idx}  "
+      (0...8).each do |col|
+        pos = [row, col]
         piece = @board[pos]
 
         if pos == @cursor.cursor_pos
@@ -22,9 +32,11 @@ class Display
         end
       end
 
-      print "\n"
+      print "  #{row_idx}"
+      print "\n\n"
     end
 
-    nil
+    ("A".."H").each { |col| print "     #{col}"}
+    print "\n"
   end
 end

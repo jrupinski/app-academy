@@ -2,7 +2,7 @@ require_relative "pieces"
 
 require "byebug"
 #
-# Chess board for chess
+# Board for the game Chess
 #
 class Board
   attr_reader :rows
@@ -13,6 +13,12 @@ class Board
     populate_chessboard
   end
 
+  #
+  # Move Piece across the Chess Board
+  #
+  # @param [Array] start_pos Starting position of Piece
+  # @param [Array] end_pos Ending position of Piece
+  #
   def move_piece(start_pos, end_pos)
     if self[start_pos].empty? || !valid_pos?(start_pos)
       raise ArgumentError.new("No piece at starting position!")
@@ -39,6 +45,13 @@ class Board
     rows[row][col] = val
   end 
 
+  #
+  # Check if position is in boundaries of the chess board
+  #
+  # @param [Array] pos Position to check
+  #
+  # @return [Boolean] True if position is valid
+  #
   def valid_pos?(pos)
     pos.all? { |coor| coor < rows.size && coor >= 0 }
   end
@@ -51,22 +64,48 @@ class Board
     end
   end
 
+  #
+  # Check if Player is in a checkmate (King in check and there's no move available to defend him)
+  #
+  # @param [Symbol] color Color of player
+  #
+  # @return [Boolean] True if King is in a checkmate
+  #
   def checkmate?(color)
     friendly_pieces = pieces.select { |piece| piece.color == color }
     in_check?(color) && friendly_pieces.all?(&:valid_moves.empty?)
   end
 
+  #
+  # Check if given color's King piece is open to attacks
+  #
+  # @param [Symbol] color Color of player
+  #
+  # @return [Boolean] Return true if it's under a check
+  #
   def in_check?(color)
     king_pos = find_king(color)
     enemies = pieces.select { |piece| piece.color != color }
     puts enemies.any? { |enemy| enemy.moves.include?(king_pos)}
   end
 
+  #
+  # Find King position on Board
+  #
+  # @param [Symbol] color Color of Player
+  #
+  # @return [Array] Row and Column of King, empty otherwise
+  #
   def find_king(color)
     pieces.select { |piece| piece.symbol == "♚" && piece.color == color }
     .map(&:pos).flatten
   end
 
+  #
+  # List all pieces left on board
+  #
+  # @return [Array] Array of all remaining pieces on Board
+  #
   def pieces
     pieces = []
     (0...8).each do |row|
@@ -86,6 +125,11 @@ class Board
 
   attr_reader :sentinel
 
+  #
+  # Create a Chessboard and put pieces on it
+  #
+  # @return [Array] A 2-d Array with Pieces on it - a Chessboard
+  #
   def populate_chessboard
     @rows = Array.new(8) { Array.new(8) }
 
@@ -98,6 +142,13 @@ class Board
     end
   end
 
+  #
+  # Check which Piece should be put on given position when initializing ChessBoard
+  #
+  # @param [Array] pos Position to check
+  #
+  # @return [Piece] Piece appropriate for position (Rook/Queen/Knight/King/Bishop/Pawn/Null)
+  #
   def piece_at(pos)
     row, col = pos
     if row == 1 || row == 6
@@ -120,6 +171,13 @@ class Board
     end
   end
 
+  #
+  # Check which color of Piece should be at given position
+  #
+  # @param [Array] pos Position to check
+  #
+  # @return [Symbol] Color
+  #
   def color_at(pos)
     row, col = pos
     (row == 0 || row == 1) ? :black : :white

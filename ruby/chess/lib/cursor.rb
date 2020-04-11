@@ -30,6 +30,10 @@ MOVES = {
   down: [1, 0]
 }
 
+#
+# Generate a cursor in terminal output for moving and selecting on chessboard
+# Imported from a gist, added @selected, #update_pos and #toggle_selected
+#
 class Cursor
 
   attr_reader :cursor_pos, :board, :selected
