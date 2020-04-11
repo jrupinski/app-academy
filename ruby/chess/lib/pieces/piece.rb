@@ -33,4 +33,8 @@ class Piece
     # implemented by class's children
     raise NotImplementedError
   end
+
+  def valid_moves
+    # TODO 
+  end
 end

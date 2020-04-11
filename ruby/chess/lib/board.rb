@@ -42,25 +42,58 @@ class Board
   def valid_pos?(pos)
     pos.all? { |coor| coor < rows.size && coor >= 0 }
   end
+  
+  def add_piece(piece, pos)
+    if piece == sentinel
+      self[pos] = sentinel
+    else
+      self[pos] = piece.new(pos, self, color_at(pos))
+    end
+  end
+
+  def checkmate?(color)
+    friendly_pieces = pieces.select { |piece| piece.color == color }
+    in_check?(color) && friendly_pieces.all?(&:valid_moves.empty?)
+  end
+
+  def in_check?(color)
+    king_pos = find_king(color)
+    enemies = pieces.select { |piece| piece.color != color }
+    puts enemies.any? { |enemy| enemy.moves.include?(king_pos)}
+  end
+
+  def find_king(color)
+    pieces.select { |piece| piece.symbol == "♚" && piece.color == color }
+    .map(&:pos).flatten
+  end
+
+  def pieces
+    pieces = []
+    (0...8).each do |row|
+      (0...8).each do |col|
+        pos = row, col
+        next if self[pos].empty?
+
+        piece = self[pos]
+        pieces << piece
+      end
+    end
+
+    pieces
+  end
 
   private
 
   attr_reader :sentinel
 
   def populate_chessboard
-    @rows = Array.new(8) { Array.new(8, sentinel) }
+    @rows = Array.new(8) { Array.new(8) }
 
     (0...8).each do |row|
       (0...8).each do |col|
         pos = [row, col]
         piece = piece_at(pos)
-        color = color_at(pos)
-
-        if piece == sentinel
-          self[pos] = sentinel
-        else
-          self[pos] = piece.new(pos, self, color)
-        end
+        add_piece(piece, pos)
       end
     end
   end
@@ -89,7 +122,6 @@ class Board
 
   def color_at(pos)
     row, col = pos
-    (row == 0 || row == 1) ? :white : :black
+    (row == 0 || row == 1) ? :black : :white
   end
-
 end
