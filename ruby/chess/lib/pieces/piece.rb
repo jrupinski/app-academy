@@ -1,4 +1,3 @@
-
 #
 # Piece on chess board
 # Parent piece of all pieces in chess
@@ -42,6 +41,12 @@ class Piece
   end
 
   def valid_moves
-    # TODO 
+    self.moves.reject { |pos| move_into_check?(pos) }
+  end
+
+  def move_into_check?(end_pos)
+    after_move = board.dup
+    after_move.move_piece(self.pos, end_pos)
+    after_move.in_check?(self.color)
   end
 end

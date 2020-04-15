@@ -22,7 +22,7 @@ class Board
   def move_piece(start_pos, end_pos)
     if self[start_pos].empty? || !valid_pos?(start_pos)
       raise ArgumentError.new("No piece at starting position!")
-    elsif !self[end_pos].empty? || !valid_pos?(end_pos)
+    elsif self[end_pos].color == self[start_pos].color || !valid_pos?(end_pos)
       raise ArgumentError.new("Cannot move to end position!")
     end
 
@@ -57,7 +57,7 @@ class Board
   end
   
   def add_piece(piece, pos)
-    if piece == sentinel
+    if piece.is_a?(NullPiece)
       self[pos] = sentinel
     else
       self[pos] = piece.new(pos, self, color_at(pos))
@@ -73,7 +73,7 @@ class Board
   #
   def checkmate?(color)
     friendly_pieces = pieces.select { |piece| piece.color == color }
-    in_check?(color) && friendly_pieces.all?(&:valid_moves.empty?)
+    in_check?(color) && friendly_pieces.all? { |piece| piece.valid_moves.empty? }
   end
 
   #
@@ -86,7 +86,7 @@ class Board
   def in_check?(color)
     king_pos = find_king(color)
     enemies = pieces.select { |piece| piece.color != color }
-    puts enemies.any? { |enemy| enemy.moves.include?(king_pos)}
+    enemies.any? { |enemy| enemy.moves.include?(king_pos)}
   end
 
   #
@@ -119,6 +119,25 @@ class Board
     end
 
     pieces
+  end
+
+  def dup
+    duped_board = Board.new
+    (0...8).each do |row|
+      (0...8).each do |col|
+        pos = row, col
+        og_piece = self[pos]
+
+        if og_piece.is_a?(NullPiece)
+          duped_board[pos] = sentinel
+        else
+          duped_piece = og_piece.class.new(og_piece.pos, duped_board, og_piece.color)
+          duped_board[pos] = duped_piece
+        end
+      end
+    end
+
+    duped_board
   end
 
   private
