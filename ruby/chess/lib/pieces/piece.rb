@@ -63,7 +63,7 @@ class Piece
   #
   def move_into_check?(end_pos)
     after_move = board.dup
-    after_move.move_piece(self.pos, end_pos)
+    after_move.move_piece!(self.pos, end_pos)
     after_move.in_check?(self.color)
   end
 end

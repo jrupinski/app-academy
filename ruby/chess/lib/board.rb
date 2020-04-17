@@ -20,13 +20,28 @@ class Board
   # @param [Array] end_pos Ending position of Piece
   #
   def move_piece(start_pos, end_pos)
-    if self[start_pos].empty? || !valid_pos?(start_pos)
-      raise ArgumentError.new("No piece at starting position!")
-    elsif self[end_pos].color == self[start_pos].color || !valid_pos?(end_pos)
-      raise ArgumentError.new("Cannot move to end position!")
-    end
+  if !valid_pos?(end_pos) || !valid_pos?(start_pos)
+    raise ArgumentError.new("Invalid start or end position")
+  elsif self[start_pos].empty?
+    raise ArgumentError.new("No piece at starting position")
+  elsif self[start_pos].move_into_check?(end_pos)
+    raise "This move results in a check!"
+  elsif !self[start_pos].valid_moves.include?(end_pos)
+    raise "Invalid move for this piece"
+  end
 
-    # move piece
+    move_piece!(start_pos, end_pos)
+  end
+
+  #
+  # Move piece on board(no checks)
+  #
+  # @param [Array] start_pos Piece to move
+  # @param [Array] end_pos Position to move Piece to
+  #
+  # @return [nil] 
+  #
+  def move_piece!(start_pos, end_pos)
     self[end_pos] = self[start_pos] 
     self[start_pos] = sentinel
     # update piece's position
