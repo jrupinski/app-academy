@@ -35,15 +35,32 @@ class Piece
     "#{symbol}, color: #{color}, position: #{pos}"
   end
 
+  #
+  # Return Piece's symbol
+  #
+  # @return [String] Piece's symbol
+  #
   def symbol
     # implemented by class's children
     raise NotImplementedError
   end
 
+  #
+  # Return moves that will NOT result in a check on a Board
+  #
+  # @return [Array] Array of valid moves
+  #
   def valid_moves
     self.moves.reject { |pos| move_into_check?(pos) }
   end
 
+  #
+  # Check if moving into given position result in a check against player's color 
+  #
+  # @param [Array] end_pos Position to move Piece to
+  #
+  # @return [Boolean] True if move will end up in a check
+  #
   def move_into_check?(end_pos)
     after_move = board.dup
     after_move.move_piece(self.pos, end_pos)

@@ -2,6 +2,11 @@ require_relative "piece"
 
 class Pawn < Piece
 
+  #
+  # Return Pawn's moves 
+  #
+  # @return [Array] Array of possible positions
+  #
   def moves
     forward_steps + side_attacks
   end
@@ -12,17 +17,32 @@ class Pawn < Piece
 
   private
 
+  #
+  # Check if Pawn is in starting position
+  #
+  # @return [Boolean] True if Pawn on given color's starting pos
+  #
   def at_start_row?
     row, col = pos
-    start_row = (color == :white) ? 1 : 6
+    start_row = (color == :white) ? 6 : 1
 
     row == start_row
   end
 
+  #
+  # Determine which way should a Pawn go to move forward (based on color/position)
+  #
+  # @return [Integer] Number to add to row of Pawn to move forward 
+  #
   def forward_dir
     color == :white ? -1 : 1
   end
 
+  #
+  # Return possible moves in forward direction based on placement of Pawn and enemies
+  #
+  # @return [Array] Array of possible moves
+  #
   def forward_steps
     forward_steps = []
     row, col = pos
@@ -38,6 +58,11 @@ class Pawn < Piece
     forward_steps
   end
 
+  #
+  # Return possible moves/attacks on sides - only applicable if enemies are in front
+  #
+  # @return [Array] Array of possible attacks
+  #
   def side_attacks
     side_attacks = []
     row, col = pos
