@@ -53,38 +53,8 @@ class Display
       puts "Moves that will result in selected color's check: #{selected_piece.moves.select { |pos| selected_piece.move_into_check?(pos) }}"
     end
   end
-end
 
-
-if $PROGRAM_NAME == __FILE__
-  a = Board.new
-  b = Display.new(a, true)
-  b.render
-  # fastest checkmate placement, in 4 moves
-  a.move_piece!([1, 5], [3, 5])
-  a.move_piece!([6, 6], [4, 6])
-  a.move_piece!([0, 3], [4, 7])
-  puts "BEFORE MOVING INTO A CHECKMATE - should not be in check or in checkmate"
-  puts "is in a check? #{a.in_check?(:white)}"
-  puts "is in a checkmate? #{a.checkmate?(:white)}"
-  b.render
-  puts
-  print "is next move a move into a check? (should be true) #{a[[6, 5]].move_into_check?([5, 5])}"
-  puts 
-  
-  ### UNCOMMENT THIS TO PLACE WHITE IN CHECKMATE (test #checkmate?/#move_into_check?) ###
-  a.move_piece([6, 5], [5, 5])
-  # a.move_piece!([6, 5], [5, 5])
-  # # check if in check?
-  # puts "AFTER MOVING INTO CHECKMATE"
-  # b.render
-  # puts "is in a check? #{a.in_check?(:white)}"
-  # # debugger
-  # puts "is in a checkmate? #{a.checkmate?(:white)}"
-
-  # loop do
-  #   b.render
-  #   b.cursor.get_input
-  #   system "clear"
-  # end
+  def reset!
+    system "clear"
+  end
 end

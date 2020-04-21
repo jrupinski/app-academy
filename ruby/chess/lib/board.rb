@@ -19,16 +19,18 @@ class Board
   # @param [Array] start_pos Starting position of Piece
   # @param [Array] end_pos Ending position of Piece
   #
-  def move_piece(start_pos, end_pos)
-  if !valid_pos?(end_pos) || !valid_pos?(start_pos)
-    raise ArgumentError.new("Invalid start or end position")
-  elsif self[start_pos].empty?
-    raise ArgumentError.new("No piece at starting position")
-  elsif self[start_pos].move_into_check?(end_pos)
-    raise "This move results in a check!"
-  elsif !self[start_pos].valid_moves.include?(end_pos)
-    raise "Invalid move for this piece"
-  end
+  
+  def move_piece(player_color, start_pos, end_pos)
+    raise ArgumentError.new("No piece at starting position") if self[start_pos].empty?
+
+    piece = self[start_pos]
+    if !piece.moves.include?(end_pos)
+      raise "Invalid move for this piece"
+    elsif !piece.valid_moves.include?(end_pos)
+      raise "Cannot move into a check"
+    elsif player_color != piece.color
+      raise "You can only move pieces of your own color"
+    end
 
     move_piece!(start_pos, end_pos)
   end
