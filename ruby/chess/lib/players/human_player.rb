@@ -1,11 +1,6 @@
-require_relative "display"
+require_relative "player"
 
-class HumanPlayer
-  attr_reader :color, :display
-  def initialize(color, display)
-    @color = color
-    @display = display
-  end
+class HumanPlayer < Player
 
   #
   # Get input which piece to move on ChessBoard
