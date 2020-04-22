@@ -44,6 +44,11 @@ class Cursor
     @selected = false
   end
 
+  #
+  # Get keyboard input from user
+  #
+  # @return [nil] Return input to #handle_key method
+  #
   def get_input
     key = KEYMAP[read_char]
     handle_key(key)
@@ -103,6 +108,14 @@ class Cursor
     end
   end
 
+  #
+  # Update cursor position on Board
+  # Updates cursor up, down, left or right
+  #
+  # @param [Array] diff Array of direction where to move (based on MOVES constant)
+  #
+  # @return [nil] Updates @cursor_pos placement
+  #
   def update_pos(diff)
     row, col = cursor_pos
     dx, dy = diff
@@ -111,6 +124,11 @@ class Cursor
     @cursor_pos = new_pos unless !board.valid_pos?(new_pos)
   end
 
+  #
+  # Toggles if a Piece is selected
+  #
+  # @return [nil] Updates @selected value
+  #
   def toggle_selected
     @selected ? @selected = false : @selected = true
   end

@@ -1,5 +1,4 @@
 require_relative "pieces"
-
 require "byebug"
 #
 # Board for the game Chess
@@ -7,14 +6,13 @@ require "byebug"
 class Board
   attr_reader :rows
 
-  def initialize
-    # initialize board with placeholder pieces for now
+  def initialize(fill_board = true)
     @sentinel = NullPiece.instance
-    populate_chessboard
+    populate_chessboard(fill_board)
   end
 
   #
-  # Move Piece across the Chess Board
+  # Do sanity checks before moving a piece on Chess Board
   #
   # @param [Array] start_pos Starting position of Piece
   # @param [Array] end_pos Ending position of Piece
@@ -74,11 +72,9 @@ class Board
   end
   
   def add_piece(piece, pos)
-    if piece.is_a?(NullPiece)
-      self[pos] = sentinel
-    else
-      self[pos] = piece.new(pos, self, color_at(pos))
-    end
+    raise "There is a Piece on this position already!" unless empty?(pos)
+    return nil if piece == sentinel
+    self[pos] = piece.new(pos, self, color_at(pos))
   end
 
   #
@@ -124,36 +120,22 @@ class Board
   # @return [Array] Array of all remaining pieces on Board
   #
   def pieces
-    pieces = []
-    (0...8).each do |row|
-      (0...8).each do |col|
-        pos = row, col
-        next if self[pos].empty?
-
-        piece = self[pos]
-        pieces << piece
-      end
-    end
-
-    pieces
+    rows.flatten.reject { |piece| piece == sentinel}
   end
 
+  #
+  # Create a deep copy of a  Board
+  #
+  # @return [Board] Duplicated Board
+  #
   def dup
-    duped_board = Board.new
-    (0...8).each do |row|
-      (0...8).each do |col|
-        pos = row, col
-        og_piece = self[pos]
+    duped_board = Board.new(false)
 
-        if og_piece.is_a?(NullPiece)
-          duped_board[pos] = sentinel
-        else
-          duped_piece = og_piece.class.new(og_piece.pos, duped_board, og_piece.color)
-          duped_board[pos] = duped_piece
-        end
-      end
+    self.pieces.each do |piece| 
+      pos = piece.pos
+      duped_board[pos] = piece.class.new(piece.pos, duped_board, piece.color) 
     end
-
+    
     duped_board
   end
 
@@ -162,24 +144,31 @@ class Board
   attr_reader :sentinel
 
   #
+  # Check if given position is empty on ChessBoard
+  #
+  # @param [Array] pos Position to check
+  #
+  # @return [Boolean] True if empty, false otherwise
+  #
+  def empty?(pos)
+    self[pos].empty?
+  end
+
+  #
   # Create a Chessboard and put pieces on it
   #
   # @return [Array] A 2-d Array with Pieces on it - a Chessboard
   #
-  def populate_chessboard
-    @rows = Array.new(8) { Array.new(8) }
+  def populate_chessboard(fill_board)
+    @rows = Array.new(8) { Array.new(8, sentinel) }
+    return unless fill_board
 
-    (0...8).each do |row|
-      (0...8).each do |col|
-        pos = [row, col]
-        piece = piece_at(pos)
-        add_piece(piece, pos)
-      end
-    end
+    place_back_rows
+    place_pawns
   end
 
   #
-  # Check which Piece should be put on given position when initializing ChessBoard
+  # Check which Piece should be put on back position when initializing ChessBoard
   #
   # @param [Array] pos Position to check
   #
@@ -187,11 +176,6 @@ class Board
   #
   def piece_at(pos)
     row, col = pos
-    if row == 1 || row == 6
-      return Pawn
-    elsif row != 0 && row !=7 
-      return sentinel
-    end
 
     case col
     when 0, 7
@@ -204,6 +188,34 @@ class Board
       Queen
     when 4
       King
+    end
+  end
+
+  #
+  # Place Pawns on Chessboard
+  #
+  # @return [Nil]
+  #
+  def place_pawns
+    [1, 6].each do |row|
+      (0...8).each do |col|
+        pos = row, col
+        add_piece(Pawn, pos)
+      end
+    end
+  end
+
+  #
+  # Place Knights, Bishops, Kings and Queens on Chessboard
+  #
+  # @return [Nil] 
+  #
+  def place_back_rows
+    [0, 7].each do |row|
+      (0...8).each do |col|
+        pos = row, col
+        add_piece(piece_at(pos), pos)
+      end
     end
   end
 

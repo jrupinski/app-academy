@@ -7,6 +7,12 @@ class HumanPlayer
     @display = display
   end
 
+  #
+  # Get input which piece to move on ChessBoard
+  # Render the board and make user choose pieces in a GUI
+  #
+  # @return [Array] Start and End positions of a Piece
+  #
   def make_move
     cursor = display.cursor
     start_pos = nil

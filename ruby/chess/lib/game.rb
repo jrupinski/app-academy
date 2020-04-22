@@ -5,9 +5,9 @@ require_relative "display"
 class Game
   attr_reader :board, :display, :players, :current_player
 
-  def initialize
+  def initialize(debug = false)
     @board = Board.new
-    @display = Display.new(@board)
+    @display = Display.new(@board, debug)
     @players = {
       black: HumanPlayer.new(:black, @display),
       white: HumanPlayer.new(:white, @display)
@@ -15,6 +15,11 @@ class Game
     @current_player = :white
   end
 
+  #
+  # Play a game of Chess in terminal
+  #
+  # @return [nil] Print out game over
+  #
   def play
     until board.checkmate?(current_player)
       begin
@@ -48,5 +53,5 @@ end
 
 
 if $PROGRAM_NAME == __FILE__
-  Game.new.play
+  ARGV[0] == "debug" ? Game.new(true).play : Game.new.play
 end

@@ -24,15 +24,13 @@ class Piece
     false
   end
 
+  #
+  # Print Piece's symbol
+  #
+  # @return [String] Symbol of Piece
+  #
   def to_s
     " #{symbol} "
-  end
-
-  #
-  # Formats output in terminal nicely
-  #
-  def inspect
-    "#{symbol}, color: #{color}, position: #{pos}"
   end
 
   #
@@ -53,6 +51,8 @@ class Piece
   def valid_moves
     self.moves.reject { |pos| move_into_check?(pos) }
   end
+
+  private
 
   #
   # Check if moving into given position result in a check against player's color 
