@@ -18,7 +18,7 @@ class Board
   # @param [Array] end_pos Ending position of Piece
   #
   
-  def move_piece(player_color, start_pos, end_pos)
+  def move_piece(player_color, start_pos, end_pos, ai_playing = false)
     raise ArgumentError.new("No piece at starting position") if self[start_pos].empty?
 
     piece = self[start_pos]
@@ -31,6 +31,7 @@ class Board
     end
 
     move_piece!(start_pos, end_pos)
+    piece.promote(ai_playing) if piece.is_a?(Pawn) && piece.at_end_row?
   end
 
   #

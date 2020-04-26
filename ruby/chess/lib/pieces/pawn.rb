@@ -8,6 +8,7 @@ class Pawn < Piece
   # @return [Array] Array of possible positions
   #
   def moves
+    @passed_end_row = true if at_end_row?
     forward_steps + side_attacks
   end
 
@@ -15,7 +16,54 @@ class Pawn < Piece
     "♟"
   end
 
+  def promote(ai_playing = false)
+    if ai_playing
+        selection = "QKRB".chars.sample
+        promote_pawn(selection)
+        return
+    end
+
+    begin
+      system "clear"
+      puts "Pawn promoted! Which Piece to promote to? (input first letter):"
+      print "Q - Queen \nK - Knight \nR - Rook \nB - Bishop\n"
+      print "Make a selection: >"
+
+      selection = STDIN.gets.chomp.upcase
+
+      raise "Undefined selection, retry...\n\n" unless "QKRB".chars.include?(selection)
+    rescue => exception
+      puts exception.message
+      sleep 1.5
+      retry
+    end
+
+    promote_pawn(selection)
+  end
+
+  def at_end_row?
+    row, col = pos
+    end_row = (color == :white) ? 0 : 7
+
+    row == end_row
+  end
+
   private
+
+  @passed_end_row = false
+
+  def promote_pawn(selection)
+    case selection
+    when "Q"
+      board[pos] = Queen.new(pos, board, color)
+    when "K"
+      board[pos] = Knight.new(pos, board, color)
+    when "R"
+      board[pos] = Rook.new(pos, board, color)
+    when "B"
+      board[pos] = Bishop.new(pos, board, color)
+    end
+  end
 
   #
   # Check if Pawn is in starting position

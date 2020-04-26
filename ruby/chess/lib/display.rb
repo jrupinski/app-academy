@@ -75,7 +75,6 @@ class Display
     puts "selected piece: #{selected_piece.symbol}, position: #{cursor_pos}"
     puts "selected piece's available moves:"
     puts "#{selected_piece.valid_moves}".colorize(:yellow)
-    puts "Selected color in check?: #{@board.in_check?(enemy_color)}"
-    puts "Moves that will result in selected color's check: #{selected_piece.moves.select { |pos| selected_piece.move_into_check?(pos) }}"
+    puts "Enemy color in check?: #{@board.in_check?(enemy_color)}"
   end
 end

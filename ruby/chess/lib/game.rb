@@ -10,7 +10,7 @@ class Game
     @display = Display.new(@board, debug)
     @players = {
       black: HumanPlayer.new(:black, @display),
-      white: HumanPlayer.new(:white, @display)
+      white: AiPlayer.new(:white, @display)
     }
     @current_player = :white
   end
@@ -23,8 +23,9 @@ class Game
   def play
     until board.checkmate?(current_player)
       begin
+        ai_playing = (players[current_player].is_a?(AiPlayer))
         move = players[current_player].make_move
-        board.move_piece(current_player, move.first, move.last)
+        board.move_piece(current_player, move.first, move.last, ai_playing)
 
         swap_turn!
         notify_players
@@ -47,7 +48,7 @@ class Game
   end
 
   def notify_players
-    puts "Check!" if board.in_check?(current_player)
+    puts "#{current_player} in check!" if board.in_check?(current_player)
   end
 end
 
