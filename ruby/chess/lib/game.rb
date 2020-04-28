@@ -23,7 +23,8 @@ class Game
   def play
     until board.checkmate?(current_player)
       begin
-        ai_playing = (players[current_player].is_a?(AiPlayer))
+        ai_playing = players[current_player].is_a?(AiPlayer)
+        
         move = players[current_player].make_move
         board.move_piece(current_player, move.first, move.last, ai_playing)
 
