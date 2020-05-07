@@ -13,7 +13,6 @@ describe "my_uniq" do
   end
 
   it "does not modify original array" do
-    expect(my_uniq(elements)).to_not be(elements)
-    expect(elements).to eq([1, 2, 1, 3, 3])
+    expect { my_uniq(elements) }.to_not change { elements.object_id }
   end
 end
