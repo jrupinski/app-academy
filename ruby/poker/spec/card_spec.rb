@@ -85,7 +85,7 @@ describe Card do
         let(:card_type) { "2X" }
         it { expect { subject.suit }.to raise_error(ArgumentError) }
         
-        let(:card_type) { "105" }
+        let(:card_type) { "Q5" }
         it { expect { subject.suit }.to raise_error(ArgumentError) }
       end
 
