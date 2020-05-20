@@ -1,3 +1,4 @@
+require "byebug"
 class Card
 
   VALUE_HASH = {
@@ -15,14 +16,20 @@ class Card
     "K" => 13
   }
 
-  def initialize(value)
-    @value = value
+  def initialize(card)
+    raise ArgumentError unless card.length.between?(2, 3) && card.is_a?(String)
+    @card = card
   end
 
   def value
-    raise ArgumentError unless @value.length.between?(2, 3)
-    value_str = @value.chars.take(@value.length - 1).join
-    VALUE_HASH.has_key?(value_str) ? VALUE_HASH[value_str] : (raise ArgumentError)
+    value_str = @card[0...@card.length - 1].upcase
+    VALUE_HASH[value_str] || (raise ArgumentError)
   end
 
+  def suit
+    valid_suits = "C D H S"
+    suit = @card.chars.last
+    raise ArgumentError unless valid_suits.include?(suit)
+    suit.to_sym
+  end
 end

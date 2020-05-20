@@ -51,4 +51,48 @@ describe Card do
       end
     end
   end
+
+  describe "#suit" do
+    context "Two of Hearts" do
+      let(:card_type) { "2H" }
+      it { expect(subject.suit).to eq :H }
+    end
+
+    context "Ten of Spades" do
+      let(:card_type) { "10S" }
+      it { expect(subject.suit).to eq :S }
+    end
+
+    describe "Face Cards" do
+      context "Jack of Clubs" do
+        let(:card_type) { "JC" }
+        it { expect(subject.suit).to eq :C }
+      end
+
+      context "Queen of Diamonds" do
+        let(:card_type) { "QD" }
+        it { expect(subject.suit).to eq :D }
+      end
+
+      context "King of Spades" do
+        let(:card_type) { "KS" }
+        it { expect(subject.suit).to eq :S }
+      end
+    end
+
+    context "Bad suit" do
+      context "Bad string:" do
+        let(:card_type) { "2X" }
+        it { expect { subject.suit }.to raise_error(ArgumentError) }
+        
+        let(:card_type) { "105" }
+        it { expect { subject.suit }.to raise_error(ArgumentError) }
+      end
+
+      context "Empty string:" do
+        let(:card_type) { "" }
+        it { expect { subject.suit }.to raise_error(ArgumentError) }
+      end
+    end
+  end
 end
