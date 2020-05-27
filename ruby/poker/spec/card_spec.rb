@@ -32,6 +32,11 @@ describe Card do
         let(:card_type) { "KS" }
         it { expect(subject.value).to eq 13 }
       end
+
+      context "Ace of Spades" do
+        let(:card_type) { "AS" }
+        it { expect(subject.value).to eq 14 }
+      end
     end
 
     context "Bad value" do

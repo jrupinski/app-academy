@@ -13,7 +13,8 @@ class Card
     "10" => 10,
     "J" => 11,
     "Q" => 12,
-    "K" => 13
+    "K" => 13,
+    "A" => 14
   }
 
   SUITS_HASH = { 
@@ -23,10 +24,9 @@ class Card
     :S => "spades"
   }
 
-  attr_reader :suit
-
   def initialize(card)
     raise ArgumentError unless card.length.between?(2, 3) && card.is_a?(String)
+    @card = card.upcase
     @value = card[0...card.length - 1].upcase
     @suit = card[-1].upcase.to_sym
     raise ArgumentError unless valid_suit? && valid_value?
@@ -34,6 +34,14 @@ class Card
   
   def value
     VALUE_HASH[@value]
+  end
+
+  def suit
+    SUITS_HASH[@suit]
+  end
+
+  def name
+    @card
   end
 
   def valid_value?
