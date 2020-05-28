@@ -2,6 +2,7 @@ require "deck"
 
 describe Deck do
   subject(:deck) { Deck.new }
+
   it "contains 52 cards" do
     expect(deck.cards.count).to eq(52)
     deck.cards.all? do |card|
@@ -54,5 +55,16 @@ describe Deck do
     deck.cards.sort! { |x, y| x.name <=> y.name }
     unshuffled_deck.sort! { |x, y| x.name <=> y.name }
     expect(unshuffled_deck).to eq(deck.cards)
+  end
+
+  it "allows to draw a card" do
+    expect(deck.draw).to be_a(Card)
+    expect(deck.cards.count).to eq(51)
+  end
+
+  it "allows to discard cards" do
+    card = Card.new("KS") 
+    expect { deck.discard(card) }.to_not raise_error
+    expect(deck.cards.count).to eq(53)
   end
 end

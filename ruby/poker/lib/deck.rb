@@ -29,4 +29,13 @@ class Deck
   def shuffle
     @cards.shuffle!
   end
+
+  def draw
+    @cards.pop
+  end
+
+  def discard(card)
+    raise TypeError unless card.class == Card
+    @cards.unshift(card)
+  end
 end
