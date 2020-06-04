@@ -103,23 +103,28 @@ describe Hand do
     let(:flush) { [ace, king, queen, jack, four] }
 
     context "flush vs two pair vs one pair vs high card vs straight" do
-      let(:hands) { [flush, two_pair, one_pair, high_card, straight] }
-      it { expect(hand.best_hand(hands)).to eq(0) }
+      let(:hands) { [two_pair, one_pair, flush, high_card, straight] }
+      it { expect(hand.best_hand(hands)).to eq([2]) }
+    end
+
+    context "flush vs two pair vs flush(again) one pair vs high card vs straight (2x identical flush - DRAW)" do
+      let(:hands) { [flush, two_pair, one_pair, flush, high_card, straight] }
+      it { expect(hand.best_hand(hands)).to eq([0, 3]) }
     end
 
     context "one pair vs high card vs straight" do
       let(:hands) { [one_pair, high_card, straight] }
-      it { expect(hand.best_hand(hands)).to eq(2) }
+      it { expect(hand.best_hand(hands)).to eq([2]) }
     end
 
-    context "one pair vs one pair (same cards)" do
+    context "one pair vs one pair (same cards - DRAW)" do
       let(:hands) { [one_pair, one_pair] }
-      it { expect(hand.best_hand(hands)).to eq(:draw) }
+      it { expect(hand.best_hand(hands)).to eq([0, 1]) }
     end
 
     context "one pair vs one pair (with a lower ranked card)" do
       let(:hands) { [one_pair, one_pair_lower_rank] }
-      it { expect(hand.best_hand(hands)).to eq(0) }
+      it { expect(hand.best_hand(hands)).to eq([0]) }
     end
   end
 end
