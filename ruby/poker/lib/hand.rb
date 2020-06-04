@@ -1,6 +1,18 @@
 require_relative "deck"
 require "byebug"
 
+class Array
+  #
+  # Convert Array of a single number to an Integer
+  #
+  # @return [Integer] Number from inside the array
+  #
+  def to_i
+    raise TypeError unless self.all? { |ele| ele.is_a?(Numeric) }
+    self.join.to_i
+  end
+end
+
 
 class Hand
   attr_reader :cards
@@ -46,21 +58,200 @@ class Hand
       possible_winners << player_idx if rank == best_hand_rank 
     end
 
-    return possible_winners.first if possible_winners.count == 1
+    return possible_winners if possible_winners.count == 1
 
-    # TODO : fix draw scenarios and scenarios where >1 player has the same type of hand
+    winners = []
+
+    # THIS IS FUCKING AWFUL, SO MUCH COPY-PASTE. D-R-Y THIS UP LATER
     case best_hand_rank
     when 0
-      possible_winners.reject! { |player| hands[player].first.min }
+      possible_winners.inject(0) do |max_value, player|
+        player_hand = hands[player]
+        pair_value = pairs(player_hand, 5).to_i
+        if pair_value >= max_value 
+          winners.clear unless pair_value == max_value
+          winners << player
+          pair_value
+        else
+          max_value
+        end
+      end
+
     when 1
-      possible_winners.reject! { |player| hands[player].max }
+      # check flush
+      possible_winners.inject(0) do |max_rank, player|
+        player_hand = hands[player]
+        player_max_rank = player_hand.map(&:value).max
+        if player_max_rank >= max_rank 
+          winners.clear unless player_max_rank == max_rank
+          winners << player
+          player_max_rank
+        else
+          max_rank
+        end
+      end
+
+      # return winners.to_i unless winners.count != 1
+
+    # Then check straight
+      (0...5).each do |card|
+        winners.inject(0) do |max_value, player|
+          player_hand = hands[player]
+          card_value = player_hand[card].value
+          if card_value >= max_value 
+            winners.clear unless card_value == max_value
+            winners << player
+            card_value
+          else
+            max_value
+          end
+        end
+      end
+
+      # return winners.to_i unless winners.count != 1
+
+    when 2
+      possible_winners.inject(0) do |max_value, player|
+        player_hand = hands[player]
+        pair_value = pairs(player_hand, 4).to_i
+        if pair_value >= max_value 
+          winners.clear unless pair_value == max_value
+          winners << player
+          pair_value
+        else
+          max_value
+        end
+      end
+
+      # return winners.to_i unless winners.count != 1
+
+    when 3
+      # check triplets first
+      possible_winners.inject(0) do |max_value, player|
+        player_hand = hands[player]
+        pair_value = pairs(player_hand, 3).to_i
+        if pair_value >= max_value 
+          winners.clear unless pair_value == max_value
+          winners << player
+          pair_value
+        else
+          max_value
+        end
+      end
+
+      # return winners.to_i unless winners.count != 1
+
+      # then check pairs
+      winners.inject(0) do |max_value, player|
+        player_hand = hands[player]
+        pair_value = pairs(player_hand, 2).to_i
+        if pair_value >= max_value 
+          winners.clear unless pair_value == max_value
+          winners << player
+          pair_value
+        else
+          max_value
+        end
+      end
+
+    when 4
+      (0...5).each do |card|
+        possible_winners.inject(0) do |max_value, player|
+          player_hand = hands[player]
+          card_value = player_hand[card].value
+          if card_value >= max_value 
+            winners.clear unless card_value == max_value
+            winners << player
+            card_value
+          else
+            max_value
+          end
+        end
+      end
+
+      # return winners.to_i unless winners.count != 1
+
+    when 5
+      possible_winners.inject(0) do |max_rank, player|
+        player_hand = hands[player]
+        player_max_rank = player_hand.map(&:value).max
+        if player_max_rank >= max_rank 
+          winners.clear unless player_max_rank == max_rank
+          winners << player
+          player_max_rank
+        else
+          max_rank
+        end
+      end
+
+      # return winners.to_i unless winners.count != 1
+
+    when 6
+      possible_winners.inject(0) do |max_value, player|
+        player_hand = hands[player]
+        pair_value = pairs(player_hand, 5).to_i
+        if pair_value >= max_value 
+          winners.clear unless pair_value == max_value
+          winners << player
+          pair_value
+        else
+          max_value
+        end
+      end
+
+      # return winners.to_i unless winners.count != 1
+
+    when 7
+      possible_winners.inject(0) do |max_value, player|
+        player_hand = hands[player]
+        pair_value = pairs(player_hand, 5).to_i
+        if pair_value >= max_value 
+          winners.clear unless pair_value == max_value
+          winners << player
+          pair_value
+        else
+          max_value
+        end
+      end
+
+      # return winners.to_i unless winners.count != 1
+
+    when 8
+      possible_winners.inject(0) do |max_value, player|
+        player_hand = hands[player]
+        pair_value = pairs(player_hand, 2).to_i
+        if pair_value >= max_value 
+          winners.clear unless pair_value == max_value
+          winners << player
+          pair_value
+        else
+          max_value
+        end
+      end
+
+      # return winners.to_i unless winners.count != 1
+
     end
 
-    :draw
+    winners
   end
 
 
   private
+
+  #
+  # Return cards' values that have n repeats (eg. pair is n = 2 repeats) 
+  #
+  # @param [Array] cards Array of Cards (a hand)
+  # @param [Integer] num_of_repeats number of repeats to find
+  #
+  # @return [Array] lists of Cards (values) that are repeated n times
+  #
+  def pairs(cards, num_of_repeats)
+    card_count(cards)
+      .select { |card, count| count == num_of_repeats }
+      .keys
+  end
 
   def same_suit?(cards)
     cards_suits = cards.map(&:suit)
