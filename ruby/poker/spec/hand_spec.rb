@@ -2,19 +2,19 @@ require "hand"
 
 describe Hand do
   let(:hand) { Hand.new }
-  let(:card) { double(:value => 10, :suit => "H") }
+  let(:card) { double(:value => 10, :suit => "hearts") }
   let(:deck) { double(:cards => [card]) }
 
   # CARDS
-    let(:ace) { double(:value => 14, :suit => "H") }
-    let(:king) { double(:value => 13, :suit => "H") }
-    let(:queen) { double(:value => 12, :suit => "H") }
-    let(:jack) { double(:value => 11, :suit => "H") }
-    let(:ten_hearts) { double(:value => 10, :suit => "H") }
-    let(:ten_clubs) { double(:value => 10, :suit => "C") }
-    let(:four) { double(:value => 4, :suit => "H") }
-  
-  
+  let(:ace) { double(:value => 14, :suit => "hearts") }
+  let(:king) { double(:value => 13, :suit => "hearts") }
+  let(:queen) { double(:value => 12, :suit => "hearts") }
+  let(:jack) { double(:value => 11, :suit => "hearts") }
+  let(:ten_hearts) { double(:value => 10, :suit => "hearts") }
+  let(:ten_clubs) { double(:value => 10, :suit => "clubs") }
+  let(:four) { double(:value => 4, :suit => "hearts") }
+
+
   it "starts with no cards" do
     expect(hand.cards).to eq([])
   end

@@ -60,28 +60,28 @@ describe Card do
   describe "#suit" do
     context "Two of Hearts" do
       let(:card_type) { "2H" }
-      it { expect(subject.suit).to eq :H }
+      it { expect(subject.suit).to eq "hearts" }
     end
 
     context "Ten of Spades" do
       let(:card_type) { "10S" }
-      it { expect(subject.suit).to eq :S }
+      it { expect(subject.suit).to eq "spades" }
     end
 
     describe "Face Cards" do
       context "Jack of Clubs" do
         let(:card_type) { "JC" }
-        it { expect(subject.suit).to eq :C }
+        it { expect(subject.suit).to eq "clubs" }
       end
 
       context "Queen of Diamonds" do
         let(:card_type) { "QD" }
-        it { expect(subject.suit).to eq :D }
+        it { expect(subject.suit).to eq "diamonds" }
       end
 
       context "King of Spades" do
         let(:card_type) { "KS" }
-        it { expect(subject.suit).to eq :S }
+        it { expect(subject.suit).to eq "spades" }
       end
     end
 

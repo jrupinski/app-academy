@@ -58,13 +58,13 @@ describe Deck do
   end
 
   it "allows to draw a card" do
-    expect(deck.draw).to be_a(Card)
+    expect(deck.draw!).to be_a(Card)
     expect(deck.cards.count).to eq(51)
   end
 
   it "allows to discard cards" do
     card = Card.new("KS") 
-    expect { deck.discard(card) }.to_not raise_error
+    expect { deck.discard!(card) }.to_not raise_error
     expect(deck.cards.count).to eq(53)
   end
 end
