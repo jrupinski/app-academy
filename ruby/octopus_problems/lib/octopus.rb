@@ -16,21 +16,31 @@ class Octopus
   end
 
   # Find the longest fish in O(n log n) time. 
-  def self.dominant_octopus(arr = FISHES)
-    self.merge_sort(arr)
+  def self.dominant_octopus
+    sorted_fish = self.merge_sort(FISHES)
+    sorted_fish.last
   end
+
+  # Find the longest fish in O(n) time
+  def self.clever_octopus
+    longest_fish = FISHES.first
+    FISHES.each { |fish| longest_fish = fish if fish.length > longest_fish.length }
+    longest_fish
+  end
+
+  private
 
   # Merge sort based on string length
   def self.merge_sort(arr)
     # debugger
     return arr if arr.length <= 1
     mid = (arr.length / 2).floor
-    small = arr[0...mid]
-    big = arr[mid...arr.length]
+    left = arr[0...mid]
+    right = arr[mid...arr.length]
 
     self.merge(
-      self.merge_sort(small),
-      self.merge_sort(big)
+      self.merge_sort(left),
+      self.merge_sort(right)
     )
   end
 
@@ -61,6 +71,10 @@ class Octopus
   end
 end
 
-print Octopus.dominant_octopus
-puts
+puts "Finding longest fish:"
+puts "O(n^2) time:"
 puts Octopus.sluggish_octopus
+puts "O(n log n) time:"
+puts Octopus.dominant_octopus
+puts "O(n) time:"
+puts Octopus.clever_octopus
