@@ -10,11 +10,38 @@
 class Anagrams
   def first_anagram?(word_1, word_2)
     raise ArgumentError unless word_1.is_a?(String) && word_2.is_a?(String)
+    return false unless word_1.length == word_2.length
     anagrams = word_1.permutation
 
     anagrams.each { |anagram| return true if anagram == word_2}
 
     false
+  end
+
+  #
+  # Write a method #second_anagram? that iterates over the first string. 
+  # For each letter in the first string, find the index of that letter in the 
+  # second string (hint: use Array#find_index) and delete at that index. 
+  # The two strings are anagrams if an index is found for every letter and the
+  # second string is empty at the end of the iteration.
+  #
+  # @param [String] word_1 first word
+  # @param [String] word_2 second word
+  #
+  # @return [Boolean] true if both words are anagrams of each other
+  #
+  def second_anagram?(word_1, word_2)
+    # debugger
+    raise ArgumentError unless word_1.is_a?(String) && word_2.is_a?(String)
+    return false unless word_1.length == word_2.length
+
+    word_2_chars = word_2.chars
+    word_1.each_char do |word_1_char|
+      index = word_2_chars.find_index(word_1_char)
+      word_2_chars.delete_at(index) unless index.nil?
+    end
+
+    word_2_chars.empty?
   end
 end
 
