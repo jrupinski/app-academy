@@ -43,6 +43,21 @@ class Anagrams
 
     word_2_chars.empty?
   end
+
+  #
+  # Write a method #third_anagram? that solves the problem by sorting both 
+  # strings alphabetically. The strings are then anagrams if and only if the 
+  # sorted versions are the identical.
+  #
+  # @param [String] word_1 first word
+  # @param [String] word_2 second word
+  #
+  # @return [Boolean] true if both words are anagrams of each other
+  #
+  def third_anagram?(word_1, word_2)
+    # I used merge sort; time complexity may vary between different algorithms 
+    word_1.merge_sort == word_2.merge_sort
+  end
 end
 
 # monkey patch to make it easier for myself 
@@ -66,5 +81,24 @@ class String
     end
 
     new_permutations
+  end
+
+  #
+  # Sort String and return sorted version as an Array
+  #
+  # @return [Array] Sorted String
+  #
+  def merge_sort
+    return [self] if self.length == 1
+    
+    sorted = [self[0]] + self[1..-1].merge_sort
+
+    (0...sorted.length - 1).each do |i|
+      if sorted[i] > sorted[i + 1]
+        sorted[i], sorted[i + 1] = sorted[i + 1], sorted[i]
+      end
+    end
+
+    sorted
   end
 end
