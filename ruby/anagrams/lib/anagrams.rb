@@ -89,15 +89,23 @@ class String
   # @return [Array] Sorted String
   #
   def merge_sort
-    return [self] if self.length == 1
+    return [self] if self.length <= 1
     
-    sorted = [self[0]] + self[1..-1].merge_sort
+    mid = self.length / 2
+    left = self[0...mid].merge_sort
+    right = self[mid..-1].merge_sort
+    sorted = []
 
-    (0...sorted.length - 1).each do |i|
-      if sorted[i] > sorted[i + 1]
-        sorted[i], sorted[i + 1] = sorted[i + 1], sorted[i]
+    until left.empty? || right.empty?
+      if left[0] >= right[0]
+        sorted << right.shift
+      else
+        sorted << left.shift
       end
     end
+
+    sorted += left
+    sorted += right
 
     sorted
   end
