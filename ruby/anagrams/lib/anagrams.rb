@@ -60,6 +60,43 @@ class Anagrams
   end
 end
 
+#
+# Write one more method #fourth_anagram?. This time, use two Hashes to store
+# the number of times each letter appears in both words. Compare the resulting 
+# hashes.
+#
+# @param [String] word_1 first word
+# @param [String] word_2 second word
+#
+# @return [Boolean] true if both words are anagrams of each other
+#
+def fourth_anagram?(word_1, word_2)
+  word_1_hash = Hash.new(0)
+  word_2_hash = Hash.new(0)
+
+  word_1.each_char { |char| word_1_hash[char] += 1 }
+  word_2.each_char { |char| word_2_hash[char] += 1 }
+
+  word_1_hash == word_2_hash
+end
+
+#
+# Same as #fourth_anagram?, but uses one Hash, so it's a tiny bit faster
+# Uses one less Hash, and computes through one Hash, not two!
+#
+# @param [String] word_1 first word
+# @param [String] word_2 second word
+#
+# @return [Boolean] true if both words are anagrams of each other
+#
+def fourth_anagram_one_hash?(word_1, word_2)
+  word_hash = Hash.new(0)
+  word_1.each_char { |char| word_hash[char] += 1 }
+  word_2.each_char { |char| word_hash[char] -= 1 }
+
+  word_hash.each_value.all? { |count| count == 0 }
+end
+
 # monkey patch to make it easier for myself 
 class String
   #
