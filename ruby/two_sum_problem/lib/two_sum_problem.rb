@@ -59,5 +59,26 @@ class TwoSumProblem
     false
   end
 
-  # I tried binary search but it didn't work as intended 
+
+  # Finally, it's time to bust out the big guns: a hash map. Remember, a
+  # hash map has O(1) #set and O(1) #get, so you can build a hash out of each of
+  # the n elements in your array in O(n) time. That hash map prevents you from 
+  # having to repeatedly find values in the array; now you can just look them up
+  # instantly.
+  #
+  # @param [Array] arr Integers to check pairs of
+  # @param [Integer] target Target number
+  #
+  # @return [Boolean] True if a sum of pair equals target, false otherwise
+  #
+  def two_sum?(arr, target)
+    hash_map = {}
+
+    arr.each do |ele|
+      return true if hash_map.has_key?(target - ele)
+      hash_map[ele] = true
+    end
+
+    false
+  end
 end
