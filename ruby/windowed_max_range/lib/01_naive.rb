@@ -15,6 +15,15 @@
 def windowed_max_range(array, window_size)
   best_range = nil
   
+  # universal version
+  # (0..array.length - window_size).each do |i|
+  #   window = array[i...i + window_size]
+  #   current_max_range = window.max - window.min
+  #   if best_range.nil? || current_max_range > best_range
+  #     best_range = current_max_range
+  #   end
+  # end
+  
   array.each_cons(window_size) do |window|
     current_max_range = window.max - window.min
     if best_range.nil? || current_max_range > best_range  
