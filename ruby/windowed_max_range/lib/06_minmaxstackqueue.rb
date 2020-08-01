@@ -30,16 +30,22 @@ class MinMaxStackQueue
   end
 
   def min
-    @inqueue.min || @outqueue.min unless empty?
+    mins = []
+    mins << @inqueue.min unless @inqueue.empty?
+    mins << @outqueue.min unless @outqueue.empty?
+    mins.min
   end
 
   def max
-    @inqueue.max || @outqueue.max unless empty?
+    maxes = []
+    maxes << @inqueue.max unless @inqueue.empty?
+    maxes << @outqueue.max unless @outqueue.empty?
+    maxes.max
   end
 
   private
 
   def move_to_outqueue
-    @inqueue.size.times { @outqueue.push(@inqueue.pop) }
+    @outqueue.push(@inqueue.pop) until @inqueue.empty?
   end
 end
