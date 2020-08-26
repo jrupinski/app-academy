@@ -11,24 +11,19 @@ def count
 end
 
 # adds element to cache according to LRU principle
-# TODO: fix sorting, items are added at the same time and are not sorted right
 def add(el)
-  el_idx = @cache.index {|value, timestamp| value == el }
-
-  unless el_idx.nil?
-    item = @cache[el_idx]
-    @cache[el_idx] = update_timestamp(item)
+  if @cache.include?(el)
+    @cache.delete(el)
+    @cache.push(el)
   else
-    value = [el, current_timestamp]
-    self.count < @capacity ? @cache << value : @cache[0] = value
+    @cache.shift unless self.count < @capacity
+    @cache.push(el)
   end
-  
-  @cache.sort_by! { |val, timestamp| timestamp }
 end
 
 # shows the items in the cache, with the LRU item first
 def show
-  @cache.map { |ele, timestamp| ele }
+  @cache
 end
 
 private
