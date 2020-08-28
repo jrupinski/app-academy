@@ -1,3 +1,5 @@
+require "byebug"
+
 class MaxIntSet
   # added it because it's necessary for passing spec suite
   attr_reader :store
@@ -73,18 +75,36 @@ class ResizingIntSet
   end
 
   def insert(num)
+    return false if self.include?(num)
+    self[num] << num
+    resize! if count >= num_buckets
   end
 
   def remove(num)
+    if self.include?(num)
+      @count -= 1
+      self[num].delete(num)
+      resize! if self.count < (num_buckets * 0.25)
+    end
   end
 
   def include?(num)
+    self[num].include?(num)
   end
 
+  def count
+    @store.sum(&:count)
+  end
+
+  def inspect
+    p "num_of_buckets: #{num_buckets}"
+    @store
+  end
   private
 
   def [](num)
     # optional but useful; return the bucket corresponding to `num`
+    @store[num % num_buckets]
   end
 
   def num_buckets
@@ -92,5 +112,14 @@ class ResizingIntSet
   end
 
   def resize!
+    # add new buckets or remove unnecessary buckets
+    new_size = (self.count >= num_buckets ? num_buckets * 2 : num_buckets / 2)
+    # don't downsize past default size
+    return false if new_size < 20
+
+    elements = @store.flatten
+    @store = Array.new(new_size) { Array.new }
+    elements.each { |el| self.insert(el) }
   end
 end
+
