@@ -4,6 +4,10 @@ end
 
 class Array
   def hash
+    self
+    .map.with_index { |ele, idx| ele.to_i ^ idx }
+    .sum
+    .hash
   end
 end
 
