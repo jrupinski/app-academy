@@ -13,6 +13,9 @@ end
 
 class String
   def hash
+    bytes = []
+    self.each_byte { |char| hashed << char }
+    bytes.hash
   end
 end
 
