@@ -77,6 +77,7 @@ class ResizingIntSet
   def insert(num)
     return false if self.include?(num)
     self[num] << num
+    @count += 1
     resize! if count >= num_buckets
   end
 
@@ -118,8 +119,11 @@ class ResizingIntSet
     return false if new_size < 20
 
     elements = @store.flatten
+    # create new buckets, reset counter
     @store = Array.new(new_size) { Array.new }
+    @count = 0
     elements.each { |el| self.insert(el) }
+
   end
 end
 
