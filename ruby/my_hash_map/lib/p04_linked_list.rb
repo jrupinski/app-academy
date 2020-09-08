@@ -1,5 +1,3 @@
-require "byebug"
-
 class Node
   attr_reader :key
   attr_accessor :val, :next, :prev
@@ -15,16 +13,19 @@ class Node
     "#{@key}: #{@val}"
   end
 
+  # optional but useful, connects previous link to next link
+  # and removes self from list.
   def remove
     prev_node = self.prev
     next_node = self.next
     prev_node.next = next_node
-    # optional but useful, connects previous link to next link
-    # and removes self from list.
+    next_node.prev = prev_node
   end
 end
 
 class LinkedList
+  include Enumerable
+
   def initialize
     @head = Node.new
     @tail = Node.new
@@ -80,19 +81,21 @@ class LinkedList
   # @return [Nil] No return value
   #
   def update(key, val)
-    self[key].val = val if self.include?(key)
-    nil
+    if self.include?(key)
+      self.each { |node| node.val = val if node.key == key }
+    end
   end
 
   def remove(key)
-    # This requires each_with_index...
-    self[key].remove
+    if self.include?(key)
+      self.each { |node| node.remove if node.key == key }
+    end
   end
 
   #
   # Enumerate through every node in Linked List
   #
-  def each
+  def each(&block)
     current_node = @head.next
     until current_node == @tail
       yield current_node if block_given?
@@ -101,7 +104,7 @@ class LinkedList
   end
 
   # uncomment when you have `each` working and `Enumerable` included
-  # def to_s
-  #   inject([]) { |acc, link| acc << "[#{link.key}, #{link.val}]" }.join(", ")
-  # end
+  def to_s
+    inject([]) { |acc, link| acc << "[#{link.key}, #{link.val}]" }.join(", ")
+  end
 end
