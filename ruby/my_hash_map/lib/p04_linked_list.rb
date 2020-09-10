@@ -24,6 +24,7 @@ class Node
 end
 
 class LinkedList
+  # add Enumerable module to get access to #each_with_index, #select etc.
   include Enumerable
 
   def initialize
@@ -57,7 +58,6 @@ class LinkedList
 
   def include?(key)
   self.each { |node| return true if node.key == key }
-
   false
   end
 
@@ -97,6 +97,7 @@ class LinkedList
   #
   def each(&block)
     current_node = @head.next
+
     until current_node == @tail
       yield current_node if block_given?
       current_node = current_node.next
