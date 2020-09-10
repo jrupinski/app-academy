@@ -1,7 +1,7 @@
 require_relative 'p04_linked_list'
 
 class HashMap
-  # include Enumerable
+  include Enumerable
   attr_accessor :count
 
   def initialize(num_buckets = 8)
@@ -36,19 +36,26 @@ class HashMap
     end
   end
 
-  # TODO: Fix/implement this, and import Enumerable module
+  #
+  # Iterate through every node in every bucket, returning key-val pairs
+  #
+  # @param [Block] &block Block of code
+  #
+  # @return [Array] Key, Value pair
+  #
   def each(&block)
-  #   # debugger
-  #   @store.each { |list| list.each { |node| block.call(node) } if block_given? }
+    @store.each do |node_head|
+      node_head.each { |node| yield [node.key, node.val] if block_given? }
+    end
   end
 
   # uncomment when you have Enumerable included
-  # def to_s
-  #   pairs = inject([]) do |strs, (k, v)|
-  #     strs << "#{k.to_s} => #{v.to_s}"
-  #   end
-  #   "{\n" + pairs.join(",\n") + "\n}"
-  # end
+  def to_s
+    pairs = inject([]) do |strs, (k, v)|
+      strs << "#{k.to_s} => #{v.to_s}"
+    end
+    "{\n" + pairs.join(",\n") + "\n}"
+  end
 
   alias_method :[], :get
   alias_method :[]=, :set
@@ -65,16 +72,14 @@ class HashMap
     # don't downsize past default size
     return false if new_size < 8
 
-    lists = @store.flatten
+    # store elements from current buckets
+    elements = self.map { |node| node }
     
-    elements = Hash.new
-    lists.each do |node_head|
-      node_head.each { |node| elements[node.key] =  node.val }
-    end
-
     # create new buckets, reset counter
     @store = Array.new(new_size) { LinkedList.new }
     @count = 0
+    
+    # rehash and reinsert elements in resized HashMap 
     elements.each { |key, val| self.set(key, val) }
   end
 
