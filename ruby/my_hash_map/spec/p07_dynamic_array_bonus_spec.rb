@@ -66,7 +66,6 @@ describe DynamicArray do
 
       expect(arr.pop).to eq(2)
       expect(arr.count).to eq(1)
-
       expect(arr.pop).to eq(1)
       expect(arr.count).to eq(0)
       expect(arr[0]).to be_nil
