@@ -50,59 +50,75 @@ class DynamicArray
   end
 
   def include?(val)
-    @store.any { |ele| ele == val }
+    self.any? { |ele| ele == val }
   end
 
   def push(val)
-    resize! if capacity > count
-    
-    (0...capacity).each do |idx|
-
-      if @store[idx].nil?
-        @store[idx] = val
-        @count += 1
-        return val
-      end
-    end
+    resize! if count >= capacity
+    self[count] = val
+    @count += 1
+    # return inserted val
+    val
   end
 
   def unshift(val)
-    # TODO
-  end
+    @count += 1
+    resize! if count >= capacity
 
-  def pop
-    resize! if count < (@capacity * 0.25)
-
-    (0...capacity).reverse_each do |idx|
-      ele = @store[idx]
-      
+    # move every item one index to the right
+    # start moving in reverse order to not overwrite values
+    (0...@count).reverse_each do |idx|
+      ele = self[idx]
       unless ele.nil?
-        @store[idx] = nil
-        @count -= 1
-        return ele
+        self[idx + 1] = ele
       end
     end
 
-    nil
+    # push val to beginning of the Array
+    self[0] = val
+  end
+
+  def pop
+    return nil if count <= 0
+
+    last_item = self.last
+    last_idx = count - 1
+    self[last_idx] = nil
+    @count -= 1
+    
+    resize! if count < (capacity * 0.25)
+    last_item
   end
 
   def shift
-    # TODO
+    return nil unless count > 0 
+    first_ele = self.first
+    self[0] = nil
+    @count -= 1
+
+    # move every item one index to the left
+    (1..@count).reverse_each do |idx|
+      ele = self[idx]
+      prev_idx = idx - 1
+
+      self[prev_idx] = ele
+      self[idx] = nil
+    end
+
+    first_ele
   end
 
   def first
-    @store[0] unless @store[0].nil?
+    self[0] unless self[0].nil?
   end
 
   def last
-    (0...capacity).reverse_each do |idx|
-      return @store[idx] unless @store[idx].nil?
-    end
+    self[@count - 1] if self.count > 0
   end
 
   def each
     (0...count).each do |idx|
-      yield @store[idx]
+      yield self[idx]
     end
   end
 
@@ -112,7 +128,8 @@ class DynamicArray
 
   def ==(other)
     return false unless [Array, DynamicArray].include?(other.class)
-    # ...
+    return false if self.length != other.length
+    (0...self.count).all? { |idx| self[idx] == other[idx] }
   end
 
   alias_method :<<, :push
@@ -121,17 +138,13 @@ class DynamicArray
   private
 
   def resize!
-    # TODO Fix resizing
-
-
   # Create new Array
-  capacity = @store.length
   new_size = (@count >= capacity ? capacity * 2 : capacity / 2)
   # don't downsize past default size
-  return false if new_size < 8
+  return false if new_size < 1
 
   # store elements from current Array
-  elements = @store.dup
+  elements = self.dup
 
   # create new Array, reset counter
   @store = StaticArray.new(new_size)
