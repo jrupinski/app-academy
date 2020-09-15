@@ -38,10 +38,21 @@ class DynamicArray
   end
 
   def [](i)
-    @store[i]
+    # count in reverse when number is negative: -1 is last ele, -2 is second last etc.
+    i %= count if i < 0 && i >= (-count)
+
+    begin
+      @store[i]
+    rescue 
+      # I'd create a separate Error class for rescuing but exercise forbids editing StaticArray Class
+      # return nil if overindexing
+      nil
+    end
   end
 
   def []=(i, val)
+    i %= count if i < 0 && i >= (-count)
+    # count in reverse when number is negative: -1 is last ele, -2 is second last etc.
     @store[i] = val
   end
 
@@ -97,7 +108,7 @@ class DynamicArray
     @count -= 1
 
     # move every item one index to the left
-    (1..@count).reverse_each do |idx|
+    (1..@count).each do |idx|
       ele = self[idx]
       prev_idx = idx - 1
 
