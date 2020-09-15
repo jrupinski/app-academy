@@ -51,8 +51,14 @@ class DynamicArray
   end
 
   def []=(i, val)
-    i %= count if i < 0 && i >= (-count)
+    # TODO: fix over-indexing
     # count in reverse when number is negative: -1 is last ele, -2 is second last etc.
+    if i < 0 && i >= (-count)
+      i %= count 
+    # else
+    #   self.push(nil) until capacity >= i
+    end
+    @count += 1 if @store[i] == nil
     @store[i] = val
   end
 
@@ -67,13 +73,11 @@ class DynamicArray
   def push(val)
     resize! if count >= capacity
     self[count] = val
-    @count += 1
     # return inserted val
     val
   end
 
   def unshift(val)
-    @count += 1
     resize! if count >= capacity
 
     # move every item one index to the right
@@ -91,9 +95,7 @@ class DynamicArray
 
   def pop
     return nil if count <= 0
-
     last_item = self.last
-    last_idx = count - 1
     self[last_idx] = nil
     @count -= 1
     
@@ -103,32 +105,40 @@ class DynamicArray
 
   def shift
     return nil unless count > 0 
-    first_ele = self.first
-    self[0] = nil
+    first_ele_copy = self.first.dup
+    self[first_idx] = nil
     @count -= 1
-
+    return first_ele_copy if count <= 0
+    
     # move every item one index to the left
-    (1..@count).each do |idx|
+    (first_idx...capacity).each do |idx|
       ele = self[idx]
       prev_idx = idx - 1
 
       self[prev_idx] = ele
       self[idx] = nil
+      # remove one to keep counter the same - we're just moving, not adding elements
+      @count -= (ele.nil? ? 2 : 1)
     end
 
-    first_ele
+    first_ele_copy
   end
 
+  #
+  # return first non-nil element from array
+  #
   def first
-    self[0] unless self[0].nil?
+    self.each { |ele| return ele unless ele.nil? }
+    nil
   end
 
   def last
-    self[@count - 1] if self.count > 0
+    self.reverse_each { |ele| return ele unless ele.nil? }
+    nil
   end
 
   def each
-    (0...count).each do |idx|
+    (0...capacity).each do |idx|
       yield self[idx]
     end
   end
@@ -149,19 +159,35 @@ class DynamicArray
   private
 
   def resize!
-  # Create new Array
-  new_size = (@count >= capacity ? capacity * 2 : capacity / 2)
-  # don't downsize past default size
-  return false if new_size < 1
+    # Create new Array
+    new_size = (@count >= capacity ? capacity * 2 : capacity / 2)
+    # don't downsize past default size
+    return false if new_size < 1
 
-  # store elements from current Array
-  elements = self.dup
+    # store elements from current Array
+    elements = self.map.with_index { |ele, idx| [ele, idx] }
+    elements.reject! {|ele, idx| ele.nil? }
 
-  # create new Array, reset counter
-  @store = StaticArray.new(new_size)
-  @count = 0
+    # create new Array, reset counter
+    @store = StaticArray.new(new_size)
+    @count = 0
 
-  # rehash and reinsert elements in resized HashMap 
-  elements.each { |ele| self.push(ele) }
+    # rehash and reinsert elements in resized HashMap 
+    elements.each { |ele, idx| self[idx] = ele}
+  end
+
+  #
+  # Find index of first non-nil element in Array
+  #
+  # @return [Numeric] Integer with non-nil ele index
+  #
+  def first_idx
+    self.each_with_index { |ele, idx| return idx unless ele.nil? }
+    nil
+  end
+
+  def last_idx
+    capacity.downto(0) { |idx| return idx unless self[idx].nil? }
+    nil
   end
 end
