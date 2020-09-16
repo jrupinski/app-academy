@@ -55,10 +55,10 @@ class DynamicArray
     # count in reverse when number is negative: -1 is last ele, -2 is second last etc.
     if i < 0 && i >= (-count)
       i %= count 
-    # else
-    #   self.push(nil) until capacity >= i
+    elsif i >= capacity
+      resize! until capacity >= i
     end
-    @count += 1 if @store[i] == nil
+    @count += 1 if @store[i] == nil && !val.nil?
     @store[i] = val
   end
 
@@ -95,33 +95,26 @@ class DynamicArray
 
   def pop
     return nil if count <= 0
-    last_item = self.last
+    last_item = self.last.dup
     self[last_idx] = nil
     @count -= 1
     
     resize! if count < (capacity * 0.25)
     last_item
   end
-
+  
   def shift
     return nil unless count > 0 
-    first_ele_copy = self.first.dup
-    self[first_idx] = nil
+    first_ele = self.first.dup
+    self[0] = nil
     @count -= 1
-    return first_ele_copy if count <= 0
-    
     # move every item one index to the left
-    (first_idx...capacity).each do |idx|
-      ele = self[idx]
-      prev_idx = idx - 1
-
-      self[prev_idx] = ele
-      self[idx] = nil
-      # remove one to keep counter the same - we're just moving, not adding elements
-      @count -= (ele.nil? ? 2 : 1)
+    (1...capacity).each do |idx|
+      self[idx], self[idx - 1] = self[idx - 1], self[idx]
+      @count -= 1 unless self[idx].nil? && self[idx - 1].nil?
     end
 
-    first_ele_copy
+    first_ele
   end
 
   #
@@ -159,21 +152,20 @@ class DynamicArray
   private
 
   def resize!
-    # Create new Array
+    # Calculate new size
     new_size = (@count >= capacity ? capacity * 2 : capacity / 2)
-    # don't downsize past default size
+    # don't downsize past minimum size
     return false if new_size < 1
 
-    # store elements from current Array
-    elements = self.map.with_index { |ele, idx| [ele, idx] }
-    elements.reject! {|ele, idx| ele.nil? }
+    # Copy elements from current Array
+    elements = self.map.with_index { |ele, idx| [ele, idx] }.dup
 
-    # create new Array, reset counter
+    # Resize @store Array
     @store = StaticArray.new(new_size)
     @count = 0
 
-    # rehash and reinsert elements in resized HashMap 
-    elements.each { |ele, idx| self[idx] = ele}
+    # Reinsert elements in their respective index in resized Array 
+    elements.each { |ele, idx| self[idx] = ele unless ele.nil?}
   end
 
   #

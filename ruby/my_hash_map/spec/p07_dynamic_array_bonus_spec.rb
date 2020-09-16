@@ -231,7 +231,6 @@ describe DynamicArray do
     it "should push nils when over-indexing" do
       arr[2] = 0
       expect(arr).to eq([nil, nil, 0])
-      # debugger
       arr.shift
       arr[5] = 0
       expect(arr).to eq([nil, 0, nil, nil, nil, 0])
