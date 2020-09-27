@@ -24,24 +24,52 @@ end
 def prizes_from_1950
   # Display Nobel prizes for 1950.
   execute(<<-SQL)
+    SELECT
+      *
+    FROM
+      nobels
+    WHERE
+      yr = 1950
   SQL
 end
 
 def literature_1962
   # Show who won the 1962 prize for Literature.
   execute(<<-SQL)
+    SELECT
+      winner
+    FROM
+      nobels
+    WHERE
+      yr = 1962
+    AND
+      subject = 'Literature'
   SQL
 end
 
 def einstein_prize
   # Show the year and subject that won 'Albert Einstein' his prize.
   execute(<<-SQL)
+    SELECT
+      yr, subject
+    FROM
+      nobels
+    WHERE
+      winner = 'Albert Einstein'
   SQL
 end
 
 def millennial_peace_prizes
   # Give the name of the 'Peace' winners since the year 2000, including 2000.
   execute(<<-SQL)
+    SELECT
+      winner
+    FROM
+      nobels
+    WHERE
+      subject LIKE 'Peace'
+    AND
+      yr BETWEEN 2000 AND 2020
   SQL
 end
 
