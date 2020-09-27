@@ -52,17 +52,39 @@ def population_in_millions
   # 'South America'. Divide the population by 1,000,000 to get population in
   # millions.
   execute(<<-SQL)
+    SELECT
+      name, population / 1000000 AS population_in_milions
+    FROM
+      countries
+    WHERE
+      continent LIKE 'South America'
   SQL
 end
 
 def name_and_population
   # Show the name and population for 'France', 'Germany', and 'Italy'
   execute(<<-SQL)
+    SELECT
+      name, population
+    FROM
+      countries
+    WHERE 
+      name = 'France'
+    OR
+      name = 'Germany'
+    OR
+      name = 'Italy'
   SQL
 end
 
 def united_we_stand
   # Show the countries that have a name that includes the word 'United'
   execute(<<-SQL)
+    SELECT
+      name
+    FROM
+      countries
+    WHERE
+      name LIKE '%United%'
   SQL
 end
