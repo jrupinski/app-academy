@@ -10,138 +10,66 @@
 
 require_relative './sqlzoo.rb'
 
-# A note on subqueries: we can refer to values in the outer SELECT within the
-# inner SELECT. We can name the tables so that we can tell the difference
-# between the inner and outer versions.
-
-def example_select_with_subquery
+def highest_gdp
+  # Which countries have a GDP greater than every country in Europe? (Give the
+  # name only. Some countries may have NULL gdp values)
   execute(<<-SQL)
     SELECT
-      name
+      countries.name
     FROM
       countries
     WHERE
-      population > (
+      countries.gdp > (
         SELECT
-          population
+          MAX(c2.gdp)
         FROM
-          countries
+          countries c2
         WHERE
-          name='Romania'
-        )
+          c2.continent = 'Europe'
+      );
   SQL
 end
 
-def larger_than_russia
-  # List each country name where the population is larger than 'Russia'.
+def largest_in_continent
+  # Find the largest country (by area) in each continent. Show the continent,
+  # name, and area.
   execute(<<-SQL)
     SELECT
-      name
+      c1.continent,
+      c1.name,
+      c1.area
     FROM
-      countries
-    WHERE 
-      population > (
-        SELECT
-          population
-        FROM
-          countries
-        WHERE
-          name = 'Russia'
-        )
-  SQL
-end
-
-def richer_than_england
-  # Show the countries in Europe with a per capita GDP greater than
-  # 'United Kingdom'.
-  execute(<<-SQL)
-    SELECT
-      name
-    FROM
-      countries
+      countries c1
     WHERE
-      continent = 'Europe'
-    AND 
-      gdp / population > (
+      c1.area = (
         SELECT
-          gdp / population AS gdp_per_capita
+          MAX(c2.area)
         FROM
-          countries
+           countries c2
         WHERE
-          name = 'United Kingdom'
-        )
+          c1.continent = c2.continent
+      );
   SQL
 end
 
-def neighbors_of_certain_b_countries
-  # List the name and continent of countries in the continents containing
-  # 'Belize', 'Belgium'.
+def large_neighbors
+  # Some countries have populations more than three times that of any of their
+  # neighbors (in the same continent). Give the countries and continents.
   execute(<<-SQL)
     SELECT
-      name, continent
+      c1.name,
+      c1.continent
     FROM
-      countries
+      countries c1
     WHERE
-      continent IN (
+      population > 3 * (
         SELECT
-          continent
+          MAX(c2.population)
         FROM
-          countries
+          countries c2
         WHERE
-          name LIKE '%Belgium%'
-        OR
-          name LIKE '%Belize%'
-        )
-  SQL
-end
-
-def population_constraint
-  # Which country has a population that is more than Canada but less than
-  # Poland? Show the name and the population.
-  execute(<<-SQL)
-    SELECT
-      name, population
-    FROM
-      countries
-    WHERE
-      population > (
-        SELECT
-          population
-        FROM
-          countries
-        WHERE
-          name = 'Canada'
-      )
-    AND
-      population < (
-        SELECT
-          population
-        FROM
-          countries
-        WHERE
-          name = 'Poland'
-      )
-  SQL
-end
-
-def sparse_continents
-  # Find every country that belongs to a continent where each country's
-  # population is less than 25,000,000. Show name, continent and
-  # population.
-  # Hint: Sometimes rewording the problem can help you see the solution.
-  execute(<<-SQL)
-    SELECT
-      name, continent, population
-    FROM
-      countries
-    WHERE
-      continent NOT IN (
-        SELECT DISTINCT
-          continent
-        FROM
-          countries
-        WHERE
-        population >= 25000000
+          c1.name != c2.name -- got me!
+            AND c1.continent = c2.continent
       )
   SQL
 end

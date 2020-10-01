@@ -15,16 +15,16 @@ def highest_gdp
   # name only. Some countries may have NULL gdp values)
   execute(<<-SQL)
     SELECT
-      name
+      countries.name
     FROM
       countries
-    WHERE gdp > (
+    WHERE countries.gdp > (
       SELECT
         MAX(COALESCE(gdp, 0)) AS max_gdp
       FROM
-        countries
+        countries AS other_country
       WHERE
-        continent = 'Europe'
+        other_country.continent = 'Europe'
     )
   SQL
 end
@@ -34,16 +34,17 @@ def largest_in_continent
   # name, and area.
   execute(<<-SQL)
     SELECT
-      DISTINCT continent, name, area
+      c1.continent, c1.name, c1.area
     FROM
-      countries
-    WHERE area IN (
-      SELECT
-        MAX(area)
-      FROM
-        countries
-      GROUP BY
-        continent
+      countries AS c1
+    WHERE
+      c1.area IN (
+        SELECT
+          MAX(c2.area)
+        FROM
+          countries AS c2
+        WHERE
+          c1.continent = c2.continent
     )
   SQL
 end
@@ -52,5 +53,19 @@ def large_neighbors
   # Some countries have populations more than three times that of any of their
   # neighbors (in the same continent). Give the countries and continents.
   execute(<<-SQL)
+    SELECT
+      big_country.name, big_country.continent
+    FROM
+      countries AS big_country
+    WHERE big_country.population > 3 * (
+      SELECT
+        MAX(neighbour_country.population) AS largest_neighbour
+      FROM
+        countries AS neighbour_country
+      WHERE
+        big_country.name != neighbour_country.name
+      AND
+        big_country.continent = neighbour_country.continent
+    )
   SQL
 end
