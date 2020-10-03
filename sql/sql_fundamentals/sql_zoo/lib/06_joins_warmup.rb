@@ -87,16 +87,15 @@ end
 
 def glenn_close_id
   # What id number does the actress 'Glenn Close' have?
-
-  # TODO: use JOIN not where, fix xd
   execute(<<-SQL)
     SELECT DISTINCT
       actor_id
     FROM
-      actors, castings
+      actors
+    JOIN 
+      castings
+        ON actors.id = castings.actor_id
     WHERE
-      actors.id = castings.actor_id
-    AND
       actors.name = 'Glenn Close'
   SQL
 end
@@ -104,6 +103,15 @@ end
 def casablanca_id
   # What is the id of the film 'Casablanca'?
   execute(<<-SQL)
+    SELECT DISTINCT
+      movie_id
+    FROM
+      movies
+    JOIN
+      castings
+        ON movies.id = castings.movie_id
+    WHERE
+      movies.title = 'Casablanca'
   SQL
 end
 
@@ -111,11 +119,35 @@ def casablanca_cast
   # Obtain the cast list for 'Casablanca'. Use the id value that you obtained
   # in the previous question directly in your query (for example, id = 1).
   execute(<<-SQL)
+    SELECT
+      actors.name
+    FROM
+      actors
+    JOIN
+      castings
+        ON actors.id = castings.actor_id
+    JOIN
+      movies
+        ON movies.id = castings.movie_id
+    WHERE
+      movies.id = #{casablanca_id.join.to_i}
   SQL
 end
 
 def alien_cast
   # Obtain the cast list for the film 'Alien'
   execute(<<-SQL)
+    SELECT
+      actors.name
+    FROM
+      actors
+    JOIN
+      castings
+        ON actors.id = castings.actor_id
+    JOIN
+      movies
+        ON movies.id = castings.movie_id
+    WHERE
+      movies.title = 'Alien'
   SQL
 end
