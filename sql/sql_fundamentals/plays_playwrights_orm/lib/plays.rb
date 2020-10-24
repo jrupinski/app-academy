@@ -48,4 +48,35 @@ class Play
         id = ?
     SQL
   end
+
+  # Find all plays with given title in the database
+  def self.find_by_title(title)
+    data = PlayDBConnection.instance.execute(<<-SQL)
+      SELECT
+        *
+      FROM
+        plays
+      WHERE
+        title LIKE '#{title}'
+    SQL
+
+    data.map { |datum| Play.new(datum) }
+  end
+
+  # Find all plays created by given playwright in the database
+  def self.find_by_playwright(name)
+    data = PlayDBConnection.instance.execute(<<-SQL)
+      SELECT
+        *
+      FROM
+        plays
+      JOIN
+        playwrights
+          ON plays.playwright_id = playwrights.id
+      WHERE
+        playwrights.name LIKE '#{name}'
+    SQL
+
+    data.map { |datum| Play.new(datum) }
+  end
 end
