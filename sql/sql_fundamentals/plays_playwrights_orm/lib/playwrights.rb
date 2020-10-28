@@ -10,12 +10,12 @@ class Playwright
   end
 
   def self.all
-    playwrights = PlayDBConnection.instance.execute("SELECT * FROM playwrights")
-    playwrights.map { |datum| Playwright.new(datum) }
+    data = PlayDBConnection.instance.execute("SELECT * FROM playwrights")
+    data.map { |datum| Playwright.new(datum) }
   end
 
   def self.find_by_name(name)
-    playwrights = PlayDBConnection.instance.execute(<<-SQL, name)
+    person = PlayDBConnection.instance.execute(<<-SQL, name)
       SELECT
         *
       FROM
@@ -23,6 +23,13 @@ class Playwright
       WHERE
         name LIKE ?
     SQL
+
+    # person is an array of query results, but we only want the first result
+    # one liner:
+    # person.empty? ? nil : Playwright.new(person.first)
+    # cleaner version:
+    return nil if person.empty?
+    Playwright.new(person.first)
   end
 
   def create
@@ -52,6 +59,17 @@ class Playwright
 
   # returns all plays written by playwright
   def get_plays
-    # TODO
+    plays = PlayDBConnection.instance.execute(<<-SQL, name)
+      SELECT
+        *
+      FROM
+        playwrights
+      JOIN
+        plays ON playwrights.id = plays.playwright_id
+      WHERE
+        playwrights.name LIKE ?
+    SQL
+
+    plays.map { |play| Play.new(play) }
   end
 end
