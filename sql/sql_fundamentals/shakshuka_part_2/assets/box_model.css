@@ -72,3 +72,60 @@ h2 + .user_review {
     border-top: 1px solid black;
 }
 
+nav li {
+  display: inline-block;
+}
+
+li > a {
+  display: block;
+  padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+nav {
+  display: inline-block;
+}
+
+body {
+  width: 900px;
+  margin: 0 auto;
+}
+
+section {
+  width: 700px;
+  display: inline-block;
+}
+
+aside {
+  margin-right: 15px;
+  display: inline-block;
+  width: 180px;
+  vertical-align: top;
+}
+
+.ingredients-list > li {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+ol > li {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+input#name, select, textarea { 
+  display: block;
+  width: 50%;
+
+}
+
+/* label {
+  display: none;
+} */
+
+input[type="radio"] {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
