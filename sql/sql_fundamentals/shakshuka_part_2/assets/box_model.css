@@ -72,19 +72,17 @@ h2 + .user_review {
     border-top: 1px solid black;
 }
 
-nav li {
-  display: inline-block;
-}
-
-li > a {
-  display: block;
-  padding: 20px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
 nav {
   display: inline-block;
+}
+
+nav ul li {
+  display: inline-block;
+}
+
+nav ul li a {
+  display: block;
+  padding: 20px;
 }
 
 body {
@@ -98,9 +96,9 @@ section {
 }
 
 aside {
+  width: 180px;
   margin-right: 15px;
   display: inline-block;
-  width: 180px;
   vertical-align: top;
 }
 
@@ -114,18 +112,20 @@ ol > li {
   margin-bottom: 20px;
 }
 
-input#name, select, textarea { 
+input[type="text"], select { 
   display: block;
   width: 50%;
-
 }
 
-/* label {
-  display: none;
-} */
-
-input[type="radio"] {
-  margin-top: 20px;
-  margin-bottom: 20px;
+label {
+  display: block;
 }
 
+textarea {
+  width: 70%;
+}
+
+select {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
