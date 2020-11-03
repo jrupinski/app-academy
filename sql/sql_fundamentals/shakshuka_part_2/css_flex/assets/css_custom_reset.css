@@ -1,0 +1,40 @@
+/* RESET CSS STYLING FROM ALL SITE ELEMENTS */
+
+body, header, aside, section, footer, figure, h1, h2, p, ol, ul, li, form {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+}
+
+
+body {
+  line-height: 1.5;  
+}
+
+ol, ul {
+  list-style: none;
+}
+
+/* Make sure images always take up the width of their parents.
+   Inherit means it'll inherit the value of parent - not fill it up */
+img {
+  width: 100%;
+}
+
+
+nav {
+  float: right;
+}
+
+header > img {
+  float: left;
+  
+}
+
+/* clear fix */
+header:after {
+  content: ""; /* Empty content string */
+  display: block; /* Only block elements can clear */
+  clear: both;
+}
