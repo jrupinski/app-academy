@@ -114,6 +114,10 @@ VALUES
     title = "How are you?")
 );
 
+-- 
+-- TODO:
+-- FIX creating replies / queries to create replies, values are not assigned properly
+-- 
 -- seeding replies
 -- parent reply
 INSERT INTO
