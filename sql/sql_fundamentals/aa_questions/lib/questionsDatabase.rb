@@ -9,4 +9,14 @@ class QuestionsDatabase < SQLite3::Database
     self.type_translation = true
     self.results_as_hash = true
   end
+
+  # syntactic sugar
+  def self.execute(*args)
+    self.instance.execute(*args)
+  end
+
+  def self.get_first_row(*args)
+    self.instance.get_first_row(*args)
+  end
+  
 end

@@ -1,5 +1,6 @@
 require "sqlite3"
 require_relative "questionsDatabase"
+require_relative "question"
 
 class User
 
@@ -12,12 +13,12 @@ class User
   end
 
   def self.all
-    users = QuestionsDatabase.instance.execute("SELECT * FROM users;")
+    users = QuestionsDatabase.execute("SELECT * FROM users;")
     users.map { |user| User.new(user) }
   end  
 
   def self.find_by_id(id)
-    user = QuestionsDatabase.instance.get_first_row(<<-SQL, id)
+    user = QuestionsDatabase.get_first_row(<<-SQL, id)
       SELECT
         *
       FROM
@@ -27,5 +28,29 @@ class User
     SQL
 
     User.new(user)
+  end
+
+  def self.find_by_name(fname, lname)
+    users = QuestionsDatabase.execute(<<-SQL, fname, lname)
+      SELECT
+        *
+      FROM
+        users
+      WHERE
+        fname = ? AND lname = ?;
+    SQL
+
+    return nil if users.empty?
+    users.map { |user| User.new(user) }
+  end
+
+  # Return all questions asked by User
+  def authored_questions
+    Question.find_by_author_id(self.id)
+  end
+
+  # Return all replies asked by User
+  def authored_replies
+    Reply.find_by_user_id(self.id)
   end
 end

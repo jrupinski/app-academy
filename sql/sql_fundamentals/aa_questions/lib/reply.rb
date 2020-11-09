@@ -15,12 +15,12 @@ class Reply
   end
 
   def self.all
-    questions = QuestionsDatabase.instance.execute("SELECT * FROM questions;")
-    questions.map { |question| Reply.new(question) }
+    replies = QuestionsDatabase.execute("SELECT * FROM replies;")
+    replies.map { |reply| Reply.new(reply) }
   end  
 
   def self.find_by_id(id)
-    reply_data = QuestionsDatabase.instance.get_first_row(<<-SQL, id)
+    reply_data = QuestionsDatabase.get_first_row(<<-SQL, id)
       SELECT
         *
       FROM
@@ -33,7 +33,7 @@ class Reply
   end
 
   def self.find_by_user_id(user_id)
-    replies_data = QuestionsDatabase.instance.execute(<<-SQL, user_id)
+    replies_data = QuestionsDatabase.execute(<<-SQL, user_id)
       SELECT
         *
       FROM
@@ -47,7 +47,7 @@ class Reply
   end
   
   def self.find_by_question_id(question_id)
-    replies_data = QuestionsDatabase.instance.execute(<<-SQL, question_id)
+    replies_data = QuestionsDatabase.execute(<<-SQL, question_id)
       SELECT
         *
       FROM
@@ -61,7 +61,7 @@ class Reply
   end
 
   def self.find_by_parent_id(parent_reply_id)
-    replies_data = QuestionsDatabase.instance.execute(<<-SQL, parent_reply_id)
+    replies_data = QuestionsDatabase.execute(<<-SQL, parent_reply_id)
       SELECT
         *
       FROM

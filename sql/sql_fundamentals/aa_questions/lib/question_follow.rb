@@ -12,12 +12,12 @@ class QuestionFollow
   end
 
   def self.all
-    question_follows = QuestionsDatabase.instance.execute("SELECT * FROM question_follows;")
+    question_follows = QuestionsDatabase.execute("SELECT * FROM question_follows;")
     question_follows.map { |questionFollow| QuestionFollow.new(questionFollow) }
   end  
 
   def self.find_by_id(id)
-    question_follows = QuestionsDatabase.instance.execute(<<-SQL, id)
+    question_follows = QuestionsDatabase.execute(<<-SQL, id)
       SELECT
         *
       FROM
