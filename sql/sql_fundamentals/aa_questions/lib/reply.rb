@@ -1,0 +1,77 @@
+require "sqlite3"
+require_relative "questionsDatabase"
+
+class Reply
+
+  attr_accessor :id, :user_id, :question_id, :question_subject, :question_body, :parent_reply_id
+
+  def initialize(options)
+    @id = options["id"]
+    @user_id = options["user_id"]
+    @question_id = options["question_id"]
+    @question_subject = options["question_subject"]
+    @question_body = options["question_body"]
+    @parent_reply_id = options["parent_reply_id"]
+  end
+
+  def self.all
+    questions = QuestionsDatabase.instance.execute("SELECT * FROM questions;")
+    questions.map { |question| Reply.new(question) }
+  end  
+
+  def self.find_by_id(id)
+    reply_data = QuestionsDatabase.instance.get_first_row(<<-SQL, id)
+      SELECT
+        *
+      FROM
+        replies
+      WHERE
+        id = ?;
+    SQL
+
+    Reply.new(reply_data)
+  end
+
+  def self.find_by_user_id(user_id)
+    replies_data = QuestionsDatabase.instance.execute(<<-SQL, user_id)
+      SELECT
+        *
+      FROM
+        replies
+      WHERE
+        user_id = ?;
+    SQL
+
+    return nil if replies_data.empty?
+    replies_data.map { |reply_data| Reply.new(reply_data) }
+  end
+  
+  def self.find_by_question_id(question_id)
+    replies_data = QuestionsDatabase.instance.execute(<<-SQL, question_id)
+      SELECT
+        *
+      FROM
+        replies
+      WHERE
+        question_id = ?
+    SQL
+
+    return nil if replies_data.empty?
+    replies_data.map { |reply_data| Reply.new(reply_data) }
+  end
+
+  def self.find_by_parent_id(parent_reply_id)
+    replies_data = QuestionsDatabase.instance.execute(<<-SQL, parent_reply_id)
+      SELECT
+        *
+      FROM
+        replies
+      WHERE
+        parent_reply_id = ?
+    SQL
+
+    return nil if replies_data.empty?
+    replies_data.map { |reply_data| Reply.new(reply_data) }
+  end
+
+end 

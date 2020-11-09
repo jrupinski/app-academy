@@ -95,6 +95,44 @@ VALUES
     users.fname = "Johnny" AND users.lname = "Test")
 );
 
+INSERT INTO
+  questions(title, body, author_id)
+VALUES
+  ("Why can't I come up with more questions?", "Tell me why", 
+  (SELECT
+    id
+  FROM
+    users
+  WHERE
+    users.fname = "Jakub" AND users.lname = "Rupinski")
+);
+
+
+INSERT INTO
+  questions(title, body, author_id)
+VALUES
+  ("Do you like chocolate?", "Yasssssss!", 
+  (SELECT
+    id
+  FROM
+    users
+  WHERE
+    users.fname = "Jakub" AND users.lname = "Rupinski")
+);
+
+INSERT INTO
+  questions(title, body, author_id)
+VALUES
+  ("Is this another question?", "Yeah boi", 
+  (SELECT
+    id
+  FROM
+    users
+  WHERE
+    users.fname = "Johnny" AND users.lname = "Test")
+);
+
+
 -- seeding questions_follows
 INSERT INTO
   question_follows(user_id, question_id)
@@ -114,11 +152,8 @@ VALUES
     title = "How are you?")
 );
 
--- 
--- TODO:
--- FIX creating replies / queries to create replies, values are not assigned properly
--- 
 -- seeding replies
+-- 
 -- parent reply
 INSERT INTO
   replies(user_id, question_id, question_subject, question_body, parent_reply_id)
@@ -190,8 +225,76 @@ VALUES
   (SELECT
     id
   FROM
-    replies)
+    replies
+  WHERE
+    id = 1)
 );
+
+INSERT INTO
+  replies(user_id, question_id, question_subject, question_body, parent_reply_id)
+VALUES
+  ((SELECT
+    id
+  FROM
+    users
+  WHERE
+  fname = "Johnny" AND lname = "Test"),
+
+  (SELECT
+    id
+  FROM
+    questions
+  WHERE
+    title = "Is this another question?"),
+    
+  (SELECT
+    title
+  FROM
+    questions
+  WHERE
+    title = "Is this another question?"),
+    
+  (SELECT
+    body
+  FROM
+    questions
+  WHERE
+    title = "Is this another question?"),
+    
+  (SELECT
+    id
+  FROM
+    replies
+  WHERE
+    question_id = 
+      (SELECT
+        id
+      FROM
+        questions
+      WHERE
+        title = "Do you need a question?")
+  )     
+);
+
+INSERT INTO
+  replies(user_id, question_id, question_subject, question_body, parent_reply_id)
+VALUES
+  (4,
+  1,
+  (SELECT
+    title
+  FROM
+    questions
+  WHERE
+    id = 4),
+    
+  (SELECT
+    body
+  FROM
+    questions
+  WHERE
+    id = 4),
+  1);
 
 -- seeding question_likes
 INSERT INTO

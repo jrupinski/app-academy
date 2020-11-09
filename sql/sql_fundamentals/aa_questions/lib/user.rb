@@ -17,7 +17,7 @@ class User
   end  
 
   def self.find_by_id(id)
-    users = QuestionsDatabase.instance.execute(<<-SQL, id)
+    user = QuestionsDatabase.instance.get_first_row(<<-SQL, id)
       SELECT
         *
       FROM
@@ -26,7 +26,6 @@ class User
         id = ?;
     SQL
 
-    return nil if users.empty?
-    User.new(users.first)
+    User.new(user)
   end
 end

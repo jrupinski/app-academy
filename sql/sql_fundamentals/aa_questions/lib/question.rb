@@ -18,7 +18,7 @@ class Question
   end  
 
   def self.find_by_id(id)
-    questions = QuestionsDatabase.instance.execute(<<-SQL, id)
+    question = QuestionsDatabase.instance.get_first_row(<<-SQL, id)
       SELECT
         *
       FROM
@@ -27,7 +27,19 @@ class Question
         id = ?;
     SQL
 
-    return nil if questions.empty?
-    Question.new(questions.first)
+    Question.new(question)
+  end
+
+  def self.find_by_author_id(author_id)
+    question = QuestionsDatabase.instance.get_first_row(<<-SQL, author_id)
+      SELECT
+        *
+      FROM
+        questions
+      WHERE
+        author_id = ?;
+    SQL
+
+    Question.new(question)
   end
 end
