@@ -1,5 +1,7 @@
 require "sqlite3"
 require_relative "questionsDatabase"
+require_relative "user"
+require_relative "reply"
 
 class Question
 
@@ -18,7 +20,7 @@ class Question
   end  
 
   def self.find_by_id(id)
-    question = QuestionsDatabase.execute(<<-SQL, id)
+    question = QuestionsDatabase.get_first_row(<<-SQL, id)
       SELECT
         *
       FROM
@@ -42,5 +44,13 @@ class Question
 
     return nil if questions.empty?
     questions.map { |question| Question.new(question) }
+  end
+
+  def author
+    User.find_by_id(self.author_id)
+  end
+
+  def replies
+    Reply.find_by_user_id(self.author_id)
   end
 end
