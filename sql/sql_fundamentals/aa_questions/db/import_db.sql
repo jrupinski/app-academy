@@ -152,6 +152,60 @@ VALUES
     title = "How are you?")
 );
 
+INSERT INTO
+  question_follows(user_id, question_id)
+VALUES
+  (
+  (SELECT
+    id
+  FROM
+    users
+  WHERE
+    fname = "Jakub" AND lname = "Rupinski"),
+  (SELECT
+    id
+  FROM
+    questions
+  WHERE
+    title = "Do you need a question?")
+);
+
+INSERT INTO
+  question_follows(user_id, question_id)
+VALUES
+  (
+  (SELECT
+    id
+  FROM
+    users
+  WHERE
+    fname = "Johnny" AND lname = "Test"),
+  (SELECT
+    id
+  FROM
+    questions
+  WHERE
+    title = "Do you need a question?")
+);
+
+INSERT INTO
+  question_follows(user_id, question_id)
+VALUES
+  (
+  (SELECT
+    id
+  FROM
+    users
+  WHERE
+    fname = "John" AND lname = "Marston"),
+  (SELECT
+    id
+  FROM
+    questions
+  WHERE
+    title = "Do you need a question?")
+);
+
 -- seeding replies
 -- 
 -- parent reply
