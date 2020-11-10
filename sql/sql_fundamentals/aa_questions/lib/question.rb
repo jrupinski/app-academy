@@ -1,5 +1,5 @@
 require "sqlite3"
-require_relative "questionsDatabase"
+require_relative "questions_database"
 require_relative "user"
 require_relative "reply"
 

@@ -1,5 +1,5 @@
 require "sqlite3"
-require_relative "questionsDatabase"
+require_relative "questions_database"
 
 class Reply
 
@@ -74,4 +74,19 @@ class Reply
     replies_data.map { |reply_data| Reply.new(reply_data) }
   end
 
+  def author
+    User.find_by_id(self.user_id)
+  end
+
+  def question
+    Question.find_by_id(self.question_id)
+  end
+
+  def parent_reply
+    Reply.find_by_id(self.parent_reply_id)
+  end
+
+  def child_replies
+    Reply.find_by_parent_id(self.id)
+  end
 end 

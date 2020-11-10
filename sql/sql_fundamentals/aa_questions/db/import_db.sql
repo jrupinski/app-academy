@@ -279,8 +279,8 @@ VALUES
 INSERT INTO
   replies(user_id, question_id, question_subject, question_body, parent_reply_id)
 VALUES
-  (4,
-  1,
+  (1,
+  4,
   (SELECT
     title
   FROM
@@ -293,8 +293,8 @@ VALUES
   FROM
     questions
   WHERE
-    id = 4),
-  1);
+    id = 3),
+  3);
 
 -- seeding question_likes
 INSERT INTO
