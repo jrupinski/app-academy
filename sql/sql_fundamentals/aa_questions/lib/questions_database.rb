@@ -19,4 +19,7 @@ class QuestionsDatabase < SQLite3::Database
     self.instance.get_first_row(*args)
   end
   
+  def self.get_first_value(*args)
+    self.instance.get_first_value(*args)
+  end
 end

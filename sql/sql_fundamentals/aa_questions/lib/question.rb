@@ -2,6 +2,7 @@ require "sqlite3"
 require_relative "questions_database"
 require_relative "user"
 require_relative "reply"
+require_relative "question_like"
 
 class Question
 
@@ -46,6 +47,10 @@ class Question
     questions.map { |question| Question.new(question) }
   end
 
+  def self.most_followed(n)
+    QuestionFollow.most_followed_questions(n)
+  end
+
   def author
     User.find_by_id(self.author_id)
   end
@@ -56,5 +61,13 @@ class Question
 
   def followers
     QuestionFollow.followers_for_question_id(self.id)
+  end
+
+  def likers
+    QuestionLike.likers_for_question_id(self.id)
+  end
+
+  def num_of_likes
+    QuestionLike.num_likes_for_question_id(self.id)
   end
 end
