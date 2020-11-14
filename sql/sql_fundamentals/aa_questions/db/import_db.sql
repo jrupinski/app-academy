@@ -388,3 +388,44 @@ VALUES
   WHERE
     title = "How are you?")
   );
+
+INSERT INTO
+  question_likes(user_id, question_id)
+VALUES
+  (
+  1,
+  2
+  );
+
+INSERT INTO
+  question_likes(user_id, question_id)
+VALUES
+  (
+  2,
+  2
+  );
+
+
+INSERT INTO
+  question_likes(user_id, question_id)
+VALUES
+  (
+  3,
+  2
+  );
+
+
+INSERT INTO
+  question_likes(user_id, question_id)
+VALUES
+  (
+  (SELECT
+    id
+  FROM
+    users
+  WHERE
+    lname = "Test"),
+  3
+  );
+
+

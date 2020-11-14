@@ -76,9 +76,29 @@ class QuestionLike
       JOIN
         questions
       ON
-        question_likes.id = questions.id
+        question_likes.question_id = questions.id
       WHERE
         question_likes.question_id = ?
     SQL
+  end
+
+  def self.most_liked_questions(n)
+    questions = QuestionsDatabase.execute(<<-SQL, n)
+      SELECT
+        questions.*
+      FROM
+        questions
+      JOIN
+        question_likes
+      ON
+        questions.id = question_likes.question_id
+      GROUP BY
+        questions.title
+      ORDER BY
+        COUNT(*) DESC
+      LIMIT ?;
+    SQL
+
+    questions.map { |question| Question.new(question) }
   end
 end
