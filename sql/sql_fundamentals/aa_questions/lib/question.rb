@@ -70,4 +70,8 @@ class Question
   def num_of_likes
     QuestionLike.num_likes_for_question_id(self.id)
   end
+
+  def self.most_liked_question
+    QuestionLike.most_liked_questions(1).first
+  end
 end
