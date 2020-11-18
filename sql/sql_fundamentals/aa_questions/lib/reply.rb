@@ -89,4 +89,25 @@ class Reply
   def child_replies
     Reply.find_by_parent_id(self.id)
   end
+
+  def save
+    # If record doesn't exists - save it
+    if self.id.nil?
+      QuestionsDatabase.execute(<<-SQL, self.user_id, self.question_id, self.question_subject, self.question_body, self.parent_reply_id)
+        INSERT INTO
+          replies(user_id, question_id, parent_reply_id, question_subject, question_body)
+        VALUES
+          (?, ?, ?, ?, ?);
+      SQL
+    else  # update if it exists in DB
+      QuestionsDatabase.execute(<<-SQL, self.user_id, self.question_id, self.question_subject, self.question_body, self.parent_reply_id, self.id)
+        UPDATE
+          replies
+        SET
+          user_id = ?, question_id = ?, question_subject = ?, question_body = ?, parent_reply_id = ?
+        WHERE
+          id = ?;
+      SQL
+    end
+  end
 end 

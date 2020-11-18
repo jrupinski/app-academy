@@ -51,6 +51,10 @@ class Question
     QuestionFollow.most_followed_questions(n)
   end
 
+  def self.most_liked_question
+    QuestionLike.most_liked_questions(1).first
+  end
+
   def author
     User.find_by_id(self.author_id)
   end
@@ -71,7 +75,24 @@ class Question
     QuestionLike.num_likes_for_question_id(self.id)
   end
 
-  def self.most_liked_question
-    QuestionLike.most_liked_questions(1).first
+  def save
+    # If record doesn't exists - save it
+    if self.id.nil?
+      QuestionsDatabase.execute(<<-SQL, self.author_id, self.title, self.body)
+        INSERT INTO
+          questions(author_id, title, body)
+        VALUES
+          (?, ?, ?);
+      SQL
+    else  # update if it exists in DB
+      QuestionsDatabase.execute(<<-SQL, self.author_id, self.title, self.body, self.id)
+        UPDATE
+          questions
+        SET
+          author_id = ?, title = ?, body = ?
+        WHERE
+          id = ?;
+      SQL
+    end
   end
 end

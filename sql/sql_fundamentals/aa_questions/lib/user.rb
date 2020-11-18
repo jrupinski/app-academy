@@ -80,4 +80,25 @@ class User
         questions.author_id = ?
     SQL
   end
+
+  def save
+    # If record doesn't exists - save it
+    if self.id.nil?
+      QuestionsDatabase.execute(<<-SQL, self.fname, self.lname)
+        INSERT INTO
+          users(fname, lname)
+        VALUES
+          (?, ?);
+      SQL
+    else  # update if it exists in DB
+      QuestionsDatabase.execute(<<-SQL, self.fname, self.lname, self.id)
+        UPDATE
+          users
+        SET
+          fname = ?, lname = ?
+        WHERE
+          id = ?;
+      SQL
+    end
+  end
 end
