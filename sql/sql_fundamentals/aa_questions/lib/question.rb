@@ -3,8 +3,9 @@ require_relative "questions_database"
 require_relative "user"
 require_relative "reply"
 require_relative "question_like"
+require_relative "model_base"
 
-class Question
+class Question < ModelBase
 
   attr_accessor :id, :author_id, :title, :body
 
@@ -13,24 +14,6 @@ class Question
     @author_id = options["author_id"]
     @title = options["title"]
     @body = options["body"]
-  end
-
-  def self.all
-    questions = QuestionsDatabase.execute("SELECT * FROM questions;")
-    questions.map { |question| Question.new(question) }
-  end  
-
-  def self.find_by_id(id)
-    question = QuestionsDatabase.get_first_row(<<-SQL, id)
-      SELECT
-        *
-      FROM
-        questions
-      WHERE
-        id = ?;
-    SQL
-
-    Question.new(question)
   end
 
   def self.find_by_author_id(author_id)
@@ -84,6 +67,8 @@ class Question
         VALUES
           (?, ?, ?);
       SQL
+
+      "#{self} inserted into database"
     else  # update if it exists in DB
       QuestionsDatabase.execute(<<-SQL, self.author_id, self.title, self.body, self.id)
         UPDATE
@@ -93,6 +78,8 @@ class Question
         WHERE
           id = ?;
       SQL
+
+      "#{self} row updated in database"
     end
   end
 end

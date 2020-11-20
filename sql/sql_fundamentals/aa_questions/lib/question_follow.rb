@@ -1,8 +1,9 @@
 require "sqlite3"
 require_relative "questions_database"
 require_relative "user"
+require_relative "model_base"
 
-class QuestionFollow
+class QuestionFollow < ModelBase
 
   attr_accessor :id, :user_id, :question_id
 
@@ -10,25 +11,6 @@ class QuestionFollow
     @id = options["id"]
     @user_id = options["user_id"]
     @question_id = options["question_id"]
-  end
-
-  def self.all
-    question_follows = QuestionsDatabase.execute("SELECT * FROM question_follows;")
-    question_follows.map { |questionFollow| QuestionFollow.new(questionFollow) }
-  end  
-
-  def self.find_by_id(id)
-    question_follows = QuestionsDatabase.execute(<<-SQL, id)
-      SELECT
-        *
-      FROM
-        question_follows
-      WHERE
-        id = ?;
-    SQL
-
-    return nil if question_follows.empty?
-    QuestionFollow.new(question_follows.first)
   end
 
   def self.followers_for_question_id(question_id)

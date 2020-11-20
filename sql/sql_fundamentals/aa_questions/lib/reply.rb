@@ -1,7 +1,8 @@
 require "sqlite3"
 require_relative "questions_database"
+require_relative "model_base"
 
-class Reply
+class Reply < ModelBase
 
   attr_accessor :id, :user_id, :question_id, :question_subject, :question_body, :parent_reply_id
 
@@ -12,24 +13,6 @@ class Reply
     @question_subject = options["question_subject"]
     @question_body = options["question_body"]
     @parent_reply_id = options["parent_reply_id"]
-  end
-
-  def self.all
-    replies = QuestionsDatabase.execute("SELECT * FROM replies;")
-    replies.map { |reply| Reply.new(reply) }
-  end  
-
-  def self.find_by_id(id)
-    reply_data = QuestionsDatabase.get_first_row(<<-SQL, id)
-      SELECT
-        *
-      FROM
-        replies
-      WHERE
-        id = ?;
-    SQL
-
-    Reply.new(reply_data)
   end
 
   def self.find_by_user_id(user_id)
@@ -99,6 +82,8 @@ class Reply
         VALUES
           (?, ?, ?, ?, ?);
       SQL
+
+      "#{self} inserted into database"
     else  # update if it exists in DB
       QuestionsDatabase.execute(<<-SQL, self.user_id, self.question_id, self.question_subject, self.question_body, self.parent_reply_id, self.id)
         UPDATE
@@ -108,6 +93,8 @@ class Reply
         WHERE
           id = ?;
       SQL
+      
+      "#{self} row updated in database"
     end
   end
 end 
