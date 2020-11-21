@@ -57,29 +57,4 @@ class Question < ModelBase
   def num_of_likes
     QuestionLike.num_likes_for_question_id(self.id)
   end
-
-  def save
-    # If record doesn't exists - save it
-    if self.id.nil?
-      QuestionsDatabase.execute(<<-SQL, self.author_id, self.title, self.body)
-        INSERT INTO
-          questions(author_id, title, body)
-        VALUES
-          (?, ?, ?);
-      SQL
-
-      "#{self} inserted into database"
-    else  # update if it exists in DB
-      QuestionsDatabase.execute(<<-SQL, self.author_id, self.title, self.body, self.id)
-        UPDATE
-          questions
-        SET
-          author_id = ?, title = ?, body = ?
-        WHERE
-          id = ?;
-      SQL
-
-      "#{self} row updated in database"
-    end
-  end
 end
