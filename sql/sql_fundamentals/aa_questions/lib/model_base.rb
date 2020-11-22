@@ -1,4 +1,5 @@
 require_relative "questions_database"
+require "byebug"
 
 # gem for converting class names to table names
 require 'active_support/inflector'
@@ -8,6 +9,40 @@ class ModelBase
   # convert class to a table name
   def self.table
     self.to_s.tableize
+  end
+
+  # allows users to find records with any number of arguments
+  # eg. Reply.find_by(question_id: 2, author_id: 1)
+  def self.find_by(arguments)
+    self.where(arguments)
+  end
+
+  # Accepts an options hash as an argument and searches the database for records 
+  # whose column matches the options key and whose value matches the options value. 
+  # Now also accepts a String as a direct query 
+  def self.where(options)
+    if options.is_a?(String)
+      query = options
+    elsif options.is_a?(Hash)
+      attrs = options.keys
+      values = options.values
+      column_names = attrs.join(", ")
+      query = attrs.map { |attr| "#{attr} = ?" }.join(" AND ")
+    else
+      raise "invalid argument. Only a hash or a direct SQL query string allowed"
+    end
+
+    data = QuestionsDatabase.execute(<<-SQL, *values)
+      SELECT
+        *
+      FROM
+        #{table}
+      WHERE
+        #{query};
+    SQL
+
+    return nil if data.nil? || data.empty?
+    data.map { |datum| self.new(datum) }
   end
 
   def attributes
@@ -29,18 +64,20 @@ class ModelBase
         id = ?;
     SQL
 
+    return nil if data.nil?
     self.new(data)
   end
 
   # Return all rows in a table
   def self.all
     data = QuestionsDatabase.execute("SELECT * FROM #{table};")
+
+    return nil if data.nil?
     data.map { |datum| self.new(datum) }
   end
 
   # if ID exists in DB - update, else create new 
   def save
-    debugger
     self.id ? update : create
   end
 
