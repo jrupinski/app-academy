@@ -17,6 +17,11 @@ class Dog < ApplicationRecord
       end
     end
 
+    belongs_to :house,
+      primary_key: :id,  # House's id
+      foreign_key: :house_id,
+      class_name: :House
+
     has_many :toys,
       primary_key: :id,  #Dog's id
       foreign_key: :dog_id,
