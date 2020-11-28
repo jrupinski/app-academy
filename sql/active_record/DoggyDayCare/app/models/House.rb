@@ -10,8 +10,23 @@
 class House < ApplicationRecord
   
   has_many :dogs,
-  primary_key: id,  # House's id
-  foreign_key: house_id,
-  class_name: :Dog
+    primary_key: :id,  # House's id
+    foreign_key: :house_id,
+    class_name: :Dog
+
+  # long way
+  # def toys
+  #   toys = []
+    
+  #   dogs.each do |dog|
+  #     toys << dog.toys
+  #   end
+
+  #   toys
+  # end
+
+  has_many :toys,
+    through: :dogs,  # house association
+    source: :toys  # dogs association
 
 end

@@ -15,4 +15,9 @@ class Toy < ApplicationRecord
     primary_key: :id,  # Dog's id
     foreign_key: :dog_id,  # Toy's id
     class_name: :Dog
+
+  has_one(:house, {
+    through: :dog,
+    source: :house
+  })
 end
