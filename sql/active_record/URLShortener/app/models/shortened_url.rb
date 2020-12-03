@@ -15,10 +15,15 @@ class ShortenedUrl < ApplicationRecord
     foreign_key: :user_id,
     class_name: :User
 
-  has_many :visitors,
+  has_many :visits,
     primary_key: :id,
     foreign_key: :shortened_url_id,
     class_name: :Visit
+
+  has_many :visitors,
+    -> { distinct },  # lambda for returning unique users 
+    through: :visits,
+    source: :visitor
 
   def self.create_for_user_and_url!(user, long_url)
     ShortenedUrl.create!(
@@ -33,5 +38,23 @@ class ShortenedUrl < ApplicationRecord
       random_code = SecureRandom.urlsafe_base64
       return random_code unless ShortenedUrl.exists?(short_url: random_code)
     end
+  end
+
+  def num_clicks
+    visits.count
+  end
+
+  def num_uniques
+    # visits.select(:visitor_id).distinct.count
+    # un-distincted version / version without using lambda above
+    visitors.count
+  end
+
+  def recent_uniques
+    visits
+      .select(:visitor_id)
+      .where('created_at > ?', 10.minutes.from_now)
+      .distinct
+      .count
   end
 end

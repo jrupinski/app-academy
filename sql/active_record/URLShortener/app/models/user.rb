@@ -21,6 +21,7 @@ class User < ApplicationRecord
     class_name: :Visit
 
   has_many :visited_urls,
+    -> { distinct },  # lambda for returning unique users 
     through: :visits,
     source: :shortened_url
 
