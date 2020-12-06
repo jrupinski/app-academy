@@ -1,0 +1,86 @@
+  #!/usr/bin/env ruby
+
+class CLI
+  def run
+    login_user!
+    begin
+      commands_prompt
+      execute_command
+    rescue StandardError => exception
+      clear_screen
+      puts exception.message
+      retry
+    end
+  end
+
+  def login_user!
+    email_prompt
+    @current_user = User.find_by(email: gets.chomp)
+    raise "User not found!" if @current_user.nil?
+  end
+
+  def execute_command
+    command = get_keypress
+
+    puts command
+    case command
+    when 'V'
+      visit_url
+    when 'C'
+      create_url
+    when 'Q'
+      puts "Quitting..."
+      exit
+    else
+      raise "Invalid key pressed\n\n"
+    end
+  end
+
+  private
+
+  def visit_url
+    url_prompt
+    shortened_url = ShortenedUrl.find_by(short_url: gets.chomp)
+    raise "Short URL not found!" if shortened_url.nil?
+    Visit.record_visit!(@current_user, shortened_url)
+
+    full_url = shortened_url.long_url
+    # Open link in default web browser
+    Launchy.open(full_url)
+    puts "URL opened, visit recorded"
+  end
+
+  def create_url
+    url_prompt
+    full_url = gets.chomp
+    raise "URL cannot be empty" if full_url.empty?
+    shortened_url = ShortenedUrl.create_for_user_and_url!(@current_user, full_url)
+    puts "Launching #{shortened_url.short_url} ..."
+  end
+
+  def get_keypress
+    STDIN.getch.upcase
+  end
+
+  def url_prompt
+    puts "Enter URL: "
+  end
+
+  def email_prompt
+    p "enter email to login: "
+  end
+
+  def commands_prompt
+    puts "Available commands:"
+    puts "V - Visit shortened URL"
+    puts "C - Create new shortened URL"
+    puts "Q - Quit program"
+    print "\nEnter command: "
+  end
+
+  def clear_screen
+    system "clear" 
+  end
+end
+
+CLI.new.run
