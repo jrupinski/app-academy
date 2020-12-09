@@ -47,7 +47,7 @@ class CLI
     full_url = shortened_url.long_url
     # Open link in default web browser
     Launchy.open(full_url)
-    puts "URL opened, visit recorded"
+    puts "Launching #{full_url} ..."
   end
 
   def create_url
@@ -55,7 +55,9 @@ class CLI
     full_url = gets.chomp
     raise "URL cannot be empty" if full_url.empty?
     shortened_url = ShortenedUrl.create_for_user_and_url!(@current_user, full_url)
-    puts "Launching #{shortened_url.short_url} ..."
+
+    short_url = shortened_url.short_url
+    puts "Success, shortened URL: #{short_url}"
   end
 
   def get_keypress
