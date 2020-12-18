@@ -9,6 +9,7 @@
 #
 class ShortenedUrl < ApplicationRecord
   validates :short_url, :user_id, :long_url, presence: true
+  validate :no_spamming
 
   belongs_to :submitter,
     primary_key: :id,
@@ -65,5 +66,14 @@ class ShortenedUrl < ApplicationRecord
       .where('created_at > ?', 10.minutes.from_now)
       .distinct
       .count
+  end
+
+  def no_spamming
+    created_urls = submitter.submitted_urls
+    num_of_recent_urls = created_urls
+      .where('created_at > ?', 1.minute.ago)
+      .count
+
+    raise "Cannot create more than 5 shortened links in a minute!" if num_of_recent_urls > 5 
   end
 end
