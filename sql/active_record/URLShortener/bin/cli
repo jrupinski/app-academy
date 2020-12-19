@@ -2,14 +2,13 @@
 
 class CLI
   def run
-    login_user!
     begin
+      login_user!
       commands_prompt
       execute_command
     rescue StandardError => exception
-      clear_screen
       puts exception.message
-      retry
+      exit
     end
   end
 
@@ -79,10 +78,7 @@ class CLI
     puts "Q - Quit program"
     print "\nEnter command: "
   end
-
-  def clear_screen
-    system "clear" 
-  end
+  
 end
 
 CLI.new.run

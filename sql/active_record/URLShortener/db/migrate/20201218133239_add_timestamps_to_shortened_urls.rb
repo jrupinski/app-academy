@@ -1,4 +1,4 @@
-class AddTimestampsToShortenedUrl < ActiveRecord::Migration[6.0]
+class AddTimestampsToShortenedUrls < ActiveRecord::Migration[6.0]
   def change
     # Add default value to existing records - date and time of adding this migration
     add_timestamps :shortened_urls, null: false, default: -> { 'NOW()' }

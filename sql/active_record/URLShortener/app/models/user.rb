@@ -8,6 +8,7 @@
 #  updated_at :datetime         not null
 #
 class User < ApplicationRecord
+  validates :premium, presence: true
   validates :email, presence: true, uniqueness: true
 
   has_many :submitted_urls,
@@ -25,5 +26,8 @@ class User < ApplicationRecord
     through: :visits,
     source: :shortened_url
 
+    def premium_toggle!
+      toggle!(:premium)
+    end
 
 end
