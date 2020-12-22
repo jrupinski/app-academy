@@ -53,7 +53,7 @@ class CLI
     url_prompt
     full_url = gets.chomp
     raise "URL cannot be empty" if full_url.empty?
-    shortened_url = ShortenedUrl.create_for_user_and_url!(@current_user, full_url)
+    shortened_url = ShortenedUrl.create_for_user_and_long_url!(@current_user, full_url)
 
     short_url = shortened_url.short_url
     puts "Success, shortened URL: #{short_url}"

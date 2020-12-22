@@ -37,7 +37,7 @@ class ShortenedUrl < ApplicationRecord
   has_many :tag_topics,
     through: :taggings,
     source: :tag_topic
-  
+
   def self.create_for_user_and_long_url!(user, long_url)
     ShortenedUrl.create!(
       user_id: user.id,
@@ -89,21 +89,27 @@ class ShortenedUrl < ApplicationRecord
   end
 
   # Delete shortenedUrls that have not been visited in the last (n) minutes
+  # Premium account shortenedUrls are kept indefinitely, regardless of visits
   # TODO: REFACTOR TO A SINGLE QUERY
   def self.prune(n)
     urls_to_remove = []
 
     self.all.each do |shortened_url|
+      submitter = shortened_url.submitter
+      next if submitter.premium?
+
       last_visit = shortened_url.visits.last
-      # debugger
-      next if last_visit.nil?
-      urls_to_remove << shortened_url.id if last_visit.created_at < n.minutes.ago
+
+      # if no visits recorded and shortenedUrl is new - do not destroy
+      if last_visit.nil? 
+        urls_to_remove << shortened_url.id if shortened_url.created_at < n.minutes.ago
+      else
+        urls_to_remove << shortened_url.id if last_visit.created_at < n.minutes.ago
+      end
     end
 
-    urls_to_remove.each do |shortened_url_id|
-      
-      ShortenedUrl.find(shortened_url_id).destroy
-    end
+    urls_to_remove.map! { |shortened_url_id| ShortenedUrl.find(shortened_url_id) }
+    urls_to_remove.each(&:destroy!)
   end
 
 end
