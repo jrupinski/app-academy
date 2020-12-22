@@ -2,10 +2,12 @@
 #
 # Table name: shortened_urls
 #
-#  id        :bigint           not null, primary key
-#  short_url :string           not null
-#  long_url  :string           not null
-#  user_id   :integer
+#  id         :bigint           not null, primary key
+#  short_url  :string           not null
+#  long_url   :string           not null
+#  user_id    :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 class ShortenedUrl < ApplicationRecord
   validates :short_url, :user_id, :long_url, presence: true
@@ -17,6 +19,7 @@ class ShortenedUrl < ApplicationRecord
     class_name: :User
 
   has_many :visits,
+    dependent: :destroy,
     primary_key: :id,
     foreign_key: :shortened_url_id,
     class_name: :Visit
@@ -35,7 +38,7 @@ class ShortenedUrl < ApplicationRecord
     through: :taggings,
     source: :tag_topic
   
-  def self.create_for_user_and_url!(user, long_url)
+  def self.create_for_user_and_long_url!(user, long_url)
     ShortenedUrl.create!(
       user_id: user.id,
       long_url: long_url,
@@ -83,6 +86,24 @@ class ShortenedUrl < ApplicationRecord
     return nil if submitter.premium
     created_urls = submitter.submitted_urls
     raise "Non-premium accounts are limited to 5 Shortened URLs per user" if created_urls.count >= 5
+  end
+
+  # Delete shortenedUrls that have not been visited in the last (n) minutes
+  # TODO: REFACTOR TO A SINGLE QUERY
+  def self.prune(n)
+    urls_to_remove = []
+
+    self.all.each do |shortened_url|
+      last_visit = shortened_url.visits.last
+      # debugger
+      next if last_visit.nil?
+      urls_to_remove << shortened_url.id if last_visit.created_at < n.minutes.ago
+    end
+
+    urls_to_remove.each do |shortened_url_id|
+      
+      ShortenedUrl.find(shortened_url_id).destroy
+    end
   end
 
 end
