@@ -92,24 +92,33 @@ class ShortenedUrl < ApplicationRecord
   # Premium account shortenedUrls are kept indefinitely, regardless of visits
   # TODO: REFACTOR TO A SINGLE QUERY
   def self.prune(n)
-    urls_to_remove = []
-
-    self.all.each do |shortened_url|
-      submitter = shortened_url.submitter
-      next if submitter.premium?
-
-      last_visit = shortened_url.visits.last
-
-      # if no visits recorded and shortenedUrl is new - do not destroy
-      if last_visit.nil? 
-        urls_to_remove << shortened_url.id if shortened_url.created_at < n.minutes.ago
-      else
-        urls_to_remove << shortened_url.id if last_visit.created_at < n.minutes.ago
-      end
-    end
-
-    urls_to_remove.map! { |shortened_url_id| ShortenedUrl.find(shortened_url_id) }
-    urls_to_remove.each(&:destroy!)
+    ShortenedUrl
+      .joins(:submitter)
+      # using left join because some URLS don't have visits yet!
+      .joins('LEFT JOIN visits ON shortened_urls.id = visits.shortened_url_id')
+      .where("(shortened_urls.id IN 
+      (
+        SELECT
+          shortened_urls.id
+        FROM
+          shortened_urls
+        JOIN
+          visits 
+        ON 
+          shortened_urls.id = visits.shortened_url_id
+        GROUP BY
+          shortened_urls.id
+        HAVING
+          MAX(visits.created_at) < :n_minutes_ago
+      ) OR (
+        visits.id IS NULL
+        AND
+        shortened_urls.created_at < :n_minutes_ago
+      ))
+      AND
+        users.premium = FALSE",
+      :n_minutes_ago => n.minutes.ago
+      )
+      .destroy_all
   end
-
 end
