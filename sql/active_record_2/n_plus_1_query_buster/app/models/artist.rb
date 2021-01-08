@@ -24,17 +24,35 @@ class Artist < ApplicationRecord
   end
 
   def better_tracks_query
-    # prefetch tracks without any data
-    albums = self.albums.includes(:tracks)
+    albums = self
+    .albums
+    .select('albums.*, COUNT(*) AS tracks_count')
+    .joins(:tracks)
+    .group('albums.id')
+    
     tracks_count = {}
-
+    
     albums.each do |album|
       # i use #length to avoid rails firing up another query, because data
       # is already prefetched in #includes(:tracks)
-      tracks_count[album.title] = album.tracks.length
+      tracks_count[album.title] = album.tracks_count
     end
 
     tracks_count
-    # 3 queries total 
+    # 2 queries total 
+
+    # OLD VERSION - simple syntax, using #includes
+    # # prefetch tracks without any data
+    # albums = self.albums.includes(:tracks)
+    # tracks_count = {}
+
+    # albums.each do |album|
+    #   # i use #length to avoid rails firing up another query, because data
+    #   # is already prefetched in #includes(:tracks)
+    #   tracks_count[album.title] = album.tracks.length
+    # end
+
+    # tracks_count
+    # # 3 queries total 
   end
 end
