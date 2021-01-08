@@ -17,6 +17,7 @@ class House < ApplicationRecord
     through: :gardeners,
     source: :plants
 
+  # Create an array of all the seeds within a given house
   def n_plus_one_seeds
     plants = self.plants
     seeds = []
@@ -27,7 +28,21 @@ class House < ApplicationRecord
     seeds
   end
 
+  # Create an array of all the seeds within a given house (non - n+1 query)
   def better_seeds_query
-    # TODO: your code here
+    plants = self
+      .plants
+      .includes(:seeds)
+
+      seeds = []
+
+      plants.each do |plant|
+        seeds << plant.seeds
+        sql_query = plant.seeds.to_sql
+        json_query = plant.seeds.to_json
+      end
+
+      seeds
+      # 3 queries
   end
 end
