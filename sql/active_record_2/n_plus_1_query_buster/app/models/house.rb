@@ -38,8 +38,6 @@ class House < ApplicationRecord
 
       plants.each do |plant|
         seeds << plant.seeds
-        sql_query = plant.seeds.to_sql
-        json_query = plant.seeds.to_json
       end
 
       seeds
