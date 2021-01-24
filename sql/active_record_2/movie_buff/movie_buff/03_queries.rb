@@ -13,6 +13,18 @@ end
 
 def golden_age
   # Find the decade with the highest average movie score.
+  # TODO: Refactor a bit. It works tho, in a single query. 
+  # Could probably solve it using rails only, but grouping doesn't aknowledge aliases for some reason
+  decades = Movie
+    .select("AVG(score) AS avg_score, yr / 10 AS decade")
+    .group('yr / 10')
+    .pluck('yr / 10, AVG(score)')
+
+  decades_scores = {}
+  decades.each { |dec, score| decades_scores[dec] = score}
+
+  best_decade = decades_scores.max_by { |dec, avg_score| avg_score }
+  best_decade.first * 10
 
 end
 
