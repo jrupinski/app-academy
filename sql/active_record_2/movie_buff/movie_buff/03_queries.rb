@@ -68,5 +68,13 @@ def longest_career
   # (the greatest time between first and last movie).
   # Order by actor names. Show each actor's id, name, and the length of
   # their career.
-  
+
+  # prefetch years of each actors' movies
+  Actor
+    .select(:id, :name, 'MAX(movies.yr) - MIN(movies.yr) AS career')
+    .joins(:movies)
+    .group(:id)
+    .order('career DESC, name ASC')
+    .limit(3)
+
 end
