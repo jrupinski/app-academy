@@ -17,12 +17,10 @@ ActiveRecord::Schema.define(version: 2021_02_05_233407) do
 
   create_table "answer_choices", force: :cascade do |t|
     t.integer "question_id", null: false
-    t.integer "user_id", null: false
     t.text "text", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["question_id"], name: "index_answer_choices_on_question_id"
-    t.index ["user_id"], name: "index_answer_choices_on_user_id"
   end
 
   create_table "polls", force: :cascade do |t|
