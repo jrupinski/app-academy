@@ -22,8 +22,12 @@ class Response < ApplicationRecord
     class_name: :AnswerChoice
 
   has_one :question,
-  through: :answer_choice,
-  source: :question
+    through: :answer_choice,
+    source: :question
+
+  has_one :poll,
+    through: :question,
+    source: :poll
 
   # Returns other Responses objects for the same Question
   def sibling_responses
@@ -32,17 +36,28 @@ class Response < ApplicationRecord
     .responses
     .where.not(id: self.id)
   end
-  
+
+  # Check if respondent answered already in another Reply object
   def respondent_already_answered?
     self
     .sibling_responses
     .where(user_id: self.user_id)
     .exists?
   end
-end
 
-def not_duplicate_response
-  if respondent_already_answered?
-    errors[:respondent] << 'Cannot create multiple responses to the same Question'
+  # Validate that there is only one answer from every respondent
+  def not_duplicate_response
+    if respondent_already_answered?
+      errors[:respondent] << 'Cannot create multiple responses to the same Question'
+    end
+  end
+
+  # Check if Reply's respondent is the author of the poll that the question's reply belongs to.
+  def respondent_is_poll_author?
+    poll_author = self
+      .poll
+      .author
+
+    poll_author.id == self.user_id
   end
 end
