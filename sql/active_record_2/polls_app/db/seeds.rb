@@ -59,7 +59,7 @@ responses = Response.create([
   
   { user_id: User.find_by_username('user_oceanpeas').id, answer_choice_id: AnswerChoice.find_by_text('No, I preffer other languages').id },
   { user_id: User.find_by_username('user_oceanpeas').id, answer_choice_id: AnswerChoice.find_by_text('Yee-haw').id },
-  { user_id: User.find_by_username('user_oceanpeas').id, answer_choice_id: AnswerChoice.find_by_text('Poland').id },
+  { user_id: User.find_by_username('user_oceanpeas').id, answer_choice_id: AnswerChoice.find_by_text('Italy').id },
   { user_id: User.find_by_username('user_oceanpeas').id, answer_choice_id: AnswerChoice.find_by_text('Lasagne').id },
 
   { user_id: User.find_by_username('user_creambee').id, answer_choice_id: AnswerChoice.find_by_text('No, I preffer other languages').id },
