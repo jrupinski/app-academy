@@ -25,7 +25,7 @@ class Question < ApplicationRecord
     through: :answer_choices,
     source: :responses
 
-  # Return a hash of Question's answer choices, and count of the replies
+  # Return a hash of Question's answer choices, and count of the responses
   def results_n_plus_1
     results = {}
     # n + 1 query
@@ -39,7 +39,7 @@ class Question < ApplicationRecord
     results
   end
 
-  # Return a hash of Question's answer choices, and count of the replies
+  # Return a hash of Question's answer choices, and count of the responses
   # Optimized version that uses ActiveDirectory's prefetching with #includes
   def results_2_queries
     results = {}
@@ -54,7 +54,7 @@ class Question < ApplicationRecord
     results
   end
 
-  # Return a hash of Question's answer choices, and count of the replies
+  # Return a hash of Question's answer choices, and count of the responses
   # This version uses ActiveDirectory, transfers only relevant info to end user.
   # Instead of caching ALL responses like in #results_2_queries, it fetches answer choices' text with their count only.
   def results_single_query
@@ -68,6 +68,33 @@ class Question < ApplicationRecord
       .group(:id)
 
     # convert results into a hash
+    choices.each do |answer_choice|
+      results[answer_choice.text] = answer_choice.num_responses
+    end
+
+    results
+  end
+
+  # Return a hash of Question's answer choices, and count of the responses
+  # This version uses HEREDOC, transfers only relevant info to end user.
+  def results_single_query_sql
+    results = {}
+
+    choices = AnswerChoice.find_by_sql([<<-SQL, self.id])
+      SELECT
+        answer_choices.text, COUNT(responses.id) AS num_responses
+      FROM
+        answer_choices
+      LEFT OUTER JOIN
+        responses
+      ON
+        answer_choices.id = responses.answer_choice_id
+      WHERE
+        answer_choices.question_id = ?
+      GROUP BY
+        answer_choices.id
+    SQL
+
     choices.each do |answer_choice|
       results[answer_choice.text] = answer_choice.num_responses
     end
