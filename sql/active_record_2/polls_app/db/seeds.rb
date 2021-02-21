@@ -76,11 +76,9 @@ responses = Response.create([
   { user_id: User.find_by_username('user_waterfall').id, answer_choice_id: AnswerChoice.find_by_text('Pizza').id },
   { user_id: User.find_by_username('user_waterfall').id, answer_choice_id: AnswerChoice.find_by_text('Nope').id },
   { user_id: User.find_by_username('user_waterfall').id, answer_choice_id: AnswerChoice.find_by_text('France').id },
-  { user_id: User.find_by_username('user_waterfall').id, answer_choice_id: AnswerChoice.find_by_text('Lasagne').id },
 
+  # THIS USER ONLY COMPLETED THE 'Dinner wars' POLL.
   { user_id: User.find_by_username('user_glovepuppy').id, answer_choice_id: AnswerChoice.find_by_text('Yes, it is a good language').id },
-  { user_id: User.find_by_username('user_glovepuppy').id, answer_choice_id: AnswerChoice.find_by_text('Nope').id },
-  { user_id: User.find_by_username('user_glovepuppy').id, answer_choice_id: AnswerChoice.find_by_text('France').id },
   { user_id: User.find_by_username('user_glovepuppy').id, answer_choice_id: AnswerChoice.find_by_text('Lasagne').id }
 ])
 puts "Responses created!"
