@@ -50,6 +50,6 @@ class User < ApplicationRecord
         polls.id
       HAVING
         COUNT(responses.*) = COUNT(DISTINCT questions.*)
-      SQL
+    SQL
   end
 end
