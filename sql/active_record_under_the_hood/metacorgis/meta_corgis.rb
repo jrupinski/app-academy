@@ -118,8 +118,14 @@ class MetaCorgiSnacks
     @box_id = box_id
   end
 
+  # DRY up the methods #get_x_info and #get_x_tastiness to a universal module that returns that info if given snack is available
   def method_missing(name, *args)
-    # Your code goes here...
+    raise ArgumentError, "Too many arguments" if args.count != 0
+
+    info = @snack_box.send("get_#{name}_info", @box_id)
+    tastiness = @snack_box.send("get_#{name}_tastiness", @box_id)
+    result = "Treat: #{info}: #{tastiness} "
+    tastiness > 30 ? "* #{result}" : result
   end
 
 
