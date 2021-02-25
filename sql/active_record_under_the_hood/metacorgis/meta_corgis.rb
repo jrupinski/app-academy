@@ -116,20 +116,29 @@ class MetaCorgiSnacks
   def initialize(snack_box, box_id)
     @snack_box = snack_box
     @box_id = box_id
+
+    # "capture" all snack names from given SnackBox with regex and use it ($1) to define methods for all of them
+    snack_box.methods.grep(/^get_(.*)_info$/) { MetaCorgiSnacks.define_snack($1) }
   end
 
-  # DRY up the methods #get_x_info and #get_x_tastiness to a universal module that returns that info if given snack is available
-  def method_missing(name, *args)
-    raise ArgumentError, "Too many arguments" if args.count != 0
+  #  # DRY up the methods #get_x_info and #get_x_tastiness to a universal module that returns that info if given snack is available
+  # def method_missing(name, *args)
+  #   raise ArgumentError, "Too many arguments" if args.count != 0
 
-    info = @snack_box.send("get_#{name}_info", @box_id)
-    tastiness = @snack_box.send("get_#{name}_tastiness", @box_id)
-    result = "Treat: #{info}: #{tastiness} "
-    tastiness > 30 ? "* #{result}" : result
-  end
+  #   info = @snack_box.send("get_#{name}_info", @box_id)
+  #   tastiness = @snack_box.send("get_#{name}_tastiness", @box_id)
+  #   result = "Treat: #{info}: #{tastiness} "
+  #   tastiness > 30 ? "* #{result}" : result
+  # end
 
-
+  # Use ::define_method to dynamically build each of the snack methods
+  # instead of using #method_missing. #method_missing WILL mess up debugging and make it way harder than it needs to be
   def self.define_snack(name)
-    # Your code goes here...
+    define_method(name) do
+      info = @snack_box.send("get_#{name}_info", @box_id)
+      tastiness = @snack_box.send("get_#{name}_tastiness", @box_id)
+      result = "Treat: #{info}: #{tastiness} "
+      tastiness > 30 ? "* #{result}" : result
+    end
   end
 end
