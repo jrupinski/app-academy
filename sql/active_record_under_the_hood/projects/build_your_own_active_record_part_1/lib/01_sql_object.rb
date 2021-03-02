@@ -11,12 +11,15 @@ class SQLObject
   def self.finalize!
   end
 
+  # setter method for table_name instance variable
   def self.table_name=(table_name)
-    # ...
+    return nil if table_name.blank?
+    @table_name = table_name
   end
 
+  # define/read table_name instance variable
   def self.table_name
-    # ...
+    @table_name ||= self.to_s.tableize
   end
 
   def self.all
