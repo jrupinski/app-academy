@@ -5,7 +5,19 @@ require 'active_support/inflector'
 
 class SQLObject
   def self.columns
-    # ...
+    # execute2 works the same as execute, but returns an array of column names as first row
+    # ALSO - interpolation does not work in FROM statemenets, that's why I string interpolated
+    # used ||= to keep column names saved, resulting in requiring to run only one query 
+    @column_names ||= DBConnection.execute2(<<-SQL)
+      SELECT
+        *
+      FROM
+        #{table_name}
+      LIMIT
+        0
+    SQL
+    .first
+    .map(&:to_sym)
   end
 
   def self.finalize!
