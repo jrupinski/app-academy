@@ -1,5 +1,6 @@
 require_relative 'db_connection'
 require 'active_support/inflector'
+require 'byebug'
 # NB: the attr_accessor we wrote in phase 0 is NOT used in the rest
 # of this project. It was only a warm up.
 
@@ -41,20 +42,48 @@ class SQLObject
     @table_name ||= self.to_s.tableize
   end
 
+  #
+  # Returns all rows in current table
+  #
+  # @return [Array] Array of current table rows, as model's objects
+  #
   def self.all
-    # ...
+    results = DBConnection.execute(<<-SQL)
+      SELECT
+        *
+      FROM
+        #{self.table_name}
+    SQL
+
+    self.parse_all(results)
   end
 
+  #
+  # Convert Array of Hashes with table rows into current model's objects 
+  #
+  # @param [Array] results Array of hashes with each objects' parameters
+  #
+  # @return [Array] Array of class objects
+  #
   def self.parse_all(results)
-    # ...
+    results.map { |result| self.new(result) }
   end
 
   def self.find(id)
     # ...
   end
 
+  #
+  # Initialize subclass with getters and setters for given parameters
+  #
+  # @param [Hash] params Hash with table attributes
+  #
   def initialize(params = {})
-    # ...
+    params.each do |attr_name, value|
+      attr_name = attr_name.to_sym
+      raise "unknown attribute '#{attr_name}'" unless self.class.columns.include?(attr_name)
+      self.send("#{attr_name}=", value) 
+    end
   end
 
   # Lazily assign a new empty hash if attributes are not initialized yet 
