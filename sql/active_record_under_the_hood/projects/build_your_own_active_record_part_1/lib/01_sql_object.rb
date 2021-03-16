@@ -69,8 +69,25 @@ class SQLObject
     results.map { |result| self.new(result) }
   end
 
+  #
+  # Return single record with given ID from table. Return nil if not found.
+  #
+  # @param [Integer] id ID of table record to find
+  #
+  # @return [SQLObject] Single SQLObject with given ID
+  #
   def self.find(id)
-    # ...
+    result = DBConnection.execute(<<-SQL, id)
+      SELECT
+        *
+      FROM
+        #{table_name}
+      WHERE
+        ID = ?
+    SQL
+
+    # using splay operator to remove object Hash from inside Array
+    result.empty? ? nil : self.new(*result)
   end
 
   #
