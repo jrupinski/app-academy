@@ -14,7 +14,7 @@ class SQLObject
       SELECT
         *
       FROM
-        #{table_name}
+        #{self.table_name}
       LIMIT
         0
     SQL
@@ -84,6 +84,8 @@ class SQLObject
         #{table_name}
       WHERE
         ID = ?
+      LIMIT
+        1
     SQL
 
     # using splay operator to remove object Hash from inside Array
@@ -108,12 +110,42 @@ class SQLObject
     @attributes ||= Hash.new
   end
 
+  #
+  # Returns values of Object's columns rows
+  #
+  # @return [Array] Array of values
+  #
   def attribute_values
-    # ...
+    columns = self.class.columns
+    columns.map do |column|
+      self.send(column)
+    end
   end
 
+  #
+  # Insert current Object into database's table
+  #
+  # @return [nil] Nothing
+  #
   def insert
-    # ...
+    # drop first column - we do not insert row ID
+    table_name = self.class.table_name
+    columns = self.class.columns.drop(1)
+    question_marks = Array.new(columns.count, '?').join(', ')
+    column_names = columns
+      .map(&:to_s)
+      .join(', ')
+
+    # drop first column - we do not insert row ID
+    DBConnection.execute(<<-SQL, *attribute_values.drop(1))
+      INSERT INTO
+        #{table_name} (#{column_names})
+      VALUES
+        (#{question_marks})
+    SQL
+
+
+    self.id = DBConnection.last_insert_row_id
   end
 
   def update
