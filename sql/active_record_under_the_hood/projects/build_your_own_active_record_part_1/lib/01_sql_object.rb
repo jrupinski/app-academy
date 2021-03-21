@@ -144,15 +144,46 @@ class SQLObject
         (#{question_marks})
     SQL
 
-
     self.id = DBConnection.last_insert_row_id
   end
 
+  #
+  # Update current row in database's table
+  #
+  # @return [nil] No return value
+  #
   def update
-    # ...
+    # I know, I should DRY it up - but it's just an exercise, so I'm not gonna add / modify methods
+    # because I want the tests to pass. Besides - I'm reinventing the wheel here :) 
+    # drop first column - we do not insert row ID
+    # debugger
+    table_name = self.class.table_name
+    columns = self.class.columns
+
+
+    # Create a sql query with placeholder values ('?')
+    set_line = columns
+    .map { |attr_name| "#{attr_name} = ?" }
+    .join(', ')
+
+    # insert set_line query, each will get the value from attribute_values
+    DBConnection.execute(<<-SQL, *attribute_values, id)
+    UPDATE
+      #{table_name}
+    SET
+      #{set_line}
+    WHERE
+      #{table_name}.id = ?
+    SQL
   end
 
+  #
+  # Save record into the database table.
+  # If row exists - update it. If it doesn't - insert it
+  #
+  # @return [Nil] Nothing
+  #
   def save
-    # ...
+    id.nil? ? insert : update
   end
 end
