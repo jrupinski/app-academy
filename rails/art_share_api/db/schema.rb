@@ -16,8 +16,8 @@ ActiveRecord::Schema.define(version: 2022_02_06_193109) do
   enable_extension "plpgsql"
 
   create_table "artwork_shares", force: :cascade do |t|
-    t.bigint "viewer_id"
-    t.bigint "artwork_id"
+    t.integer "viewer_id", null: false
+    t.integer "artwork_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["artwork_id", "viewer_id"], name: "index_artwork_shares_on_artwork_id_and_viewer_id", unique: true
@@ -43,5 +43,4 @@ ActiveRecord::Schema.define(version: 2022_02_06_193109) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
-  add_foreign_key "artwork_shares", "users", column: "viewer_id"
 end

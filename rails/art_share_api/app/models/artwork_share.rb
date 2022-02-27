@@ -1,6 +1,6 @@
 class ArtworkShare < ApplicationRecord
-  validates :artwork, uniqueness: { scope: :viewer }
+  validates :artwork_id, uniqueness: { scope: :viewer_id }
 
-  belongs_to :viewer, class_name: 'User'
   belongs_to :artwork
+  belongs_to :viewer, class_name: 'User'
 end
