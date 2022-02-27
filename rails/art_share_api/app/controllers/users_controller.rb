@@ -8,6 +8,15 @@ class UsersController < ApplicationController
     end
   end
 
+  def destroy
+    user = User.find(params[:id])
+    user.delete
+  end
+
+  def index
+    render json: User.all
+  end
+
   def show
     user = User.find(params[:id])
     if user.persisted?
@@ -25,10 +34,7 @@ class UsersController < ApplicationController
     render json: user
   end
 
-  def index
-    render json: User.all
-  end
-
+  private
 
   def user_params
     params.require(:user).permit(:name, :email)
