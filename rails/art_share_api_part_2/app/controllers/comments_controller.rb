@@ -2,7 +2,7 @@ class CommentsController < ApplicationController
   def index
     case
     when params[:user_id]
-      comments = Comment.where(author_id: params[:user_id])
+      comments = Comment.where(user_id: params[:user_id])
     when params[:artwork_id]
       comments = Comment.where(artwork_id: params[:artwork_id])
     else

@@ -39,11 +39,11 @@ ActiveRecord::Schema.define(version: 2022_04_05_080237) do
   create_table "comments", force: :cascade do |t|
     t.text "body"
     t.bigint "artwork_id"
-    t.bigint "author_id"
+    t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["artwork_id"], name: "index_comments_on_artwork_id"
-    t.index ["author_id"], name: "index_comments_on_author_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -54,5 +54,5 @@ ActiveRecord::Schema.define(version: 2022_04_05_080237) do
   end
 
   add_foreign_key "comments", "artworks"
-  add_foreign_key "comments", "users", column: "author_id"
+  add_foreign_key "comments", "users"
 end
