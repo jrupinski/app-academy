@@ -10,6 +10,15 @@ Rails.application.routes.draw do
   # delete 'users/:id', to: 'users#destroy'
 
   resources :users, only: %i[create destroy index show update]
-  resources :artwork_shares, only: %i[create destroy]
-  resources :comments, only: %i[create destroy index]
+  resources :artworks, only: %i[create destroy show update] do
+    post :favorite, on: :member
+  end
+
+  resources :artwork_shares, only: %i[create destroy] do
+    post :favorite, on: :member
+  end
+
+  resources :comments, only: %i[create destroy index] do
+    post :favorite, on: :member
+  end
 end

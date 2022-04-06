@@ -20,4 +20,8 @@ class User < ApplicationRecord
            through: :likes,
            source: :likeable,
            source_type: 'Comment'
+
+  def favorite_artworks
+    artworks.where(favorite: true)
+  end
 end
