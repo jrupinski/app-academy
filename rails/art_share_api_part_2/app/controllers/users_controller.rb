@@ -14,7 +14,12 @@ class UsersController < ApplicationController
   end
 
   def index
-    render json: User.all
+    if params[:query].present?
+      users = User.where('username ~ ?', params[:query].to_s)
+    else
+      users = User.all
+    end
+    render json: users
   end
 
   def show
