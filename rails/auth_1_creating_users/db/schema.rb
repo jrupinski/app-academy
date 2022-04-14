@@ -16,7 +16,7 @@ ActiveRecord::Schema[7.0].define(version: 2014_04_28_042342) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "password_digest", null: false
-    t.string "session_token", null: false
+    t.string "session_token"
     t.integer "counter", default: 0
     t.index ["password_digest"], name: "index_users_on_password_digest", unique: true
   end
