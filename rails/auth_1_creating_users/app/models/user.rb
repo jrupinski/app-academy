@@ -1,7 +1,9 @@
 class User < ActiveRecord::Base
   validates :username, presence: false
   validates :password_digest, presence: { message: "Password can't be blank" }
-  validates :password, length: { minimum: 6 }
+  # Add allow_nil to make sure existing users are valid when using #valid.
+  # This is because @password is initialized but not saved/persisted.
+  validates :password, length: { minimum: 6, allow_nil: true }
 
   attr_reader :password
 
