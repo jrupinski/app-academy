@@ -1,4 +1,12 @@
 class UsersController < ApplicationController
+  def index
+    render json: User.all
+  end
+
+  def new
+    @user = User.new
+  end
+
   def create
     @user = User.new(user_params)
 
@@ -7,10 +15,6 @@ class UsersController < ApplicationController
     else
       render json: @user.errors.full_messages
     end
-  end
-
-  def new
-    @user = User.new
   end
 
   private
