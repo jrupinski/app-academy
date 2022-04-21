@@ -4,15 +4,20 @@ class SessionsController < ApplicationController
   end
 
   def create
-    @user = User.find_by_credentials(username: user_params[:username], password: user_params[:password])
+    user = User.find_by_credentials(username: user_params[:username], password: user_params[:password])
 
-    if @user.nil?
-      flash[:errors] = ['Wrong username or password!']
-      redirect_to new_session_url
+    if user.nil?
+      flash[:errors] = ['Wrong username or password']
     else
-      session[:session_token] = @user.reset_session_token!
-      redirect_to cats_url
+      login_user!(user)
     end
+
+    redirect_to root_url
+  end
+
+  def destroy
+    logout!
+    redirect_to root_url
   end
 
   private

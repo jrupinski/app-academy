@@ -9,6 +9,20 @@
   </head>
 
   <body>
+    <%= render 'shared/errors' %>
+
+    <% if current_user %>
+      Hello, <b><%= current_user.username =%></b>!
+      <form action="<%= session_url %>" method="post">
+        <input type="hidden" name="_method" value="delete">
+
+        <input type='submit' value='Logout'>
+      </form>
+    <% else %>
+      <%= render 'sessions/form', session: @session %>
+    <% end %>
+
+
     <%= yield %>
   </body>
 </html>
