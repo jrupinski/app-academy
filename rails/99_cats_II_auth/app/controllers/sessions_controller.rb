@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
       redirect_to new_session_url
     else
       session[:session_token] = @user.reset_session_token!
-      redirect_to cats_url(@user)
+      redirect_to cats_url
     end
   end
 
