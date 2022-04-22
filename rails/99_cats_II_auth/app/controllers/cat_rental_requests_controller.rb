@@ -1,4 +1,6 @@
 class CatRentalRequestsController < ApplicationController
+  before_action :verify_owner, only: %i[edit update]
+
   def approve
     current_cat_rental_request.approve!
     redirect_to cat_url(current_cat)
@@ -36,5 +38,16 @@ class CatRentalRequestsController < ApplicationController
 
   def cat_rental_request_params
     params.require(:cat_rental_request).permit(:cat_id, :end_date, :start_date, :status)
+  end
+
+  def verify_owner
+    cat = Cat.find(params[:id])
+
+    if cat && current_user && current_user.cats.include?(cat)
+      cat
+    else
+      flash[:errors] = ['Cat does not exist or belong to current user']
+      redirect_to root_path
+    end
   end
 end

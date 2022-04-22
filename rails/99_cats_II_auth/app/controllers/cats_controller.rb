@@ -1,4 +1,6 @@
 class CatsController < ApplicationController
+  before_action :verify_owner, only: %i[edit update]
+
   def index
     @cats = Cat.all
     render :index
@@ -44,5 +46,16 @@ class CatsController < ApplicationController
 
   def cat_params
     params.require(:cat).permit(:age, :birth_date, :color, :description, :name, :sex)
+  end
+
+  def verify_owner
+    cat = Cat.find(params[:id])
+
+    if cat && current_user && current_user.cats.include?(cat)
+      cat
+    else
+      flash[:errors] = ['Cat does not exist or belong to current user']
+      redirect_to root_path
+    end
   end
 end
