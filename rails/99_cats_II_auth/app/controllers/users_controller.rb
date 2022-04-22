@@ -7,9 +7,11 @@ class UsersController < ApplicationController
     user = User.new(user_params)
 
     if user.save
-      render json: user
+      login_user!(user)
+      redirect_to root_path
     else
-      render json: user.errors.full_messages, status: :unprocessable_entity
+      flash[:errors] = user.errors.full_messages
+      redirect_back fallback_location: new_user_path
     end
   end
 

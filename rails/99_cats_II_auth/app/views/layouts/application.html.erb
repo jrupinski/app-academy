@@ -15,11 +15,11 @@
       Hello, <b><%= current_user.username =%></b>!
       <form action="<%= session_url %>" method="post">
         <input type="hidden" name="_method" value="delete">
-
         <input type='submit' value='Logout'>
       </form>
-    <% else %>
+    <% elsif action_name != 'new' %>
       <%= render 'sessions/form', session: @session %>
+      <a href="<%= new_user_url %>">Register User</a>
     <% end %>
 
 
