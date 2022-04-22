@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_action :redirect_if_logged_in, only: %i[new create]
+
   def new
     @user = User.new
   end
@@ -19,5 +21,9 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:username, :password)
+  end
+
+  def redirect_if_logged_in
+    redirect_to root_path if current_user
   end
 end
