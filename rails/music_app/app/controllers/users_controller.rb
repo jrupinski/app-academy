@@ -19,7 +19,7 @@ class UsersController < ApplicationController
 
     if user.save
       login_user!(user)
-      redirect_to root_path
+      redirect_to users_path
     else
       flash.now[:errors] = user.errors.full_messages
       render :new
@@ -39,7 +39,7 @@ class UsersController < ApplicationController
       redirect_to user_path(user.id)
     else
       flash.now[:errors] = user.errors.full_messages
-      render :new
+      render :edit
     end
   end
 
@@ -47,5 +47,11 @@ class UsersController < ApplicationController
     user = User.find(params[:id])
     user&.destroy
     redirect_to users_path
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:email, :password)
   end
 end
