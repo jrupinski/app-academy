@@ -11,12 +11,16 @@
   </head>
 
   <body>
-    <% if logged_in? %>
-      <%= render partial: 'shared/logout' %>
-    <% else %>
-      <h2><a href='<%= new_user_path %>'>Register</a></h2>
-      <h2><a href='<%= new_session_path %>'>Login</a></h2>
-    <% end %>
+    <div style="display: flex; justify-content: space-between;">
+      <h1>Music App</h1>
+      <% if logged_in? %>
+        <%= render partial: 'shared/logout' %>
+      <% elsif request.path == new_user_path %>
+        <h2><a href='<%= new_session_path %>'>Login</a></h2>
+      <% else %>
+        <h2><a href='<%= new_user_path %>'>Register</a></h2>
+      <% end %>
+    </div>
     <%= yield %>
   </body>
 </html>

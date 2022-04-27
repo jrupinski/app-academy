@@ -13,3 +13,13 @@
  *= require_tree .
  *= require_self
  */
+h1 {
+    font-family: 'Raleway', sans-serif;
+}
+
+a {
+    font-family: 'Raleway', sans-serif;
+    background-color: rgb(150, 208, 33);
+    border-radius: 10%;
+}
+

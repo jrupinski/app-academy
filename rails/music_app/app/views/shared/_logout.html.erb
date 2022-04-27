@@ -1,6 +1,5 @@
 <ul>
-  <li>Logged in as: <%= current_user.email %></li>
-  <li>
+  Logged in as: <%= current_user.email %>
     <form action="<%= session_url %>" method="POST">
       <input type="hidden"
             name="authenticity_token"
@@ -8,5 +7,4 @@
       <input type="hidden" value="delete" name="_method" />
       <input type="submit" value="logout" />
     </form>
-  </li>
 </ul>
