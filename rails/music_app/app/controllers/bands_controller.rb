@@ -42,6 +42,17 @@ class BandsController < ApplicationController
     end
   end
 
+  def destroy
+    band = Band.find(params[:id])
+    if band&.destroy
+      flash[:alerts] = [" Band \"#{band.name}\" has been deleted"]
+      redirect_to new_band_path
+    else
+      flash[:errors] = band.errors.full_messages
+      redirect_to band_path(band.id)
+    end
+  end
+
   private
 
   def band_params

@@ -1,0 +1,8 @@
+Welcome to Bands index page!
+
+<p>Here are all the bands:</p>
+<ul>
+  <% @bands.each do |band| %>
+    <li><%= band.name %></li>
+  <% end %>
+</ul>
