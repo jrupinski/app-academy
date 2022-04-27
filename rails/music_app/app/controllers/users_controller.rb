@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+  before_action :redirect_if_logged_in, only: %i[new create]
+  before_action :redirect_if_not_current_user, only: :show
+
   def index
     @users = User.all
     render :index
@@ -53,5 +56,13 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:email, :password)
+  end
+
+  def redirect_if_logged_in
+    redirect_to user_path(current_user) if logged_in?
+  end
+
+  def redirect_if_not_current_user
+    redirect_to users_path unless current_user.id == params[:id].to_i
   end
 end

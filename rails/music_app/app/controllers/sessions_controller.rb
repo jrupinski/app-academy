@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  before_action :redirect_if_logged_in, only: %i[new create]
+
   def new
     render :new
   end
@@ -12,7 +14,7 @@ class SessionsController < ApplicationController
       login_user!(user)
       redirect_to user_path(user)
     else
-      flash[:errors] = ['Username or password is not valid']
+      flash[:errors].now = ['Username or password is not valid']
       render :new
     end
   end
@@ -26,5 +28,9 @@ class SessionsController < ApplicationController
 
   def session_params
     params.require(:user).permit(:email, :password)
+  end
+
+  def redirect_if_logged_in
+    redirect_to user_path(current_user) if logged_in?
   end
 end

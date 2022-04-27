@@ -11,7 +11,7 @@
   </head>
 
   <body>
-    <% if current_user %>
+    <% if logged_in? %>
     <%= render partial: 'shared/logout' %>
     <% end %>
     <%= yield %>
