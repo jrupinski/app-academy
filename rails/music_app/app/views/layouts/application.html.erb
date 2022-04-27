@@ -11,6 +11,20 @@
   </head>
 
   <body>
+    <% if current_user %>
+      <ul>
+        <li>Logged in as: <%= current_user.email %></li>
+        <li>
+          <form action="<%= session_url %>" method="POST">
+            <input type="hidden"
+                  name="authenticity_token"
+                  value="<%= form_authenticity_token %>">
+            <input type="hidden" value="delete" name="_method" />
+            <input type="submit" value="Logout" />
+          </form>
+        </li>
+      </ul>
+    <% end %>
     <%= yield %>
   </body>
 </html>
