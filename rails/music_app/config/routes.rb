@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root 'sessions#new'
 
-  resources :users
   resource :session, only: %i[new create destroy]
+  resources :users
+  resources :bands
 end
