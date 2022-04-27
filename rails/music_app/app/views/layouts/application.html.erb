@@ -12,7 +12,10 @@
 
   <body>
     <% if logged_in? %>
-    <%= render partial: 'shared/logout' %>
+      <%= render partial: 'shared/logout' %>
+    <% else %>
+      <h2><a href='<%= new_user_path %>'>Register</a></h2>
+      <h2><a href='<%= new_session_path %>'>Login</a></h2>
     <% end %>
     <%= yield %>
   </body>

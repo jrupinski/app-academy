@@ -22,7 +22,7 @@ class UsersController < ApplicationController
 
     if user.save
       login_user!(user)
-      redirect_to users_path
+      redirect_to user_path(user.id)
     else
       flash.now[:errors] = user.errors.full_messages
       render :new
@@ -49,7 +49,7 @@ class UsersController < ApplicationController
   def delete
     user = User.find(params[:id])
     user&.destroy
-    redirect_to users_path
+    redirect_to new_session_path
   end
 
   private
