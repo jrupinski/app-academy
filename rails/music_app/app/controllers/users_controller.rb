@@ -46,10 +46,15 @@ class UsersController < ApplicationController
     end
   end
 
-  def delete
+  def destroy
     user = User.find(params[:id])
-    user&.destroy
-    redirect_to new_session_path
+    if user&.destroy
+      flash[:alerts] = [" User \"#{user.email }\" has been deleted"]
+      redirect_to new_user_path
+    else
+      flash[:errors] = user.errors.full_messages
+      redirect_to user_path(user.id)
+    end
   end
 
   private
