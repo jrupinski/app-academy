@@ -1,0 +1,63 @@
+<% action = (album.persisted? ? album_url(album) : albums_url) %>
+<% method = (album.persisted? ? :patch : :post) %>
+<% button_value = (album.persisted? ? 'Edit album' : 'Create album') %>
+
+
+<form action='<%= action %>' method='post' >
+  <input name='authenticity_token' type='hidden' value='<%= form_authenticity_token %>' />
+  <input name='_method' type='hidden' value='<%= method %>'>
+
+  <p>
+    <label for='album_name'>Name</label>
+    <input
+      type='text'
+      name='album[name]'
+      id='album_name'
+      value='<%= album.name %>'>
+  </p>
+
+  <p>
+    <label for='album_band_id'>Band</label>
+    <select name='album[band_id]' id='album_band_id'>
+      <% Band.all.each do |band| %>
+        <option
+          <%= 'selected' if album.band_id == band.id %>
+          value='<%= band.id %>'>
+            <%= band.name %>
+        </option>
+      <% end %>
+    >
+    </select>
+  </p>
+
+
+  <p>
+    <label for='album_year'>Release year</label>
+    <input
+      type='number'
+      min='1900'
+      max='9999'
+      name='album[year]'
+      id='album_year'
+      value='<%= album.year %>'>
+  </p>
+
+  <p>
+    <label for='album_live_t'>Live</label>
+    <input
+      type='radio'
+      name='album[live]'
+      value='t'
+      id='album_live_t'
+      <%= 'checked' if album.live %>>
+    <label for='album_live_f'>Studio</label>
+    <input
+      type='radio'
+      name='album[live]'
+      value='f'
+      id='album_live_f'
+      <%= 'checked' if !album.live %>>
+  </p>
+
+  <input type='submit' value='<%= button_value %>'>
+</form>
