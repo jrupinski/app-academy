@@ -11,12 +11,12 @@ class AlbumsController < ApplicationController
   end
 
   def create
-    album = Album.new(album_params)
+    @album = Album.new(album_params)
 
-    if album.save
-      redirect_to album_path(album.id)
+    if @album.save
+      redirect_to album_path(@album.id)
     else
-      flash.now[:errors] = album.errors.full_messages
+      flash.now[:errors] = @album.errors.full_messages
       render :new
     end
   end
@@ -27,25 +27,25 @@ class AlbumsController < ApplicationController
   end
 
   def update
-    album = Album.find(params[:id])
-    album.update(album_params)
+    @album = Album.find(params[:id])
+    @album.update(album_params)
 
-    if album.save
-      redirect_to album_path(album.id)
+    if @album.save
+      redirect_to album_path(@album.id)
     else
-      flash.now[:errors] = album.errors.full_messages
+      flash.now[:errors] = @album.errors.full_messages
       render :edit
     end
   end
 
   def destroy
-    album = Album.find(params[:id])
-    if album&.destroy
-      flash[:alerts] = [" Album \"#{album.name}\" has been deleted"]
+    @album = Album.find(params[:id])
+    if @album&.destroy
+      flash[:alerts] = [" Album \"#{@album.name}\" has been deleted"]
       redirect_to bands_path
     else
-      flash[:errors] = album.errors.full_messages
-      redirect_to album_path(album.id)
+      flash[:errors] = @album.errors.full_messages
+      redirect_to album_path(@album.id)
     end
   end
 

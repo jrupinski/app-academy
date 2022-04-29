@@ -18,13 +18,13 @@ class UsersController < ApplicationController
   end
 
   def create
-    user = User.new(user_params)
+    @user = User.new(user_params)
 
-    if user.save
-      login_user!(user)
-      redirect_to user_path(user.id)
+    if @user.save
+      login_user!(@user)
+      redirect_to user_path(@user.id)
     else
-      flash.now[:errors] = user.errors.full_messages
+      flash.now[:errors] = @user.errors.full_messages
       render :new
     end
   end
@@ -35,25 +35,25 @@ class UsersController < ApplicationController
   end
 
   def update
-    user = User.find(params[:id])
-    user.update(user_params)
+    @user = User.find(params[:id])
+    @user.update(user_params)
 
-    if user.save
-      redirect_to user_path(user.id)
+    if @user.save
+      redirect_to user_path(@user.id)
     else
-      flash.now[:errors] = user.errors.full_messages
+      flash.now[:errors] = @user.errors.full_messages
       render :edit
     end
   end
 
   def destroy
-    user = User.find(params[:id])
+    @user = User.find(params[:id])
     if user&.destroy
-      flash[:alerts] = [" User \"#{user.email }\" has been deleted"]
+      flash[:alerts] = [" User \"#{@user.email }\" has been deleted"]
       redirect_to new_user_path
     else
-      flash[:errors] = user.errors.full_messages
-      redirect_to user_path(user.id)
+      flash[:errors] = @user.errors.full_messages
+      redirect_to user_path(@user.id)
     end
   end
 
