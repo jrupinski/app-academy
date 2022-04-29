@@ -1,4 +1,6 @@
 Welcome to new Album creation page!
-
+<%= link_to 'Back', url_for(:back) %>
+<br>
+<br>
 <%= render 'shared/errors' %>
 <%= render 'form', album: @album, band: @band %>
