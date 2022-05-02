@@ -12,5 +12,7 @@ Rails.application.routes.draw do
   resources :albums, except: %i[index new] do
     resources :tracks, only: :new
   end
-  resources :tracks, only: %i[show create edit update destroy]
+  resources :tracks, except: :new do
+    resources :notes
+  end
 end
