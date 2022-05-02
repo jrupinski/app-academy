@@ -10,7 +10,8 @@ class NotesController < ApplicationController
 
   def destroy
     note = current_user.notes.find(params[:id])
-    flash[:alerts] = [" Note has been deleted"]
+    note.destroy
+    flash[:alerts] = ['Note has been deleted']
     redirect_to track_path(note.track_id)
   end
 
