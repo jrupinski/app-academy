@@ -7,3 +7,15 @@ Welcome to Track page!
 <p>Band: <%= @track.band.name %>!</p>
 <p>Lyrics: <%= @track.lyrics %>!</p>
 <p>Bonus track: <%= @track.bonus %>!</p>
+
+<br>
+<br>
+<p>
+  Track notes from users:
+  <ul>
+    <% @track.notes.each do |note| %>
+      <li><%= render "notes/note", note: note %></li>
+    <% end %>
+  </ul>
+</p>
+
