@@ -8,13 +8,16 @@ Welcome to Track page!
 <p>Lyrics: <%= @track.lyrics %>!</p>
 <p>Bonus track: <%= @track.bonus %>!</p>
 
+<%= render 'notes/form', track: @track %>
+
+
 <br>
 <br>
 <p>
   Track notes from users:
   <ul>
     <% @track.notes.each do |note| %>
-      <li><%= render "notes/note", note: note %></li>
+      <li><%= render 'notes/note', note: note %></li>
     <% end %>
   </ul>
 </p>
