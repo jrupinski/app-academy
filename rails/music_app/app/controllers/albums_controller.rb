@@ -1,4 +1,6 @@
 class AlbumsController < ApplicationController
+  before_action :redirect_if_not_logged_in
+
   def show
     @album = Album.find(params[:id])
     render :show
@@ -53,5 +55,9 @@ class AlbumsController < ApplicationController
 
   def album_params
     params.require(:album).permit(:name, :year, :live, :band_id)
+  end
+
+  def redirect_if_not_logged_in
+    redirect_to root_path unless logged_in?
   end
 end

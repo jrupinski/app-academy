@@ -1,4 +1,6 @@
 class TracksController < ApplicationController
+  before_action :redirect_if_not_logged_in
+
   def show
     @track = Track.find(params[:id])
     render :show
@@ -55,5 +57,9 @@ class TracksController < ApplicationController
 
   def track_params
     params.require(:track).permit(:title, :ord, :bonus, :lyrics, :album_id)
+  end
+
+  def redirect_if_not_logged_in
+    redirect_to root_path unless logged_in?
   end
 end

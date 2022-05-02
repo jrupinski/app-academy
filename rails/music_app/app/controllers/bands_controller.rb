@@ -1,4 +1,6 @@
 class BandsController < ApplicationController
+  before_action :redirect_if_not_logged_in
+
   def index
     @bands = Band.all
     render :index
@@ -57,5 +59,9 @@ class BandsController < ApplicationController
 
   def band_params
     params.require(:band).permit(:name)
+  end
+
+  def redirect_if_not_logged_in
+    redirect_to root_path unless logged_in?
   end
 end
