@@ -1,8 +1,28 @@
 <a href='<%= band_path(@album.band) %>'>Back to band profile</a>
 <br>
+<a href='<%= edit_album_path %>'>Edit album</a>
+<br>
+<a href='<%= new_album_track_path(@album) %>'>Add new track</a>
+<br>
+
 <br>
 Welcome to Album page!
 <p>Album name: <%= @album.name %>!</p>
 <p>Band: <%= @album.band.name %>!</p>
 <p>Release year: <%= @album.year %>!</p>
 <p>Live album: <%= @album.live %>!</p>
+
+
+<br>
+<p>Tracklist:</p>
+<p>
+  <ul>
+    <% @album.tracks.each do |track| %>
+      <li>
+        <a href='<%= track_path(track) %>'>
+          <%= track.title %>
+        </a>
+      </li>
+    <% end %>
+  </ul>
+</p>

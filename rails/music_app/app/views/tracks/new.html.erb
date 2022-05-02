@@ -1,0 +1,6 @@
+Welcome to new Track creation page!
+<%= link_to 'Back', url_for(:back) %>
+<br>
+<br>
+<%= render 'shared/errors' %>
+<%= render 'form', track: @track, album: @album %>

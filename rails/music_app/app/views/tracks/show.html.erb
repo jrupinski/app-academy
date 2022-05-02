@@ -1,0 +1,9 @@
+<a href='<%= album_path(@track.album_id) %>'>Back to album profile</a>
+<br>
+<br>
+Welcome to Track page!
+<p>Track title: <%= @track.title %>!</p>
+<p>Album title: <%= @track.album.name %>!</p>
+<p>Band: <%= @track.band.name %>!</p>
+<p>Lyrics: <%= @track.lyrics %>!</p>
+<p>Bonus track: <%= @track.bonus %>!</p>
