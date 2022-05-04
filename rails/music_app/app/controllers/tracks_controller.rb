@@ -20,8 +20,8 @@ class TracksController < ApplicationController
     if @track.save
       redirect_to track_path(@track.id)
     else
-      flash.now[:errors] = @track.errors.full_messages
-      render :new
+      flash[:errors] = @track.errors.full_messages
+      redirect_to new_track_path
     end
   end
 
@@ -32,20 +32,19 @@ class TracksController < ApplicationController
 
   def update
     @track = Track.find(params[:id])
-    @track.update(track_params)
 
-    if @track.save
+    if @track.update(track_params)
       redirect_to track_path(@track.id)
     else
-      flash.now[:errors] = @track.errors.full_messages
-      render :edit
+      flash[:errors] = @track.errors.full_messages
+      redirect_to edit_track_path(@track)
     end
   end
 
   def destroy
     @track = Track.find(params[:id])
     if @track&.destroy
-      flash[:alerts] = [" Track \"#{@track.name}\" has been deleted"]
+      flash[:notice] = " Track \"#{@track.name}\" has been deleted"
       redirect_to albums_path
     else
       flash[:errors] = @track.errors.full_messages

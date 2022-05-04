@@ -14,8 +14,8 @@ class SessionsController < ApplicationController
       login_user!(user)
       redirect_to user_path(user)
     else
-      flash[:errors].now = ['Username or password is not valid']
-      render :new
+      flash[:errors] = ['Username or password is not valid']
+      redirect_to new_session_path
     end
   end
 

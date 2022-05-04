@@ -22,8 +22,8 @@ class BandsController < ApplicationController
     if @band.save
       redirect_to band_path(@band.id)
     else
-      flash.now[:errors] = @band.errors.full_messages
-      render :new
+      flash[:errors] = @band.errors.full_messages
+      redirect_to new_band_path
     end
   end
 
@@ -34,20 +34,19 @@ class BandsController < ApplicationController
 
   def update
     @band = Band.find(params[:id])
-    @band.update(band_params)
 
-    if @band.save
+    if @band.update(band_params)
       redirect_to band_path(@band.id)
     else
-      flash.now[:errors] = @band.errors.full_messages
-      render :edit
+      flash[:errors] = @band.errors.full_messages
+      redirect_to edit_band_path(@band)
     end
   end
 
   def destroy
     @band = Band.find(params[:id])
     if @band.destroy
-      flash[:alerts] = [" Band \"#{@band.name}\" has been deleted"]
+      flash[:notice] = " Band \"#{@band.name}\" has been deleted"
       redirect_to new_band_path
     else
       flash[:errors] = @band.errors.full_messages

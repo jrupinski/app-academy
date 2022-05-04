@@ -4,14 +4,14 @@ class NotesController < ApplicationController
   def create
     note = current_user.notes.new(note_params)
     note.save
-    flash.now[:errors] = note.errors.full_messages
+    flash[:errors] = note.errors.full_messages
     redirect_to track_path(note.track_id)
   end
 
   def destroy
     note = current_user.notes.find(params[:id])
     note.destroy
-    flash[:alerts] = ['Note has been deleted']
+    flash[:notice] = 'Note has been deleted'
     redirect_to track_path(note.track_id)
   end
 
