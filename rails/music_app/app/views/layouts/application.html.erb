@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MusicApp</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <div style="display: flex; justify-content: space-between;">
+      <h1>Music App</h1>
+      <% if logged_in? %>
+        <%= render partial: 'shared/navbar' %>
+      <% elsif request.path == new_user_path %>
+        <h2><a href='<%= new_session_path %>'>Login</a></h2>
+      <% else %>
+        <h2><a href='<%= new_user_path %>'>Register</a></h2>
+      <% end %>
+    </div>
+
+    <%= render 'shared/alerts' %>
+
+    <%= yield %>
+  </body>
+</html>

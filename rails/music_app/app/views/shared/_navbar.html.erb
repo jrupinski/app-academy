@@ -1,0 +1,12 @@
+<ul>
+  Logged in as: <%= current_user.email %>
+    <br>
+    <a href='<%= user_path(current_user) %>'>User profile</a>
+    <form action="<%= session_url %>" method="POST">
+      <input type="hidden"
+            name="authenticity_token"
+            value="<%= form_authenticity_token %>">
+      <input type="hidden" value="delete" name="_method" />
+      <input type="submit" value="logout" />
+    </form>
+</ul>
