@@ -1,0 +1,14 @@
+<form action='<%= notes_path %>' method='post' >
+  <input name='authenticity_token' type='hidden' value='<%= form_authenticity_token %>' />
+  <input name='note[track_id]' type='hidden' value='<%= track.id %>' />
+
+  <p>
+    <label for='note_body' justify-content: 'center'>Note</label>
+    <textarea
+      name='note[body]'
+      id='note_body'
+      placeholder='Enter note here...'
+      rows=5></textarea>
+  <input type='submit' value='Submit note'>
+  </p>
+</form>

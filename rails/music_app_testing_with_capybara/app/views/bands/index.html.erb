@@ -1,0 +1,18 @@
+Welcome to Bands index page!
+
+<p>
+  <a href='<%= new_band_path %>'>Add new band</a>
+</p>
+
+<p>Here are all the bands:</p>
+<p>
+  <ul>
+    <% @bands.each do |band| %>
+      <li>
+        <a href='<%= band_path(band) %>'>
+          <%= band.name %>
+        </a>
+      </li>
+    <% end %>
+  </ul>
+</p>

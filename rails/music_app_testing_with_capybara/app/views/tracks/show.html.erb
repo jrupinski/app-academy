@@ -1,0 +1,26 @@
+<a href='<%= album_path(@track.album_id) %>'>Back to album profile</a>
+<br>
+<br>
+Welcome to Track page!
+<br>
+<a href='<%= edit_track_path %>'>Edit track</a>
+<p>Track title: <%= @track.title %></p>
+<p>Album title: <%= @track.album.name %></p>
+<p>Band: <%= @track.band.name %></p>
+<p>Lyrics: <%= ugly_lyrics(@track.lyrics) %></p>
+<p>Bonus track: <%= @track.bonus %></p>
+
+<%= render 'notes/form', track: @track %>
+
+
+<br>
+<br>
+<p>
+  Track notes from users:
+  <ul>
+    <% @track.notes.each do |note| %>
+      <li><%= render 'notes/note', note: note %></li>
+    <% end %>
+  </ul>
+</p>
+
