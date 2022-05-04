@@ -13,13 +13,8 @@
  *= require_tree .
  *= require_self
  */
-h1 {
-    font-family: 'Raleway', sans-serif;
-}
 
-a {
-    font-family: 'Raleway', sans-serif;
-    background-color: rgb(150, 208, 33);
-    border-radius: 10%;
-}
-
+@import "buttons.scss";
+@import "links.scss";
+@import "headers.scss";
+@import "alerts.scss";
