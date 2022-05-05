@@ -22,7 +22,7 @@ class UsersController < ApplicationController
 
     if @user.save
       login_user!(@user)
-      redirect_to user_path(@user.id)
+      redirect_to bands_path
     else
       flash[:errors] = @user.errors.full_messages
       redirect_to new_user_path
