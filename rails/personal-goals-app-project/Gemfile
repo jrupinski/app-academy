@@ -78,4 +78,5 @@ group :test do
   gem 'faker'
   gem 'shoulda-matchers'
   gem 'launchy'
+  gem 'rails-controller-testing'
 end
