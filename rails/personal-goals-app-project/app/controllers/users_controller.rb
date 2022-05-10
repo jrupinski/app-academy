@@ -1,4 +1,8 @@
 class UsersController < ApplicationController
+  def show
+    @user = User.find(params[:id])
+  end
+
   def new
     @user = User.new
   end
@@ -7,10 +11,10 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      redirect_to json: @user, status: :created
+      redirect_to user_path(@user)
     else
-      render :new, status: :unprocessable_entity
       flash.now[:errors] = @user.errors.full_messages
+      render :new, status: :unprocessable_entity
     end
   end
 
