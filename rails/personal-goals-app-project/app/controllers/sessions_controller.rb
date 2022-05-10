@@ -9,11 +9,17 @@ class SessionsController < ApplicationController
     @user = User.find_by_credentials(email: email, password: password)
 
     if @user
+      login!(@user)
       redirect_to user_path(@user)
     else
       flash.now[:errors] = ['Invalid credentials']
       render :new, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    logout!
+    redirect_to new_session_path
   end
 
   private
