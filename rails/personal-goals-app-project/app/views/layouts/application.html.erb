@@ -12,6 +12,11 @@
 
   <body>
     <%= render 'shared/alerts'%>
+
+    <% if current_user %>
+      <%= render 'shared/user_logout' %>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>
