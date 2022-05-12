@@ -7,6 +7,7 @@ RSpec.describe "Goals", type: :request do
   end
 
   let(:user) { create(:user) }
+  let(:different_user) { create(:user) }
 
   describe 'GET #index' do
     context 'When user is logged in' do
@@ -14,9 +15,17 @@ RSpec.describe "Goals", type: :request do
         post session_path, params: { user: { email: user.email, password: user.password } }
       end
 
-      it 'renders goals page' do
+      it 'returns user goals' do
+        create(:goal, user: user)
+        create(:goal, user: different_user)
+
+        post session_path, params: { user: { email: user.email, password: user.password } }
         get goals_path
+
         expect(response).to be_successful
+        # debugger
+        expect(controller.instance_variable_get(:@goals)).to eq(user.goals)
+        expect(controller.instance_variable_get(:@goals)).to_not eq(different_user.goals)
       end
     end
 
