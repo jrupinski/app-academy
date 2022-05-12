@@ -15,4 +15,9 @@ class ApplicationController < ActionController::Base
     @current_user ||= User.find_by(session_token: session[:session_token])
   end
 
+  # before_action filters
+
+  def require_current_user!
+    redirect_to new_session_path unless current_user
+  end
 end

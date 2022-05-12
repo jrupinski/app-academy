@@ -1,0 +1,30 @@
+
+<%= render 'shared/alerts' %>
+
+<form action='<%= goals_path %>' method='POST'>
+  <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+
+  <label>Title:
+    <input type='text' value='<%= goal.title %>' name='goal[title]'>
+  </label>
+  <br>
+
+  <label>Description:
+    <textarea name='goal[description]'><%= goal.description %></textarea>
+  </label>
+  <br>
+
+  <label>Private?
+    <input type='checkbox' name='goal[private]'
+      <%= "checked='true'" if goal.private %>>
+  </label>
+  <br>
+
+  <label>Completed?
+    <input type='checkbox' name='goal[completed]'
+      <%= "checked='true'" if goal.private %>>
+  </label>
+  <br>
+
+  <input type='submit' value='New goal'>
+</form>
