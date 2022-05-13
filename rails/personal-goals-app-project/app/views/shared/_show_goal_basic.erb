@@ -2,4 +2,6 @@
   <li>Owner: <%= goal.user %></li>
   <li>Title: <%= goal.title %></li>
   <li>Description: <%= goal.description %></li>
+  <li>Goal privacy: <%= goal.private? ? 'Private' : 'Public' %>
+  <li>Goal privacy: <%= goal.completed? ? 'Completed' : 'In progress' %>
 </ul>
