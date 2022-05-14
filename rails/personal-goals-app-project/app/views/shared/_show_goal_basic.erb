@@ -1,7 +1,14 @@
 <ul>
-  <li>Owner: <%= goal.user %></li>
+  <li>Owner: <%= goal.user.email %></li>
   <li>Title: <%= goal.title %></li>
   <li>Description: <%= goal.description %></li>
   <li>Goal privacy: <%= goal.private? ? 'Private' : 'Public' %>
   <li>Goal privacy: <%= goal.completed? ? 'Completed' : 'In progress' %>
 </ul>
+<p>
+  <form action='<%= goal_path(goal) %>' method='POST' >
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" >
+  <input name='_method' type='hidden' value='DELETE'>
+  <input type='submit' value="Delete '<%= goal.title %>' goal">
+</p>
+<br>

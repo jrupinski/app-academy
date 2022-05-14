@@ -1,8 +1,13 @@
+<% action = (action_type == :edit) ? goal_url(goal) : goals_url %>
+<% button_value = (action_type == :edit) ? 'Update goal' : 'New goal' %>
 
 <%= render 'shared/alerts' %>
 
-<form action='<%= goals_path %>' method='POST'>
+<form action='<%= action %>' method='POST'>
   <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+  <% if action_type == :edit %>
+    <input name='_method' type='hidden' value='PUT'>
+  <% end %>
 
   <label>Title:
     <input type='text' value='<%= goal.title %>' name='goal[title]'>
@@ -26,5 +31,5 @@
   </label>
   <br>
 
-  <input type='submit' value='New goal'>
+  <input type='submit' value='<%= button_value %>'>
 </form>

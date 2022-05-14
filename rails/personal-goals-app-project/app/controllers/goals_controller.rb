@@ -17,11 +17,35 @@ class GoalsController < ApplicationController
     @goal = current_user.goals.new(goal_params)
 
     if @goal.save
+      flash[:notice] = 'Goal saved!'
       redirect_to goal_path(@goal)
     else
       flash.now[:errors] = @goal.errors.full_messages
       render :new, status: :unprocessable_entity
     end
+  end
+
+  def edit
+    @goal = Goal.find(params[:id])
+  end
+
+  def update
+    @goal = Goal.find(params[:id])
+
+    if @goal.update(goal_params)
+      flash[:notice] = 'Goal updated!'
+      redirect_to goal_path(@goal.id)
+    else
+      flash.now[:errors] = @goal.errors.full_messages
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @goal = Goal.find(params[:id])
+    @goal.destroy
+    flash[:notice] = "Goal deleted!"
+    redirect_to goals_url
   end
 
   private
