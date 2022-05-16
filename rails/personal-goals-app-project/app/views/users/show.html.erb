@@ -1,1 +1,8 @@
 Welcome <%= @user.email %>
+
+<p>User goals:
+  User goals count: <%= @user.goals.count %>
+  <% @user.goals.each do |goal| %>
+    <%= render 'shared/show_goal_basic', goal: goal %>
+  <% end %>
+</p>
