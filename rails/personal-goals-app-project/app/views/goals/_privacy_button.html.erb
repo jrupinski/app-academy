@@ -1,0 +1,12 @@
+<form action='<%= goal_url(goal) %>' method='POST'>
+  <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+  <input type='hidden' name='_method' value='PUT'>
+  <input type='hidden' name='goal[private]' value='<%= !goal.private %>'>
+  <input type='submit'
+  <% if goal.private %>
+  value='Make goal public'
+  <% else %>
+  value='Make goal private'
+  <% end %>
+  id='goal_<%= goal.id %>_private'>
+</form>

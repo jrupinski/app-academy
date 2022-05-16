@@ -30,4 +30,28 @@ feature 'tracking goal progress/completeness' do
       end
     end
   end
+
+  describe 'Goals can be toggled as complete' do
+    context 'in Goal#show page' do
+      it 'Allows user to toggle goal status to complete' do
+        visit goal_path(goal)
+        click_button "goal_#{goal.id}_completed"
+        expect(page).to have_content 'Completed'
+      end
+
+      it 'Does not allow other users to edit goal status' do
+        visit goal_path(goal)
+        expect(page).to have_button "goal_#{goal.id}_completed"
+        click_button 'Log out'
+        expect(page).to_not have_button "goal_#{goal.id}_completed"
+      end
+
+      it 'Does not redirect to a different page' do
+        visit goal_path(goal)
+        click_button "goal_#{goal.id}_completed"
+        expect(page).to have_content 'Goal completedness'
+        expect(page).to have_content goal.title
+      end
+    end
+  end
 end

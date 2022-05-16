@@ -1,9 +1,15 @@
+<% author_logged_in = (current_user == goal.user) %>
+
 <ul>
   <li>Owner: <%= goal.user.email %></li>
   <li>Title: <%= goal.title %></li>
   <li>Description: <%= goal.description %></li>
   <li>Goal privacy: <%= goal.private? ? 'Private' : 'Public' %>
-  <li>Goal privacy: <%= goal.completed? ? 'Completed' : 'In progress' %>
+    <%= render 'goals/privacy_button', goal: goal if author_logged_in %>
+  </li>
+  <li>Goal completedness: <%= goal.completed? ? 'Completed' : 'In progress' %>
+    <%= render 'goals/complete_button', goal: goal if author_logged_in %>
+  </li>
 </ul>
 <p>
   <form action='<%= goal_path(goal) %>' method='POST' >
