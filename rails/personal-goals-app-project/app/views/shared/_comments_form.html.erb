@@ -1,0 +1,13 @@
+<% action_type = (parent_type == 'user' ? user_comments_path : goal_comments_path) %>
+<h3>New comment</h3>
+
+<%= render 'shared/alerts' %>
+
+<form action='<%= action_type %>' method='POST'>
+  <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+  <input type='hidden' name="comment[<%= parent_type %>_id]" value='<%= parent_id %>'>
+  <label>Comment
+    <textarea name='comment[body]'></textarea>
+  </label>
+  <input type='submit' value='Save comment'>
+</form>

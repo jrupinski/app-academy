@@ -1,2 +1,10 @@
 Your goal:
 <%= render 'shared/show_goal_basic', goal: @goal %>
+<p>Goal comments:
+  <% @goal.goal_comments.each do |comment| %>
+    <b><%= comment.body %></b>
+  <% end %>
+
+  <%= render 'goal_comments/form', goal: @goal %>
+</p>
+
