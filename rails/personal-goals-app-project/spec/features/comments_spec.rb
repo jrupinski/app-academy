@@ -34,7 +34,7 @@ RSpec.feature "Comments", type: :feature do
 
   describe 'Goal comments' do
     background(:each) do
-      click_on user_goal.title 
+      click_on user_goal.title
     end
 
     it_behaves_like 'comment'
