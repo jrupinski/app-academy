@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_17_093954) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_17_125900) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "goal_comments", force: :cascade do |t|
+    t.text "body", null: false
+    t.bigint "author_id", null: false
+    t.bigint "goal_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_goal_comments_on_author_id"
+    t.index ["goal_id"], name: "index_goal_comments_on_goal_id"
+  end
 
   create_table "goals", force: :cascade do |t|
     t.string "title", null: false
@@ -46,6 +56,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_17_093954) do
     t.index ["session_token"], name: "index_users_on_session_token", unique: true
   end
 
+  add_foreign_key "goal_comments", "goals"
+  add_foreign_key "goal_comments", "users", column: "author_id"
   add_foreign_key "goals", "users"
   add_foreign_key "user_comments", "users"
   add_foreign_key "user_comments", "users", column: "author_id"

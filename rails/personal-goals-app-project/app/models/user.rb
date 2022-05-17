@@ -7,8 +7,8 @@ class User < ApplicationRecord
   before_validation :ensure_session_token
 
   has_many :goals, dependent: :destroy
-  has_many :authored_comments, class_name: 'UserComment', foreign_key: 'author_id', dependent: :destroy
   has_many :user_comments, dependent: :destroy
+  has_many :goal_comments, dependent: :destroy
 
   attr_reader :password
 
