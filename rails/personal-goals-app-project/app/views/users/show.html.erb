@@ -2,7 +2,20 @@ Welcome <%= @user.email %>
 
 <p>User goals:
   User goals count: <%= @user.goals.count %>
-  <% @user.goals.each do |goal| %>
-    <%= render 'shared/show_goal_basic', goal: goal %>
-  <% end %>
+  <ul>
+    <% @user.goals.each do |goal| %>
+      <li><a href=<%= goal_path(goal) %>><%= goal.title %></a></li>
+      Goal completedness: <%= goal.completed? ? 'Completed' : 'In progress' %>
+
+      <%= render 'goals/complete_button', goal: goal if current_user == goal.user %>
+    <% end %>
+  </ul>
+</p>
+<p>User comments:
+  <ul>
+    <% @user.user_comments.each do |comment| %>
+      <li><b><%= comment.author.email %>:</b> <%= comment.body %></li>
+    <% end %>
+  </ul>
+  <%= render 'user_comments/form', user: @user %>
 </p>
