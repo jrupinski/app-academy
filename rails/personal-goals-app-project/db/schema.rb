@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_17_144137) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_17_152828) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -25,16 +25,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_17_144137) do
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
   end
 
-  create_table "goal_comments", force: :cascade do |t|
-    t.text "body", null: false
-    t.bigint "author_id", null: false
-    t.bigint "goal_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["author_id"], name: "index_goal_comments_on_author_id"
-    t.index ["goal_id"], name: "index_goal_comments_on_goal_id"
-  end
-
   create_table "goals", force: :cascade do |t|
     t.string "title", null: false
     t.text "description"
@@ -45,16 +35,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_17_144137) do
     t.datetime "updated_at", null: false
     t.index ["title"], name: "index_goals_on_title"
     t.index ["user_id"], name: "index_goals_on_user_id"
-  end
-
-  create_table "user_comments", force: :cascade do |t|
-    t.text "body", null: false
-    t.bigint "author_id", null: false
-    t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["author_id"], name: "index_user_comments_on_author_id"
-    t.index ["user_id"], name: "index_user_comments_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -68,9 +48,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_17_144137) do
   end
 
   add_foreign_key "comments", "users", column: "author_id"
-  add_foreign_key "goal_comments", "goals"
-  add_foreign_key "goal_comments", "users", column: "author_id"
   add_foreign_key "goals", "users"
-  add_foreign_key "user_comments", "users"
-  add_foreign_key "user_comments", "users", column: "author_id"
 end
