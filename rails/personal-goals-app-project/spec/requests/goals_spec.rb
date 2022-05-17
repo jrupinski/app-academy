@@ -19,11 +19,8 @@ RSpec.describe "Goals", type: :request do
         create(:goal, user: user)
         create(:goal, user: different_user)
 
-        post session_path, params: { user: { email: user.email, password: user.password } }
         get goals_path
-
         expect(response).to be_successful
-        # debugger
         expect(controller.instance_variable_get(:@goals)).to eq(user.goals)
         expect(controller.instance_variable_get(:@goals)).to_not eq(different_user.goals)
       end
