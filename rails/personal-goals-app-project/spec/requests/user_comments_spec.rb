@@ -11,7 +11,7 @@ RSpec.describe "UserComments", type: :request do
       end
 
       scenario 'Creates a comment on User Profile' do
-        post user_comments_path, params: { user_comment: { user_id: different_user.id, body: 'Sample text.' } }
+        post user_comments_path, params: { comment: { user_id: different_user.id, body: 'Sample text.' } }
 
         expect(response).to redirect_to(users_path)
         expect(different_user.user_comments.last.body).to eq('Sample text.')
@@ -20,7 +20,7 @@ RSpec.describe "UserComments", type: :request do
 
     context 'When user is anonymous' do
       it 'redirects to login page' do
-        post user_comments_path, params: { user_comment: { user_id: different_user.id, body: 'Sample text.' } }
+        post user_comments_path, params: { comment: { user_id: different_user.id, body: 'Sample text.' } }
         expect(response).to redirect_to(new_session_path)
       end
     end

@@ -2,7 +2,7 @@ class UserCommentsController < ApplicationController
   before_action :require_current_user!
 
   def create
-    @comment = UserComment.new(user_comment_params)
+    @comment = UserComment.new(comment_params)
     @comment.author_id = current_user.id
 
     if @comment.save
@@ -17,8 +17,8 @@ class UserCommentsController < ApplicationController
 
   private
 
-  def user_comment_params
-    params.require(:user_comment).permit(
+  def comment_params
+    params.require(:comment).permit(
       :body,
       :user_id
     )

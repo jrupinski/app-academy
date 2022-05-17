@@ -11,7 +11,7 @@ RSpec.describe "GoalComments", type: :request do
       end
 
       scenario 'Creates a comment on Goal Profile' do
-        post goal_comments_path, params: { goal_comment: { goal_id: goal.id, body: 'Sample text.' } }
+        post goal_comments_path, params: { comment: { goal_id: goal.id, body: 'Sample text.' } }
 
         expect(response).to redirect_to(goals_path)
         expect(goal.goal_comments.last.body).to eq('Sample text.')
@@ -20,7 +20,7 @@ RSpec.describe "GoalComments", type: :request do
 
     context 'When user is anonymous' do
       it 'redirects to login page' do
-        post goal_comments_path, params: { goal_comment: { goal_id: goal.id, body: 'Sample text.' } }
+        post goal_comments_path, params: { comment: { goal_id: goal.id, body: 'Sample text.' } }
         expect(response).to redirect_to(new_session_path)
       end
     end
