@@ -13,9 +13,9 @@ Welcome <%= @user.email %>
 </p>
 <p>User comments:
   <ul>
-    <% @user.user_comments.each do |comment| %>
+    <% @user.comments.each do |comment| %>
       <li><b><%= comment.author.email %>:</b> <%= comment.body %></li>
     <% end %>
   </ul>
-  <%= render 'user_comments/form', user: @user %>
+  <%= render 'shared/comments_form', commentable_id: @user.id, commentable_type: @user.class %>
 </p>
