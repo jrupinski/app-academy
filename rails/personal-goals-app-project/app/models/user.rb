@@ -7,7 +7,7 @@ class User < ApplicationRecord
   before_validation :ensure_session_token
 
   has_many :goals, dependent: :destroy
-  has_many :user_comments, dependent: :destroy
+  # has_many :user_comments, dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
 
   attr_reader :password

@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :goal_comment do
-    body { Faker::Lorem.sentence }
+    # body { Faker::Lorem.sentence }
   end
 end
