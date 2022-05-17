@@ -1,8 +1,11 @@
 class Goal < ApplicationRecord
+  # concern used to dry up polymorphism code
+  include Commentable
+
   belongs_to :user
 
   # has_many :goal_comments
-  has_many :comments, as: :commentable, dependent: :destroy
+  # has_many :comments, as: :commentable, dependent: :destroy
 
   validates :title, presence: true, length: { minimum: 6 }
   validates :completed, :private, inclusion: [true, false]

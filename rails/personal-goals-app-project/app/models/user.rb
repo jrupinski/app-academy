@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  # concern used to dry up polymorphism code
+  include Commentable
+
   validates :email, :password_digest, :session_token, presence: true
   validates :email, :password_digest, :session_token, uniqueness: true
 
@@ -8,7 +11,7 @@ class User < ApplicationRecord
 
   has_many :goals, dependent: :destroy
   # has_many :user_comments, dependent: :destroy
-  has_many :comments, as: :commentable, dependent: :destroy
+  # has_many :comments, as: :commentable, dependent: :destroy
 
   attr_reader :password
 
