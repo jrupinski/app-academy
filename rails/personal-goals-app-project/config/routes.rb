@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   resources :users, only: %i[show new create]
   resources :goals
   resources :user_comments, only: %i[create]
+  resources :goal_comments, only: %i[create]
 end
