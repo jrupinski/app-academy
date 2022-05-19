@@ -1,7 +1,5 @@
 <h3>New comment</h3>
 
-<%= render 'shared/alerts' %>
-
 <form action='<%= comments_path %>' method='POST'>
   <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
   <input type='hidden' name="comment[commentable_id]" value='<%= commentable_id %>'>
