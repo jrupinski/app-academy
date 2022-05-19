@@ -1,4 +1,7 @@
 class SessionsController < ApplicationController
+  before_action :require_no_current_user!, only: %i[new create]
+  before_action :require_current_user!, only: %i[index destroy]
+
   def new
     @user = User.new
   end
@@ -19,7 +22,7 @@ class SessionsController < ApplicationController
 
   def destroy
     logout!
-    redirect_to new_session_path
+    redirect_to new_user_path
   end
 
   private

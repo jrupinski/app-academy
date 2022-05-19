@@ -15,6 +15,10 @@
 
     <% if current_user %>
       <%= render 'shared/user_logout' %>
+      <p><%= link_to 'New goal', new_goal_path unless params[:action] == 'new' %></p>
+    <% else  %>
+        <p><%= link_to 'Sign up', new_user_path %></p>
+        <p><%= link_to 'Log in', new_session_path %></p>
     <% end %>
 
     <%= yield %>

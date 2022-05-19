@@ -71,7 +71,7 @@ feature 'logging out' do
 
   scenario 'begins with a logged out state' do
     visit root_path
-    expect(page).to have_button 'Log in'
+    expect(page).to have_link 'Log in'
   end
 
   scenario 'doesn\'t show username on the homepage after log out' do
