@@ -4,3 +4,6 @@
 [submodule "ruby/minesweeper"]
 	path = ruby/minesweeper
 	url = ./ruby/minesweeper/
+[submodule "rails/reddit-clone"]
+	path = rails/reddit-clone
+	url = git@github.com:jrupinski/reddit-clone.git
