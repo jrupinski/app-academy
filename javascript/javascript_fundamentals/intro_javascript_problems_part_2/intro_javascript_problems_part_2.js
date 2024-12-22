@@ -1,19 +1,17 @@
 // Phase I: Callbacks
 function titleize(arr, callback_fn) {
-	var mapped_arr = arr.map(function(el) {
-		return `Mx. ${el} Jingleheimer Schmidt`;
-	});
+	var mapped_arr = arr.map(el => `Mx. ${el} Jingleheimer Schmidt`);
 
 	callback_fn(mapped_arr);
-}
+};
 
-function printCallback(arr) {
-	arr.forEach(function(el) {
-		console.log(el);
-	})
-}
+
+titleize(["Mary", "Joe", "Mama"], (names) => {
+	names.forEach(name => console.log(name));
+});
 
 // Phase II: Constructors, Prototypes, and this
+// Old school way
 function Elephant(name, height, array_of_tricks) {
 	this.name = name;
 	this.heigth = height;
@@ -34,3 +32,25 @@ Elephant.prototype.play = function() {
 	return this.array_of_tricks[random_trick];
 }
 
+// New way
+class Elephant {
+	constructor(name, height, tricks) {
+		this.name = name;
+		this.height = height;
+		this.tricks = tricks;
+	}
+
+	trumpet() {
+		console.log(`${this.name} the elephant goes 'phrRRRRRRRRRRR!!!!!!!'`);
+	}
+	grow() {
+		this.height += 12;
+	}
+	addTrick(trick) {
+		this.array_of_tricks << trick;
+	}
+	play() {
+		random_trick = Math.floor(Math.random() * this.array_of_tricks.length);
+		return this.array_of_tricks[random_trick];
+	}
+}
