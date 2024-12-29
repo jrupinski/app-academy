@@ -54,3 +54,48 @@ class Elephant {
 		return this.array_of_tricks[random_trick];
 	}
 }
+
+// Phase 3
+// expected way
+//Elephant.paradeHelper = function paradeHelper(elephant) {
+//	console.log(`${elephant.name} is trotting by!`);
+//}
+
+// my way
+function paradeHelper(elephant) {
+	console.log(`${elephant.name} is trotting by!`);
+}
+
+Elephant.paradeHelper = paradeHelper
+
+//> herd.forEach(paradeHelper);
+//Ellie is trotting by!
+//Charlie is trotting by!
+//Kate is trotting by!
+//Micah is trotting by!
+//undefined
+
+//> herd.forEach(function(el) {
+//... paradeHelper(el);
+//... });
+//Ellie is trotting by!
+//Charlie is trotting by!
+//Kate is trotting by!
+//Micah is trotting by!
+//undefined
+
+//> herd.forEach(elephant => {
+//... paradeHelper(elephant);
+//... });
+//Ellie is trotting by!
+//Charlie is trotting by!
+//Kate is trotting by!
+//Micah is trotting by!
+//undefined
+
+//> herd.forEach(el => paradeHelper(el));
+//Ellie is trotting by!
+//Charlie is trotting by!
+//Kate is trotting by!
+//Micah is trotting by!
+//undefined
