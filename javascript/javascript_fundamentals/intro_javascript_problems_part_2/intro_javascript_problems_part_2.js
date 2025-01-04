@@ -99,3 +99,27 @@ Elephant.paradeHelper = paradeHelper
 //Kate is trotting by!
 //Micah is trotting by!
 //undefined
+
+// Phase 4 - callbacks
+function dinerBreakfast() {
+	let order = ["cheesy scrambled eggs"];
+
+	return (food) => {
+		let order_string = "I'd like "
+
+		if (food != null) {
+			order.push(food);
+		}
+
+
+		order.forEach(function(el) {
+			if (order.indexOf(el) > 0) {
+				order_string += ' and ';
+			};
+
+			order_string += el;
+		});
+
+		return order_string.concat(" please.");
+	}
+}
